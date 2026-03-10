@@ -1,0 +1,16 @@
+{
+  "name": "openehr-assistant",
+  "version": "0.1.0",
+  "description": "AI plugin suite for clinical workflow integration with openEHR systems",
+  "author": "Cadasto B.V.",
+  "license": "MIT",
+  "repository": "https://github.com/cadasto/openehr-assistant-plugin",
+  "keywords": ["openehr", "clinical", "ehr", "archetypes", "templates", "aql"],
+  "components": {
+    "commands": "commands/",
+    "skills": "skills/",
+    "agents": "agents/",
+    "hooks": "hooks/hooks.json",
+    "mcp": ".mcp.json"
+  }
+}

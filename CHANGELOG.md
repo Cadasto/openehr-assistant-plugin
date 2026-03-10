@@ -1,0 +1,23 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on Keep a Changelog, and this project adheres to Semantic Versioning.
+
+- Keep a Changelog: https://keepachangelog.com/en/1.1.0/
+- Semantic Versioning: https://semver.org/spec/v2.0.0.html
+
+## [Unreleased]
+
+## [0.1.0] - 2026-03-10
+
+Initial public release.
+
+### Added
+- Plugin manifest (`.claude-plugin/plugin.json`).
+- MCP server configuration (`.mcp.json`) connecting to the hosted openehr-assistant-mcp server.
+- Skills: `openehr-assistant` (background awareness), `archetype-authoring`, `template-authoring`, `composition-builder`, `aql-query`.
+- Commands: `/archetype-search`, `/archetype-explain`, `/template-search`, `/aql-designer`, `/format-data`, `/guide`, `/terminology`, `/type-spec`, `/adl-idiom`, `/archetype-fix-syntax`, `/archetype-translate`.
+- Agent: `clinical-modeler` for clinical information modeling tasks.
+- SessionStart hook for openEHR workspace detection.
+- Documentation: README, AGENTS.md, CONTRIBUTING.md.
