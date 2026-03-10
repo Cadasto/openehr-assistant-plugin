@@ -1,10 +1,10 @@
-# AGENTS.md
+# AI Guidelines: openEHR Assistant Plugin
 
-This file provides guidance to Claude Code when working in this repository.
+This file provides guidance to AI coding assistants working in this repository.
 
 ## Project Overview
 
-The **openEHR Assistant Plugin** is a Claude Code plugin by Cadasto B.V. that provides clinical workflow integration with openEHR systems through skills, commands, agents, and hooks.
+The **openEHR Assistant Plugin** is an AI plugin by Cadasto B.V. that provides clinical workflow integration with openEHR systems through skills, commands, agents, and hooks.
 
 ## Domain Context
 
@@ -27,7 +27,7 @@ MCP tool names in this plugin use the format: `mcp__openehr-assistant__<tool_nam
 
 ## Guide-First Principle
 
-All skills and commands instruct Claude to **load relevant guides from the MCP server before answering**. The guides (24 markdown files) are the authoritative knowledge registry:
+All skills and commands instruct the AI assistant to **load relevant guides from the MCP server before answering**. The guides (24 markdown files) are the authoritative knowledge registry:
 - `archetypes/` (11 files) — principles, rules, ADL syntax, idioms, structural constraints, terminology, anti-patterns, checklist, language standards, formatting
 - `templates/` (5 files) — principles, rules, OET syntax, OET idioms, checklist
 - `aql/` (4 files) — principles, syntax, idioms, checklist
@@ -67,6 +67,12 @@ All skills and commands instruct Claude to **load relevant guides from the MCP s
 ### Hooks
 - **SessionStart** — detects openEHR resources in workspace and displays context
 
+## Repository Layout
+
+- **Plugin manifest**: `.claude-plugin/plugin.json` — name, version, component paths (commands, skills, agents, hooks, mcp)
+- **MCP config**: `.mcp.json` — MCP server connection (default: streamable-http to hosted openehr-assistant-mcp)
+- **Hooks**: `hooks/hooks.json` registers hooks; `hooks/session-start.sh` implements SessionStart (detects `.openehr-project.json`, `*.adl`, `*.oet`, `*.opt`). Use `${CLAUDE_PLUGIN_ROOT}` in hook scripts for paths.
+
 ## Development
 
 ### Testing Locally
@@ -87,3 +93,18 @@ Verify MCP connection by running any command that uses MCP tools:
 - Agents go in `agents/<name>.md`
 - All markdown files use YAML frontmatter for metadata
 - `allowed-tools` in frontmatter pre-approves MCP tools to avoid permission prompts
+- Skills: use `auto-invocable` / `user-invocable` in frontmatter as needed; follow Guide-First (load MCP guides before acting)
+- Commands: use `argument-hint` in frontmatter and `$ARGUMENTS` in body for user input; keep instructions concise for single-interaction completion
+
+### Documentation Sync
+When adding or renaming components, update all of: **AGENTS.md** (component tables), **README.md** (tables), and **hooks/session-start.sh** (the "Available: /command1, ..." list in the SessionStart message).
+
+### Versioning
+- Plugin version is in `.claude-plugin/plugin.json`. Follow Semantic Versioning; update version and **CHANGELOG.md** (Keep a Changelog format) when releasing.
+
+### Commit Messages
+- Follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), e.g. `fix(commands): corrected allowed-tools in archetype-search`, `feat(skills): added composition-builder skill`.
+- Scopes: `skills`, `commands`, `agents`, `hooks`, `docs`, `mcp`.
+
+### Branching
+- Use feature branches and pull requests. Standard PR validation runs on every push.
