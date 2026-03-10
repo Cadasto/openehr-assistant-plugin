@@ -38,7 +38,7 @@ All skills and commands instruct the AI assistant to **load relevant guides from
 ### Skills (5)
 | Skill | Purpose |
 |-------|---------|
-| `openehr-assistant` | Background auto-invoked openEHR awareness and tool routing |
+| `openehr-assistant` | Auto-invoked openEHR awareness, clinical modeling (template design, archetype selection, constraint specification, terminology binding, model review), and tool routing |
 | `archetype-authoring` | Create, edit, extend, specialize archetypes |
 | `template-authoring` | Create and constrain templates (OET/OPT) |
 | `composition-builder` | Build compositions (FLAT/STRUCTURED/CANONICAL) |
@@ -62,7 +62,7 @@ All skills and commands instruct the AI assistant to **load relevant guides from
 ### Agents (1)
 | Agent | Purpose |
 |-------|---------|
-| `clinical-modeler` | Clinical modeling specialist for template design, archetype selection, model review |
+| `clinical-modeler` | Local clinical model file analyst for reading, writing, reviewing, and editing archetype/template files in the workspace (no MCP tool access) |
 
 ### Hooks
 - **SessionStart** — detects openEHR resources in workspace and displays context

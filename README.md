@@ -73,7 +73,7 @@ Run the MCP server locally via Docker with stdio transport:
 | `template-authoring` | Creating/reviewing templates | Template design with CGEM framework and narrowing principle |
 | `composition-builder` | Building compositions | FLAT/STRUCTURED/CANONICAL format generation |
 | `aql-query` | Writing AQL queries | Query authoring with optimization guidance |
-| `openehr-assistant` | Any openEHR mention | Background awareness and tool routing |
+| `openehr-assistant` | Any openEHR mention | Clinical modeling (template design, archetype selection, constraint specification, terminology binding, model review) and tool routing |
 
 ### Commands
 
@@ -95,7 +95,7 @@ Run the MCP server locally via Docker with stdio transport:
 
 | Agent | Description |
 |-------|-------------|
-| `clinical-modeler` | Clinical modeling specialist for template design, archetype selection, and model review |
+| `clinical-modeler` | Local clinical model file analyst for reading, writing, reviewing, and editing archetype/template files in the workspace |
 
 ## Companion MCP Server
 
