@@ -4,8 +4,6 @@ description: >
   Use when user mentions openEHR concepts (archetypes, templates, AQL, ADL, CKM, RM types,
   compositions, OPT, terminology bindings, clinical modeling) outside of a specific command context.
   Provides general openEHR awareness and routes to appropriate tools and commands.
-auto-invocable: true
-disable-model-invocation: false
 user-invocable: false
 allowed-tools:
   - mcp__openehr-assistant__ckm_archetype_search

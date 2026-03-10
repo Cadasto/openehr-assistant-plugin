@@ -3,8 +3,6 @@ name: archetype-authoring
 description: >
   Use when creating new openEHR archetypes from scratch, editing existing archetypes,
   extending archetypes via specialization, or reviewing archetype designs.
-auto-invocable: true
-user-invocable: true
 argument-hint: "<task: create|edit|extend|specialize> [archetype-id or concept]"
 allowed-tools:
   - Read

@@ -3,8 +3,6 @@ name: aql-query
 description: >
   Use when writing, explaining, or optimizing AQL (Archetype Query Language)
   queries for openEHR clinical data repositories.
-auto-invocable: true
-user-invocable: true
 argument-hint: "<clinical question or AQL query>"
 allowed-tools:
   - Read

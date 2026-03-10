@@ -4,7 +4,7 @@ description: >
   Clinical information modeling specialist with deep openEHR expertise.
   Use for clinical modeling tasks, template design, archetype selection,
   constraint specification, terminology binding, and model review.
-allowed-tools:
+tools:
   - Read
   - Glob
   - Grep

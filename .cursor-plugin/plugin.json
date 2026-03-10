@@ -1,7 +1,7 @@
 {
   "name": "openehr-assistant",
   "displayName": "openEHR Assistant",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "AI plugin suite for clinical workflow integration with openEHR systems. Provides skills, commands, agents, and hooks for archetype/template authoring, composition building, AQL, and CKM discovery.",
   "author": {
     "name": "Cadasto B.V."

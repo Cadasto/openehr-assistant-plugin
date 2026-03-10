@@ -3,8 +3,6 @@ name: template-authoring
 description: >
   Use when creating openEHR templates, constraining archetypes into templates,
   reviewing template designs, or working with OET/OPT files.
-auto-invocable: true
-user-invocable: true
 argument-hint: "<task: create|review> [template-id or use-case]"
 allowed-tools:
   - Read

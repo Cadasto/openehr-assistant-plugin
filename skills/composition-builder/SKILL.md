@@ -3,8 +3,6 @@ name: composition-builder
 description: >
   Use when building, validating, or converting openEHR compositions
   in FLAT, STRUCTURED, or CANONICAL format.
-auto-invocable: true
-user-invocable: true
 argument-hint: "<template-id> [format: flat|structured|canonical]"
 allowed-tools:
   - Read
