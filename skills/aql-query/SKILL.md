@@ -31,8 +31,9 @@ guide_get("aql/idioms-cheatsheet")
 
 AQL queries operate on archetypes. Before writing a query:
 
-1. Identify which archetypes contain the data you need
-2. Load the archetype to understand its path structure:
+1. State assumptions about deployed templates/archetypes — verify path endpoints and RM types against the deployed template, not display labels
+2. Identify which archetypes contain the data you need
+3. Load the archetype to understand its path structure:
    ```
    ckm_archetype_get("<archetype-id>")
    ```
@@ -115,6 +116,7 @@ GROUP BY e/ehr_id/value
 - Place most selective WHERE conditions first
 - Use parameterized queries for repeated execution
 - Consider index-friendly patterns (ehr_id, composition time, archetype node IDs)
+- Do not assume engine-specific behavior beyond the AQL specification
 
 ## Step 6: Review
 

@@ -50,6 +50,19 @@ When reviewing models, check for:
 - Slot constraints reference existing archetypes in the project
 - Template archetype references match available local archetypes
 
+### Lint rule awareness (local checks only)
+
+When reviewing local archetype files, check for these rules that can be verified without MCP tools:
+- **Single Concept Rule** (ERROR): Does the archetype model exactly one concept?
+- **Term Definition Completeness** (ERROR): Does every at-code have text and description?
+- **occurrences vs cardinality** (ERROR): Are they used on correct node types?
+- **CLUSTER Semantics** (WARNING): Are CLUSTERs used as semantic groups, not generic containers?
+- **Template Leakage** (WARNING): Are there workflow/UI constraints that belong in templates?
+- **Unconstrained Leaf Nodes** (WARNING): Are there DV_* matches {*} without justification?
+- **Ontology Integrity** (ERROR): Do ac-codes reference valid at-codes?
+
+Report findings with severity (ERROR/WARNING) matching the 22 normative lint rules.
+
 ### File operations
 When writing or editing clinical model files:
 - Preserve existing formatting conventions

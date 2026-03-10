@@ -70,6 +70,7 @@ Run the MCP server locally via Docker with stdio transport:
 | Skill | Trigger | Description |
 |-------|---------|-------------|
 | `archetype-authoring` | Creating/editing archetypes | Multi-step archetype authoring with guide-first approach |
+| `archetype-lint` | Reviewing/validating archetypes | 22 normative lint rules with STRICT/PERMISSIVE modes |
 | `template-authoring` | Creating/reviewing templates | Template design with CGEM framework and narrowing principle |
 | `composition-builder` | Building compositions | FLAT/STRUCTURED/CANONICAL format generation |
 | `aql-query` | Writing AQL queries | Query authoring with optimization guidance |
@@ -81,7 +82,10 @@ Run the MCP server locally via Docker with stdio transport:
 |---------|-------------|
 | `/archetype-search <query>` | Find archetypes in CKM |
 | `/archetype-explain <id>` | Explain archetype semantics and structure |
+| `/archetype-lint <file or id> [strict]` | Lint archetype against 22 normative rules |
+| `/archetype-review <file or id> [strict]` | Multi-stage review pipeline (intent, lint, fix, re-lint, review packet) |
 | `/template-search <query>` | Find templates in CKM |
+| `/template-explain <id>` | Explain template semantics and structure |
 | `/aql-designer <question or query>` | Explain, design, or review AQL queries |
 | `/format-data <template or question>` | Explain or design openEHR data instances (FLAT/STRUCTURED/CANONICAL) based on a template |
 | `/guide <topic>` | Browse openEHR implementation guides |

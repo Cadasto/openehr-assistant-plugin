@@ -9,6 +9,8 @@ allowed-tools:
   - mcp__openehr-assistant__guide_get
   - mcp__openehr-assistant__guide_adl_idiom_lookup
   - mcp__openehr-assistant__type_specification_get
+  - mcp__openehr-assistant__ckm_archetype_search
+  - mcp__openehr-assistant__ckm_archetype_get
 ---
 
 # /archetype-fix-syntax
@@ -36,5 +38,24 @@ Fix ADL syntax errors while preserving clinical semantics.
    - Existing terminology bindings
    - Archetype path structure
    - Node IDs (at-codes)
-5. Present a summary of changes made with before/after snippets
+5. Use `ckm_archetype_search` and `ckm_archetype_get` to compare patterns with existing CKM archetypes when uncertain
 6. If fixing a file, use the Edit tool to apply corrections
+
+## Conflict Resolution
+
+If conflicts arise between syntax and idioms, ADL syntax takes precedence over idioms.
+
+## Prohibited Actions
+
+- Do NOT rename concepts or archetype IDs
+- Do NOT add or remove clinical elements
+- Do NOT change coded meaning or terminology bindings
+- Do NOT alter occurrence/cardinality intent
+- Do NOT reorganize tree structure for readability
+
+## Required Output
+
+1. **Corrected ADL** in a code block
+2. **Minimal change log**: what was fixed and why (before/after snippets)
+3. **Remaining ambiguities**: issues that could not be resolved without semantic decisions
+4. **Detected Semantic Issues** (do NOT fix): modeling quality, terminology meaning, scope, over/under-constraint

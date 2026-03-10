@@ -35,6 +35,8 @@ Load the target template to understand the structure:
 ckm_template_get("<template-id>")
 ```
 
+**Important:** Simplified format field identifiers are ONLY valid for the specific target OPT. Always state the target template and validate paths against it. A field identifier valid for one template may be invalid or mean something different in another.
+
 This reveals the archetype structure, constraints, and required fields.
 
 ## Step 3: Choose Format
@@ -86,12 +88,14 @@ Full Reference Model representation with `_type` annotations. Best for archival 
 
 ## Step 4: Composition Metadata
 
-Every composition requires:
-- **composer**: Who created the data (name, optionally ID)
-- **language**: ISO 639-1 code (e.g., `en`, `nl`)
-- **territory**: ISO 3166-1 code (e.g., `NL`, `US`)
+Every composition requires context fields (`ctx/` in FLAT, `ctx` object in STRUCTURED):
+- **composer** (`ctx/composer_name`): Who created the data (name, optionally ID)
+- **language** (`ctx/language`): ISO 639-1 code (e.g., `en`, `nl`)
+- **territory** (`ctx/territory`): ISO 3166-1 code (e.g., `NL`, `US`)
 - **category**: `event` (point-in-time) or `persistent` (ongoing)
-- **context**: `start_time` and `setting` (e.g., `primary medical care`, `secondary medical care`)
+- **context**: `start_time` (`ctx/time`) and `setting` (e.g., `primary medical care`, `secondary medical care`)
+- **id_namespace** (`ctx/id_namespace`): Optional, for identification context
+- **id_scheme** (`ctx/id_scheme`): Optional, for identification scheme
 
 ## Step 5: RM Data Types
 

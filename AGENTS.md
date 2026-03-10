@@ -35,21 +35,25 @@ All skills and commands instruct the AI assistant to **load relevant guides from
 
 ## Components
 
-### Skills (5)
+### Skills (6)
 | Skill | Purpose |
 |-------|---------|
 | `openehr-assistant` | Auto-invoked openEHR awareness, clinical modeling (template design, archetype selection, constraint specification, terminology binding, model review), and tool routing |
 | `archetype-authoring` | Create, edit, extend, specialize archetypes |
+| `archetype-lint` | Auto-invoked archetype validation with 22 normative lint rules (STRICT/PERMISSIVE) |
 | `template-authoring` | Create and constrain templates (OET/OPT) |
 | `composition-builder` | Build compositions (FLAT/STRUCTURED/CANONICAL) |
 | `aql-query` | Write, explain, optimize AQL queries |
 
-### Commands (11)
+### Commands (14)
 | Command | Purpose |
 |---------|---------|
 | `/archetype-search` | Find CKM archetypes |
 | `/archetype-explain` | Explain archetype semantics |
+| `/archetype-lint` | Lint archetype against 22 normative rules |
+| `/archetype-review` | Multi-stage archetype review pipeline (intent, lint, fix, re-lint, review packet) |
 | `/template-search` | Find CKM templates |
+| `/template-explain` | Explain template semantics |
 | `/aql-designer` | Explain/design/review AQL |
 | `/format-data` | Explain or design openEHR data instances (FLAT/STRUCTURED/CANONICAL) based on a template |
 | `/guide` | Browse openEHR guides |

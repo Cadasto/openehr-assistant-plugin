@@ -21,6 +21,15 @@ allowed-tools:
 
 # Archetype Authoring
 
+## Conflict Resolution
+
+When guides conflict, apply this priority (highest first):
+1. Rules and structural constraints
+2. Syntax specifications
+3. Anti-patterns
+4. Principles and examples
+5. Convenience
+
 ## Step 1: Load Guides (MANDATORY)
 
 Before any archetype work, load the authoritative guides:
@@ -111,12 +120,14 @@ When extending via specialization:
 
 ## Step 7: Quality Review
 
-Before finalizing, run through the quality checklist:
+Before finalizing, run through the quality checklist and anti-patterns:
 
 ```
 guide_get("archetypes/checklist")
 guide_get("archetypes/anti-patterns")
 ```
+
+Run through the 22 normative lint rules (see archetype-lint skill) if reviewing for publication or CKM submission.
 
 Verify:
 - [ ] One concept per archetype

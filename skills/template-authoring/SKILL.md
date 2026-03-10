@@ -22,6 +22,14 @@ allowed-tools:
 
 # Template Authoring
 
+## Conflict Resolution
+
+When guides conflict, apply this priority (highest first):
+1. Rules and syntax specifications
+2. Idioms and structural constraints
+3. Principles
+4. Convenience
+
 ## Step 1: Load Guides (MANDATORY)
 
 Before any template work, load the authoritative guides:
@@ -123,6 +131,8 @@ Verify:
 - [ ] Required fields marked correctly
 - [ ] Excluded fields set to max=0
 - [ ] Terminology constraints appropriate for context
+- [ ] Value sets verified (quantity constraints, unit hardening, "limit to list" coded text)
+- [ ] Annotations and UI hints appropriate (hide_on_form, contextual label overrides)
 - [ ] Valid OET syntax
 
 ## Output
