@@ -1,6 +1,6 @@
 # openEHR Assistant Plugin
 
-AI plugin suite for clinical workflow integration with openEHR systems. Provides skills, commands, agents, and hooks for [Claude Code](https://claude.ai/code).
+AI plugin suite for clinical workflow integration with openEHR systems. Provides skills, commands, agents, and hooks for **[Claude Code](https://claude.ai/code)** and **[Cursor](https://cursor.com)**.
 
 ## Overview
 
@@ -15,9 +15,12 @@ This plugin connects Claude Code to the openEHR ecosystem through the companion 
 
 ## Installation
 
+**Claude Code**
 ```bash
 claude plugin add cadasto/openehr-assistant-plugin
 ```
+
+**Cursor** — Add the plugin via Cursor’s plugin flow (e.g. from a Git URL or local path). The repo includes a Cursor manifest at `.cursor-plugin/plugin.json`; skills, commands, agents, and MCP config are shared with the Claude plugin.
 
 ## MCP Configuration
 

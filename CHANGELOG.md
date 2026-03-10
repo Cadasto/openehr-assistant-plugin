@@ -9,6 +9,11 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-03-10
+
+### Added
+- Cursor plugin support: `.cursor-plugin/plugin.json`, `hooks/cursor-hooks.json`, `rules/openehr-context.mdc`. Same skills, commands, agents, and MCP config as Claude; dual-host compatible.
+
 ## [0.1.0] - 2026-03-10
 
 Initial public release.

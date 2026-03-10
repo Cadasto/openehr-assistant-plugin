@@ -44,8 +44,9 @@ No build step is required — the plugin is pure markdown and JSON.
 ## Plugin structure
 
 ```
-.claude-plugin/plugin.json    # Plugin manifest
-.mcp.json                     # MCP server connection config
+.claude-plugin/plugin.json     # Claude Code plugin manifest
+.cursor-plugin/plugin.json    # Cursor plugin manifest (same version, component paths)
+.mcp.json                     # MCP server connection config (shared)
 skills/                        # Multi-step authoring workflows
   <name>/SKILL.md
 commands/                      # Slash commands (thin MCP tool wrappers)
@@ -53,8 +54,11 @@ commands/                      # Slash commands (thin MCP tool wrappers)
 agents/                        # Specialized subagents
   <name>.md
 hooks/                         # Event hooks
-  hooks.json
-  session-start.sh
+  hooks.json                   # Claude format (array with type + command)
+  cursor-hooks.json            # Cursor format (hooks.sessionStart, etc.)
+  session-start.sh             # Shared script
+rules/                         # Cursor-only rules (.mdc)
+  openehr-context.mdc
 ```
 
 Key conventions:
@@ -134,7 +138,7 @@ PR checklist:
 
 
 ## Versioning
-- Plugin version is defined in `.claude-plugin/plugin.json`. Update it when releasing new versions.
+- Plugin version is defined in both `.claude-plugin/plugin.json` and `.cursor-plugin/plugin.json`. Update **both** when releasing new versions.
 - Follow Semantic Versioning: breaking changes bump major, new features bump minor, fixes bump patch.
 
 

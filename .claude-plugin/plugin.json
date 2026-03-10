@@ -1,6 +1,6 @@
 {
   "name": "openehr-assistant",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "AI plugin suite for clinical workflow integration with openEHR systems",
   "author": "Cadasto B.V.",
   "license": "MIT",

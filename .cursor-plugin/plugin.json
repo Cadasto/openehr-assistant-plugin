@@ -1,0 +1,26 @@
+{
+  "name": "openehr-assistant",
+  "displayName": "openEHR Assistant",
+  "version": "0.2.0",
+  "description": "AI plugin suite for clinical workflow integration with openEHR systems. Provides skills, commands, agents, and hooks for archetype/template authoring, composition building, AQL, and CKM discovery.",
+  "author": {
+    "name": "Cadasto B.V."
+  },
+  "repository": "https://github.com/cadasto/openehr-assistant-plugin",
+  "license": "MIT",
+  "keywords": [
+    "openehr",
+    "clinical",
+    "ehr",
+    "archetypes",
+    "templates",
+    "aql",
+    "ckm"
+  ],
+  "skills": "./skills/",
+  "rules": "./rules/",
+  "agents": "./agents/",
+  "commands": "./commands/",
+  "hooks": "./hooks/cursor-hooks.json",
+  "mcpServers": ".mcp.json"
+}

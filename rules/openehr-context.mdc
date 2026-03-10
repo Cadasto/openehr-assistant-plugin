@@ -1,0 +1,14 @@
+---
+description: When working with openEHR (archetypes, templates, AQL, ADL, CKM, compositions), follow AGENTS.md and load relevant guides from the MCP server before answering or editing.
+alwaysApply: false
+globs: ["**/*.adl", "**/*.oet", "**/*.opt", "**/AGENTS.md"]
+---
+
+# openEHR context
+
+When the user or the codebase involves openEHR (archetypes, templates, AQL, ADL, CKM, compositions, OPT, terminology):
+
+1. **Read AGENTS.md** in this repository for project overview, domain context, and component usage.
+2. **Guide-first**: Load relevant implementation guides from the MCP server (e.g. `guide_search` / `guide_get` or equivalent) before creating or editing archetypes, templates, AQL, or composition formats.
+3. **MCP tools**: Use `mcp__openehr-assistant__*` tools for CKM search, guide access, terminology, type specs, and ADL idioms as needed.
+4. **Conventions**: Skills live in `skills/<name>/SKILL.md`, commands in `commands/<name>.md`, agents in `agents/<name>.md`; keep frontmatter and allowed-tools aligned with AGENTS.md.
