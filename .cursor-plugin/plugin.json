@@ -1,10 +1,11 @@
 {
   "name": "openehr-assistant",
   "displayName": "openEHR Assistant",
-  "version": "0.2.1",
-  "description": "AI plugin suite for clinical workflow integration with openEHR systems. Provides skills, commands, agents, and hooks for archetype/template authoring, composition building, AQL, and CKM discovery.",
+  "version": "0.3.0",
+  "description": "AI plugin to assist on various openEHR related tasks",
   "author": {
-    "name": "Cadasto B.V."
+    "name": "Cadasto B.V.",
+    "url": "https://github.com/cadasto"
   },
   "repository": "https://github.com/cadasto/openehr-assistant-plugin",
   "license": "MIT",

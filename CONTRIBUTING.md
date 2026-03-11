@@ -138,7 +138,7 @@ PR checklist:
 
 
 ## Versioning
-- Plugin version is defined in both `.claude-plugin/plugin.json` and `.cursor-plugin/plugin.json`. Update **both** when releasing new versions.
+- Plugin version (and for consistency, description and author) is defined in both `.claude-plugin/plugin.json` and `.cursor-plugin/plugin.json`. Update **both** when releasing new versions.
 - Follow Semantic Versioning: breaking changes bump major, new features bump minor, fixes bump patch.
 
 

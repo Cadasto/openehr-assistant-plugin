@@ -75,7 +75,7 @@ All skills and commands instruct the AI assistant to **load relevant guides from
 
 This repo supports **both Claude Code and Cursor**; shared assets (skills, commands, agents, `.mcp.json`) are used by both. Host-specific manifests and hook configs are separate.
 
-- **Claude manifest**: `.claude-plugin/plugin.json` — name, version, `components` (commands, skills, agents, hooks, mcp)
+- **Claude manifest**: `.claude-plugin/plugin.json` — name, version, description, author; component discovery uses default folders (skills/, commands/, agents/, hooks/, .mcp.json)
 - **Cursor manifest**: `.cursor-plugin/plugin.json` — name, version, top-level paths (skills, rules, agents, commands, hooks, mcpServers)
 - **MCP config**: `.mcp.json` — MCP server connection (default: streamable-http to hosted openehr-assistant-mcp); used by both hosts
 - **Claude hooks**: `hooks/hooks.json` — array of `{ "type": "SessionStart", "command": "..." }`; use `${CLAUDE_PLUGIN_ROOT}` in command paths
@@ -108,7 +108,7 @@ Verify with: `/archetype-search blood pressure`
 When adding or renaming components, update: **AGENTS.md** (component tables), **README.md** (tables), and **hooks/session-start.sh** (the "Available: /command1, ..." list). Cursor uses the same skills/commands/agents paths; no separate Cursor-only list is required.
 
 ### Versioning
-- Plugin version must be kept in sync in **both** `.claude-plugin/plugin.json` and `.cursor-plugin/plugin.json`. Follow Semantic Versioning; update both manifests and **CHANGELOG.md** (Keep a Changelog format) when releasing.
+- Plugin version (and, for consistency, description and author) must be kept in sync in **both** `.claude-plugin/plugin.json` and `.cursor-plugin/plugin.json`. Follow Semantic Versioning; update both manifests and **CHANGELOG.md** (Keep a Changelog format) when releasing.
 
 ### Commit Messages
 - Follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), e.g. `fix(commands): corrected allowed-tools in archetype-search`, `feat(skills): added composition-builder skill`.
