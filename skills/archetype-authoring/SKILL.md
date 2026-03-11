@@ -1,8 +1,10 @@
 ---
 name: archetype-authoring
 description: >
-  Use when creating new openEHR archetypes from scratch, editing existing archetypes,
-  extending archetypes via specialization, or reviewing archetype designs.
+  This skill should be used when the user asks to "create an archetype", "edit an archetype",
+  "extend an archetype", "specialize an archetype", "design an archetype", or "review an
+  archetype design". Covers creating new openEHR archetypes, editing existing ones, extending
+  via specialization, and reviewing archetype designs.
 argument-hint: "<task: create|edit|extend|specialize> [archetype-id or concept]"
 allowed-tools:
   - Read

@@ -1,8 +1,9 @@
 ---
 name: composition-builder
 description: >
-  Use when building, validating, or converting openEHR compositions
-  in FLAT, STRUCTURED, or CANONICAL format.
+  This skill should be used when the user asks to "build a composition", "create a composition",
+  "validate a composition", "convert a composition", or "generate FLAT/STRUCTURED/CANONICAL format".
+  Covers building, validating, and converting openEHR compositions in all simplified formats.
 argument-hint: "<template-id> [format: flat|structured|canonical]"
 allowed-tools:
   - Read

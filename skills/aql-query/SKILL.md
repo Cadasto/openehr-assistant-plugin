@@ -1,8 +1,9 @@
 ---
 name: aql-query
 description: >
-  Use when writing, explaining, or optimizing AQL (Archetype Query Language)
-  queries for openEHR clinical data repositories.
+  This skill should be used when the user asks to "write an AQL query", "explain an AQL query",
+  "optimize an AQL query", "review AQL", or "query openEHR data". Covers writing, explaining,
+  and optimizing AQL (Archetype Query Language) queries for openEHR clinical data repositories.
 argument-hint: "<clinical question or AQL query>"
 allowed-tools:
   - Read

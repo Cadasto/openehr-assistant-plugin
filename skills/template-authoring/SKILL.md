@@ -1,8 +1,9 @@
 ---
 name: template-authoring
 description: >
-  Use when creating openEHR templates, constraining archetypes into templates,
-  reviewing template designs, or working with OET/OPT files.
+  This skill should be used when the user asks to "create a template", "design a template",
+  "constrain archetypes into a template", "review a template", or "work with OET/OPT files".
+  Covers creating openEHR templates, constraining archetypes, reviewing designs, and OET/OPT authoring.
 argument-hint: "<task: create|review> [template-id or use-case]"
 allowed-tools:
   - Read

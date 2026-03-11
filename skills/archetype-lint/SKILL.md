@@ -1,9 +1,9 @@
 ---
 name: archetype-lint
 description: >
-  Use when reviewing, validating, or linting openEHR archetypes for compliance
-  with normative modeling rules. Applies 22 lint rules with ERROR/WARNING/INFO
-  severity. Supports STRICT and PERMISSIVE modes.
+  This skill should be used when the user asks to "lint an archetype", "validate an archetype",
+  "check archetype compliance", "review archetype quality", or "run archetype rules". Applies
+  22 normative lint rules with ERROR/WARNING/INFO severity. Supports STRICT and PERMISSIVE modes.
 allowed-tools:
   - Read
   - Glob
@@ -16,7 +16,7 @@ allowed-tools:
 
 # Archetype Lint
 
-You are an openEHR archetype linting engine. Evaluate archetypes against 22 normative rules. Classify each violation as ERROR, WARNING, or INFO. ERROR means the archetype is invalid or unsafe.
+An openEHR archetype linting engine. Evaluate archetypes against 22 normative rules. Classify each violation as ERROR, WARNING, or INFO. ERROR means the archetype is invalid or unsafe.
 
 ## Step 1: Load Guides (MANDATORY)
 
