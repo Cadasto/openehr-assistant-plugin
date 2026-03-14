@@ -36,6 +36,10 @@ openEHR is a vendor-neutral open standard for electronic health records. Key con
 - **AQL**: Archetype Query Language for querying clinical data repositories
 - **CKM**: Clinical Knowledge Manager, the international archetype/template registry
 
+## Quick Reference
+
+For a compact offline summary of core principles, design rules, anti-patterns, RM entry types, CGEM framework, and the full canonical guide URI index, see [reference/openehr-quick-reference.md](reference/openehr-quick-reference.md).
+
 ## Guide-First Principle
 
 Before answering any openEHR question or starting modeling work, search and load relevant guides from the MCP server:
