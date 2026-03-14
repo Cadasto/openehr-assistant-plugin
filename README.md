@@ -75,6 +75,7 @@ Run the MCP server locally via Docker with stdio transport:
 | `composition-builder` | Building compositions | FLAT/STRUCTURED/CANONICAL format generation |
 | `aql-query` | Writing AQL queries | Query authoring with optimization guidance |
 | `openehr-assistant` | Any openEHR mention | Clinical modeling (template design, archetype selection, constraint specification, terminology binding, model review) and tool routing |
+| `guide-prompt-authoring` | Creating guides or prompts | Author new implementation guides and MCP prompt files for the openehr-assistant-mcp server |
 
 ### Commands
 
