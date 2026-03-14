@@ -21,17 +21,18 @@ The **openEHR Assistant Plugin** is an AI plugin by Cadasto B.V. that provides c
 The [openehr-assistant-mcp](https://github.com/Cadasto/openehr-assistant-mcp) server provides:
 - **10 MCP tools**: CKM search/retrieval, guide access, terminology resolution, type specifications, ADL idiom lookup
 - **15 MCP prompts**: Guided workflows for common tasks
-- **Resources**: Archetypes, templates, AQL, terminology, type specs, and 24 implementation guides
+- **Resources**: Archetypes, templates, AQL, terminology, type specs, and 28 implementation guides
 
 MCP tool names in this plugin use the format: `mcp__openehr-assistant__<tool_name>`
 
 ## Guide-First Principle
 
-All skills and commands instruct the AI assistant to **load relevant guides from the MCP server before answering**. The guides (24 markdown files) are the authoritative knowledge registry:
+All skills and commands instruct the AI assistant to **load relevant guides from the MCP server before answering**. The guides (28 markdown files across 5 categories) are the authoritative knowledge registry. A compact offline summary lives at `skills/openehr-assistant/reference/openehr-quick-reference.md` for use by the `clinical-modeler` agent and as a quick refresher; canonical guides via MCP always take precedence.
 - `archetypes/` (11 files) — principles, rules, ADL syntax, idioms, structural constraints, terminology, anti-patterns, checklist, language standards, formatting
 - `templates/` (5 files) — principles, rules, OET syntax, OET idioms, checklist
 - `aql/` (4 files) — principles, syntax, idioms, checklist
 - `simplified_formats/` (4 files) — principles, rules, idioms, checklist
+- `rm/` (3 files) — EHR information model, demographic model, platform services
 
 ## Components
 
