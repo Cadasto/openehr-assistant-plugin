@@ -9,6 +9,9 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 
 ## [Unreleased]
 
+### Added
+- Skill `guide-prompt-authoring`: multi-step workflow for authoring new implementation guides and MCP prompt files for the openehr-assistant-mcp server.
+
 ## [0.3.0] - 2026-03-10
 
 ### Added

@@ -35,7 +35,7 @@ All skills and commands instruct the AI assistant to **load relevant guides from
 
 ## Components
 
-### Skills (6)
+### Skills (7)
 | Skill | Purpose |
 |-------|---------|
 | `openehr-assistant` | Auto-invoked openEHR awareness, clinical modeling (template design, archetype selection, constraint specification, terminology binding, model review), and tool routing |
@@ -44,6 +44,7 @@ All skills and commands instruct the AI assistant to **load relevant guides from
 | `template-authoring` | Create and constrain templates (OET/OPT) |
 | `composition-builder` | Build compositions (FLAT/STRUCTURED/CANONICAL) |
 | `aql-query` | Write, explain, optimize AQL queries |
+| `guide-prompt-authoring` | Author new implementation guides and MCP prompt files for the openehr-assistant-mcp server |
 
 ### Commands (14)
 | Command | Purpose |
