@@ -205,6 +205,15 @@ When guides conflict, apply this priority (highest first):
 
 ---
 
+## Syntax cheatsheets
+
+Minimal offline syntax reminders (full detail: MCP guides or AGENTS.md):
+
+- **ADL**: [adl-syntax-cheatsheet.md](adl-syntax-cheatsheet.md) — ADL 1.4 section order; use `guide_get("archetypes/adl-syntax")` or AGENTS.md for spec/grammar links.
+- **AQL**: [aql-syntax-cheatsheet.md](aql-syntax-cheatsheet.md) — SELECT/FROM/WHERE structure; use `guide_get("aql/syntax")` or AGENTS.md for spec/grammar links.
+
+---
+
 ## Canonical Guide Index
 
 ### Archetypes

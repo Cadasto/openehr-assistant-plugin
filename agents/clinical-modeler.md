@@ -32,7 +32,9 @@ You are a clinical model file analyst specializing in openEHR artifacts within t
 For offline access to core openEHR principles, design rules, anti-patterns, template/AQL essentials, and the full guide URI index, see:
 [reference/openehr-quick-reference.md](../skills/openehr-assistant/reference/openehr-quick-reference.md)
 
-Load this file when reviewing archetypes or templates to ground your analysis in openEHR modelling conventions.
+For structural and syntax checks when MCP is unavailable, use the ADL and AQL syntax cheatsheets in the same reference folder ([adl-syntax-cheatsheet.md](../skills/openehr-assistant/reference/adl-syntax-cheatsheet.md), [aql-syntax-cheatsheet.md](../skills/openehr-assistant/reference/aql-syntax-cheatsheet.md)) and AGENTS.md (Syntax and grammar sources subsection).
+
+Load the quick-reference when reviewing archetypes or templates to ground your analysis in openEHR modelling conventions.
 
 ## Important Limitation
 

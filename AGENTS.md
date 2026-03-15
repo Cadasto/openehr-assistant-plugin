@@ -34,6 +34,15 @@ All skills and commands instruct the AI assistant to **load relevant guides from
 - `simplified_formats/` (4 files) — principles, rules, idioms, checklist
 - `rm/` (3 files) — EHR information model, demographic model, platform services
 
+## Syntax and grammar sources
+
+Use these when you need authoritative ADL or AQL syntax (e.g. for `/archetype-fix-syntax`, AQL authoring, or when MCP guides are unavailable). Canonical detail lives in MCP guides and official specs; treat the following as pointers.
+
+- **ADL syntax**: Official narrative in [specifications-AM](https://github.com/openEHR/specifications-AM) (e.g. `docs/ADL1.4/`, appendix C references ANTLR grammars). Normative grammars: [adl-antlr](https://github.com/openEHR/adl-antlr) (referenced by the spec). Consolidated ANTLR4 grammars (ADL1.4, ADL2): [openEHR-antlr4](https://github.com/openEHR/openEHR-antlr4) (`reader_adl14`, `reader_adl2`). MCP guide: `guide_get("archetypes/adl-syntax")`. Published spec: [specifications.openehr.org/releases/AM/latest](https://specifications.openehr.org/releases/AM/latest).
+- **AQL syntax**: Official narrative and grammar in [specifications-QUERY](https://github.com/openEHR/specifications-QUERY) (`docs/AQL/`). ANTLR4 grammars: [openEHR-antlr4](https://github.com/openEHR/openEHR-antlr4) `reader_aql`. MCP guide: `guide_get("aql/syntax")`. Published spec: [specifications.openehr.org/releases/QUERY/latest](https://specifications.openehr.org/releases/QUERY/latest).
+
+The written ADL1.4 spec points to adl-antlr for grammars; openEHR-antlr4 is the single consolidated ANTLR source for both ADL and AQL and is valid for implementation and tooling.
+
 ## Components
 
 ### Skills (7)
