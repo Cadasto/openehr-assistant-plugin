@@ -63,14 +63,20 @@ You are a clinical model file analyst specializing in openEHR artifacts within t
 - **Search the workspace** for archetypes, templates, and related files
 - **Cross-reference** local models to check slot usage, archetype inclusion, and naming consistency
 
-## Quick Reference
+## Reference Files
 
-For offline access to core openEHR principles, design rules, anti-patterns, template/AQL essentials, and the full guide URI index, see:
-[reference/openehr-quick-reference.md](../skills/openehr-assistant/reference/openehr-quick-reference.md)
+Load these files as needed to ground your analysis. Do not load all at once — use progressive disclosure based on the task.
 
-For structural and syntax checks when MCP is unavailable, use the ADL and AQL syntax cheatsheets in the same reference folder ([adl-syntax-cheatsheet.md](../skills/openehr-assistant/reference/adl-syntax-cheatsheet.md), [aql-syntax-cheatsheet.md](../skills/openehr-assistant/reference/aql-syntax-cheatsheet.md)) and AGENTS.md (Syntax and grammar sources subsection).
+### Always load first
+- **[openehr-quick-reference.md](../skills/openehr-assistant/reference/openehr-quick-reference.md)** — Core principles, design rules, anti-patterns, guide index. Load when starting any review or writing task.
 
-Load the quick-reference when reviewing archetypes or templates to ground your analysis in openEHR modelling conventions.
+### Load for archetype work
+- **[lint-rules-complete.md](../skills/openehr-assistant/reference/lint-rules-complete.md)** — All 22 normative lint rules with severity and violation/fix examples. Load when linting or reviewing archetypes.
+- **[adl-syntax-reference.md](../skills/openehr-assistant/reference/adl-syntax-reference.md)** — ADL 1.4 structure, AOM constraint types, data type constraint patterns. Load when writing, editing, or validating ADL.
+- **[adl-idioms-reference.md](../skills/openehr-assistant/reference/adl-idioms-reference.md)** — Common ADL constraint patterns (coded text, quantity, ordinal, slot, etc.). Load when writing or editing constraint trees.
+
+### Load for template work
+- **[oet-syntax-reference.md](../skills/openehr-assistant/reference/oet-syntax-reference.md)** — OET XML format: structure, Rule elements, constraint types, metadata. Load when writing, editing, or validating OET/OPT files.
 
 ## Important Limitation
 
@@ -95,18 +101,48 @@ When reviewing models, check for:
 - Slot constraints reference existing archetypes in the project
 - Template archetype references match available local archetypes
 
-### Lint rule awareness (local checks only)
+### Lint rule awareness
 
-When reviewing local archetype files, check for these rules that can be verified without MCP tools:
-- **Single Concept Rule** (ERROR): Does the archetype model exactly one concept?
-- **Term Definition Completeness** (ERROR): Does every at-code have text and description?
-- **occurrences vs cardinality** (ERROR): Are they used on correct node types?
-- **CLUSTER Semantics** (WARNING): Are CLUSTERs used as semantic groups, not generic containers?
-- **Template Leakage** (WARNING): Are there workflow/UI constraints that belong in templates?
-- **Unconstrained Leaf Nodes** (WARNING): Are there DV_* matches {*} without justification?
-- **Ontology Integrity** (ERROR): Do ac-codes reference valid at-codes?
+Load **lint-rules-complete.md** for all 22 rules with examples. The rules that can be fully verified locally (without MCP):
 
-Report findings with severity (ERROR/WARNING) matching the 22 normative lint rules.
+**ERROR rules (locally verifiable):**
+- Rule 1: Single Concept — one coherent concept per archetype
+- Rule 2: ENTRY Type Semantics — correct ENTRY subtype for clinical statement
+- Rule 3: Root RM Type Match — root node matches declared RM type
+- Rule 5: occurrences vs cardinality — correct usage on objects vs containers
+- Rule 6: Specialisation Integrity — child does not contradict parent
+- Rule 7: Path Stability — path changes require major version
+- Rule 8: Term Definition Completeness — every at-code has text + description
+- Rule 15: Attribute Multiplicity — C_SINGLE_ATTRIBUTE has one child
+- Rule 16: Ontology Integrity — ac-codes reference valid at-codes
+- Rule 20: Identity vs Role Separation — PERSON must not contain role semantics
+- Rule 21: Patch Version Discipline — no semantic changes in patch versions
+
+**WARNING rules (locally verifiable):**
+- Rule 9: Mandatory Data Justification — min>0 only if clinically required
+- Rule 10: Arbitrary Upper Bounds — no magic numbers
+- Rule 11: CLUSTER Semantics — semantic groups, not generic containers
+- Rule 12: Slot Discipline — constrained, not wildcard
+- Rule 13: Template Leakage — no workflow/UI in archetypes
+- Rule 14: Unconstrained Leaf Nodes — no DV_* matches {*} without justification
+- Rule 22: Deprecation Handling — deprecated nodes retained, not deleted
+
+**Rules requiring MCP for full verification** (flag for main session):
+- Rule 4: Valid RM Attributes Only — needs RM type specification lookup
+- Rule 17: Terminology Neutrality — may need terminology resolution
+- Rule 18: Semantic Binding Accuracy — needs terminology verification
+
+Report findings with severity matching the normative rules.
+
+### Template analysis
+When reviewing OET/OPT files, load **oet-syntax-reference.md** and check for:
+- Valid root COMPOSITION archetype reference
+- All `<Content>` and `<Items>` reference valid archetype IDs
+- Rule paths are valid openEHR paths against referenced archetypes
+- `min`/`max` values respect the narrowing principle (never relax archetype constraints)
+- Unused fields and slots excluded (`max="0"`)
+- Coded value subsets use `limitToList="true"` where appropriate
+- `<description>` includes purpose, use, and misuse
 
 ### File operations
 When writing or editing clinical model files:
