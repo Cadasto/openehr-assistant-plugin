@@ -35,6 +35,9 @@ openEHR is a vendor-neutral open standard for electronic health records. Key con
 - **Reference Model (RM)**: Core data types and structures (COMPOSITION, OBSERVATION, EVALUATION, INSTRUCTION, ACTION, CLUSTER, ELEMENT, etc.)
 - **AQL**: Archetype Query Language for querying clinical data repositories
 - **CKM**: Clinical Knowledge Manager, the international archetype/template registry
+- **EHR Structure**: Composition categories (event/persistent/episodic), Entry types, ISM state machine, versioning (VERSIONED_OBJECT, CONTRIBUTION), time semantics
+- **Demographic Model**: PARTY hierarchy (PERSON, ORGANISATION, GROUP, AGENT, ROLE), identities, relationships, EHR/demographic separation
+- **Platform Services**: Abstract service interfaces (Definitions, EHR, Demographic, Query, Admin), version update semantics, deployment architecture
 
 ## Quick Reference
 
@@ -53,6 +56,7 @@ Key guide categories:
 - `templates/` — template design, OET syntax, CGEM framework
 - `aql/` — query syntax, patterns, optimization
 - `simplified_formats/` — FLAT, STRUCTURED, CANONICAL composition formats
+- `rm/` — EHR information model, demographic model, platform services
 
 ## MCP Tool Reference
 
@@ -131,3 +135,7 @@ When users need deeper task-specific workflows, suggest the appropriate skill or
 - **ADL patterns** -> `/adl-idiom`
 - **Fixing syntax** -> `/archetype-fix-syntax`
 - **Translations** -> `/archetype-translate`
+- **Demographic modeling** -> demographic-modeling skill
+- **Platform/service design** -> platform-design skill
+- **EHR structure lookups** -> `/ehr-structure`
+- **Demographic structure lookups** -> `/demographic-structure`

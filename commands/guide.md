@@ -24,3 +24,4 @@ Browse and retrieve openEHR implementation guides.
 - `templates/` — Principles, rules, OET syntax, idioms, checklist
 - `aql/` — Principles, syntax, idioms, checklist
 - `simplified_formats/` — Principles, rules, idioms, checklist
+- `rm/` — EHR information model, demographic model, platform services

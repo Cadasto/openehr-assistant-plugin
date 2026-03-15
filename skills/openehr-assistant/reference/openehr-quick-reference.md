@@ -52,6 +52,92 @@
 
 ---
 
+## Composition Categories
+
+| Category | Semantics | Use Case |
+|----------|-----------|----------|
+| **event** | Point-in-time record of a healthcare event | Encounter notes, lab results, vital signs |
+| **persistent** | Ongoing patient state, maintained as a single updated instance | Problem list, medication list, allergies |
+| **episodic** | Scoped to a bounded care period, transitions to inactive when episode ends | Hospital admission, care episode |
+
+---
+
+## ISM State Machine
+
+Instructions and their Activities follow a standard state machine:
+
+```
+INITIAL → PLANNED → SCHEDULED → ACTIVE → COMPLETED
+                                  ↓          ↑
+                              SUSPENDED ──────┘
+         POSTPONED ←──────┐
+         CANCELLED ←──────┤
+         ABORTED ←────────┘
+         EXPIRED
+```
+
+Query for active medications or planned interventions via standardised ISM states.
+
+> Full guide: `openehr://guides/rm/ehr-information-model`
+
+---
+
+## Time Layers
+
+| Layer | Where | Meaning |
+|-------|-------|---------|
+| **Observation time** | `HISTORY.origin`, `EVENT.time` | When the phenomenon was true (sample time) |
+| **Healthcare event time** | `EVENT_CONTEXT.start_time` | When the encounter occurred |
+| **Commit time** | `AUDIT_DETAILS.time_committed` | When data entered the EHR (server-side) |
+| **Domain-specific times** | Archetyped values in Entries | Date of onset, resolution, medication start |
+
+---
+
+## Versioning Essentials
+
+- **VERSIONED_OBJECT** — container with stable uid; holds all versions of one top-level item
+- **VERSION uid** — 3-part: `{object_id :: creating_system_id :: version_tree_id}`
+- **CONTRIBUTION** — atomic change-set grouping one or more Version commits
+- **Lifecycle states** — `complete`, `incomplete`, `deleted`, `inactive`, `abandoned`
+- **AUDIT_DETAILS** — every commit: system_id, committer, time_committed, change_type
+
+> Full guide: `openehr://guides/rm/ehr-information-model`
+
+---
+
+## PARTY Hierarchy
+
+```
+PARTY (abstract)
+├── ACTOR (abstract) — real-world entities
+│   ├── PERSON
+│   ├── ORGANISATION
+│   ├── GROUP        — named collection of actors
+│   └── AGENT        — devices, software
+└── ROLE             — competency performed by an Actor
+```
+
+- **PARTY_IDENTITY** — names (legal, alias). State-issued identifiers go in `PARTY.details`.
+- **PARTY_RELATIONSHIP** — directed: source → target (e.g., patient-of, employed-by)
+
+> Full guide: `openehr://guides/rm/demographic-model`
+
+---
+
+## EHR/Demographic Separation
+
+Three levels of subject identification via PARTY_SELF:
+
+| Level | external_ref | Privacy |
+|-------|-------------|---------|
+| **Anonymous** | None anywhere | Maximum; cross-reference maintained externally (EHR Index) |
+| **Single reference** | In EHR_STATUS.subject only | EHR contents remain anonymous |
+| **Embedded** | In every PARTY_SELF instance | Convenient for closed/secure environments |
+
+> Full guide: `openehr://guides/rm/demographic-model`
+
+---
+
 ## Anti-Patterns
 
 1. **Multi-Concept Archetypes** — mixing unrelated concepts; split and use slots
@@ -166,5 +252,21 @@ When guides conflict, apply this priority (highest first):
 | EHR Information Model | `openehr://guides/rm/ehr-information-model` |
 | Demographic Model | `openehr://guides/rm/demographic-model` |
 | Platform Services | `openehr://guides/rm/platform-services` |
+
+### OpenAPI REST Schemas
+
+Validation schemas (OAS 3.x) for the openEHR REST API:
+
+https://github.com/openEHR/specifications-ITS-REST/tree/master/computable/OAS
+
+| Schema | Covers |
+|--------|--------|
+| `ehr-validation.openapi.yaml` | EHR, Composition, Directory, Contribution, Tags |
+| `demographic-validation.openapi.yaml` | Person, Organisation, Group, Agent, Role |
+| `definition-validation.openapi.yaml` | Templates (ADL 1.4/2), Stored Queries |
+| `query-validation.openapi.yaml` | AQL execution, Stored Query execution |
+| `admin-validation.openapi.yaml` | EHR deletion (admin) |
+| `system-validation.openapi.yaml` | Service discovery, conformance |
+| `overview-validation.openapi.yaml` | Cross-cutting: HTTP conventions, headers, status codes |
 
 ---
