@@ -1,69 +1,59 @@
 # openEHR Assistant Plugin
 
-AI plugin suite for clinical workflow integration with openEHR systems. Provides skills, commands, agents, and hooks for **[Claude Code](https://claude.ai/code)** and **[Cursor](https://cursor.com)**.
+AI plugin suite for clinical workflow integration with [openEHR](https://openehr.org/) systems. Adds skills, commands, agents, and hooks for **[Claude Code](https://claude.ai/code)** and **[Cursor](https://cursor.com)** that guide AI assistants through openEHR modeling, CKM discovery, and specification lookups.
 
-## Overview
+This plugin works with the [openEHR Assistant MCP Server](https://github.com/Cadasto/openehr-assistant-mcp), which provides the tools, prompts, and resources (CKM, guides, terminology, type specs). The plugin supplies the workflow layer: when to load which guides, which commands to offer, and how to stay aligned with openEHR best practices.
 
-This plugin connects Claude Code to the openEHR ecosystem through the companion [openehr-assistant-mcp](https://github.com/Cadasto/openehr-assistant-mcp) server, enabling:
+**Recommended:** For installation, transports, and MCP client configuration of the server (hosted vs local, streamable-http vs stdio), see the **[openehr-assistant-mcp README](https://github.com/Cadasto/openehr-assistant-mcp#quick-start)** — [Quick Start](https://github.com/Cadasto/openehr-assistant-mcp#quick-start) and [Common client configurations](https://github.com/Cadasto/openehr-assistant-mcp#common-client-configurations).
 
-- **Archetype authoring** — create, edit, extend, and specialize clinical archetypes
-- **Template design** — build and constrain templates for specific clinical workflows
-- **Composition building** — generate FLAT, STRUCTURED, and CANONICAL format instances
-- **AQL queries** — write, explain, and optimize Archetype Query Language queries
-- **CKM discovery** — search the Clinical Knowledge Manager for archetypes and templates
-- **Demographic modeling** — design demographic models using the PARTY hierarchy, roles, and relationships
-- **Platform design** — design against openEHR platform service interfaces and REST API patterns
-- **Guide access** — browse 27 authoritative implementation guides
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Setup (MCP server)](#setup-mcp-server)
+- [Components](#components)
+- [Companion MCP Server](#companion-mcp-server)
+- [License](#license)
+
+---
+
+## Features
+
+- **Guide-first workflows** — Skills and commands instruct the assistant to load relevant implementation guides from the MCP server before answering.
+- **Archetype authoring** — Create, edit, extend, and specialize clinical archetypes with lint rules and idiom lookup.
+- **Template design** — Build and constrain templates using the CGEM framework and narrowing principle.
+- **Composition building** — Generate FLAT, STRUCTURED, and CANONICAL format instances.
+- **AQL queries** — Write, explain, and optimize Archetype Query Language queries.
+- **CKM discovery** — Search the Clinical Knowledge Manager for archetypes and templates.
+- **Demographic and platform** — Demographic modeling (PARTY hierarchy, roles) and platform service design (REST API patterns).
+- **Offline reference** — Quick-reference and minimal ADL/AQL syntax cheatsheets in the repo when MCP is unavailable.
+
+---
 
 ## Installation
 
 **Claude Code**
+
 ```bash
 claude plugin add cadasto/openehr-assistant-plugin
 ```
 
 **Cursor** — Add the plugin via Cursor’s plugin flow (e.g. from a Git URL or local path). The repo includes a Cursor manifest at `.cursor-plugin/plugin.json`; skills, commands, agents, and MCP config are shared with the Claude plugin.
 
-## MCP Configuration
+---
 
-The plugin connects to the openEHR Assistant MCP server. Three transport options are available:
+## Setup (MCP server)
 
-### Hosted (default, zero-setup)
+This plugin expects the **openEHR Assistant MCP Server** to be configured in your client. The plugin ships with a default MCP config that points at the hosted server; you can override it for local or stdio use.
 
-The plugin ships pre-configured to use the hosted server:
+For **server installation, transports (streamable-http vs stdio), and client-specific configuration** (Claude Desktop, Cursor, LibreChat, Junie), see:
 
-```json
-{
-  "mcpServers": {
-    "openehr-assistant": {
-      "type": "streamable-http",
-      "url": "https://openehr-assistant-mcp.apps.cadasto.com/"
-    }
-  }
-}
-```
+- **[openehr-assistant-mcp — Quick Start](https://github.com/Cadasto/openehr-assistant-mcp#quick-start)** (hosted, Docker, stdio)
+- **[openehr-assistant-mcp — Common client configurations](https://github.com/Cadasto/openehr-assistant-mcp#common-client-configurations)**
 
-### Local Docker (stdio)
+Environment variables (e.g. `CKM_API_BASE_URL`) and Docker/stdio details are documented in the [MCP server README](https://github.com/Cadasto/openehr-assistant-mcp).
 
-Run the MCP server locally via Docker with stdio transport:
-
-```json
-{
-  "mcpServers": {
-    "openehr-assistant": {
-      "type": "stdio",
-      "command": "docker",
-      "args": ["run", "-i", "--rm", "ghcr.io/cadasto/openehr-assistant-mcp:latest", "php", "public/index.php", "--transport=stdio"]
-    }
-  }
-}
-```
-
-## Environment Variables
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `CKM_API_BASE_URL` | Base URL CKM API server | `https://ckm.openehr.org/ckm/rest` |
+---
 
 ## Components
 
@@ -78,8 +68,8 @@ Run the MCP server locally via Docker with stdio transport:
 | `aql-query` | Writing AQL queries | Query authoring with optimization guidance |
 | `demographic-modeling` | Designing demographic models | PARTY hierarchy, roles, relationships, identity patterns |
 | `platform-design` | Designing platform services | Service interfaces, REST API patterns, version update semantics |
-| `openehr-assistant` | Any openEHR mention | Clinical modeling (template design, archetype selection, constraint specification, terminology binding, model review) and tool routing |
-| `guide-prompt-authoring` | Creating guides or prompts | Author new implementation guides and MCP prompt files for the openehr-assistant-mcp server |
+| `openehr-assistant` | Any openEHR mention | Clinical modeling and tool routing |
+| `guide-prompt-authoring` | Creating guides or prompts | Author implementation guides and MCP prompt files for openehr-assistant-mcp |
 
 ### Commands
 
@@ -108,9 +98,12 @@ Run the MCP server locally via Docker with stdio transport:
 |-------|-------------|
 | `clinical-modeler` | Local clinical model file analyst for reading, writing, reviewing, and editing archetype/template files in the workspace |
 
+---
+
 ## Companion MCP Server
 
 The [openehr-assistant-mcp](https://github.com/Cadasto/openehr-assistant-mcp) server provides:
+
 - 10 MCP tools (CKM search, guide access, terminology, type specs, ADL idioms)
 - 15 MCP prompts (guided clinical workflows)
 - 27 implementation guides (archetypes, templates, AQL, simplified formats, RM)
@@ -118,6 +111,8 @@ The [openehr-assistant-mcp](https://github.com/Cadasto/openehr-assistant-mcp) se
 **Compatibility:** This plugin version is built and tested against **openehr-assistant-mcp v0.15.0** ([releases](https://github.com/Cadasto/openehr-assistant-mcp/releases)). When updating the plugin, align with that server’s changelog so each plugin release stays compatible with a specific MCP server version.
 
 Offline reference material in `skills/openehr-assistant/reference/` includes a quick-reference (principles, rules, guide index) and minimal ADL and AQL syntax cheatsheets; see **AGENTS.md** (Syntax and grammar sources) for links to official specs and grammars.
+
+---
 
 ## License
 
