@@ -7,6 +7,7 @@ allowed-tools:
   - mcp__openehr-assistant__ckm_archetype_get
   - mcp__openehr-assistant__guide_get
   - mcp__openehr-assistant__type_specification_get
+  - mcp__openehr-assistant__terminology_resolve
 ---
 
 # /archetype-explain

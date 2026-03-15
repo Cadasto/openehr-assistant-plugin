@@ -4,9 +4,11 @@ description: Explain, design, or review AQL (Archetype Query Language) queries
 argument-hint: "<clinical question or AQL query to review>"
 allowed-tools:
   - mcp__openehr-assistant__guide_get
+  - mcp__openehr-assistant__ckm_archetype_search
   - mcp__openehr-assistant__ckm_archetype_get
   - mcp__openehr-assistant__ckm_template_search
   - mcp__openehr-assistant__ckm_template_get
+  - mcp__openehr-assistant__type_specification_get
 ---
 
 # /aql-designer
@@ -17,6 +19,7 @@ Explain, design, or review AQL queries.
 
 1. Load the AQL guide for reference:
    ```
+   guide_get("aql/principles")
    guide_get("aql/syntax")
    guide_get("aql/idioms-cheatsheet")
    ```
