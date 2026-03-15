@@ -23,6 +23,8 @@ The [openehr-assistant-mcp](https://github.com/Cadasto/openehr-assistant-mcp) se
 - **15 MCP prompts**: Guided workflows for common tasks
 - **Resources**: Archetypes, templates, AQL, terminology, type specs, and 31 implementation guides
 
+This plugin is aligned with **openehr-assistant-mcp v0.15.0**. When syncing or aligning plugin changes (skills, commands, allowed-tools, guide URIs), refer to that server’s [releases](https://github.com/Cadasto/openehr-assistant-mcp/releases) and changelog so each plugin version remains compatible with a specific MCP server version.
+
 MCP tool names in this plugin use the format: `mcp__openehr-assistant__<tool_name>`
 
 ## Guide-First Principle

@@ -115,6 +115,8 @@ The [openehr-assistant-mcp](https://github.com/Cadasto/openehr-assistant-mcp) se
 - 15 MCP prompts (guided clinical workflows)
 - 27 implementation guides (archetypes, templates, AQL, simplified formats, RM)
 
+**Compatibility:** This plugin version is built and tested against **openehr-assistant-mcp v0.15.0** ([releases](https://github.com/Cadasto/openehr-assistant-mcp/releases)). When updating the plugin, align with that server’s changelog so each plugin release stays compatible with a specific MCP server version.
+
 Offline reference material in `skills/openehr-assistant/reference/` includes a quick-reference (principles, rules, guide index) and minimal ADL and AQL syntax cheatsheets; see **AGENTS.md** (Syntax and grammar sources) for links to official specs and grammars.
 
 ## License
