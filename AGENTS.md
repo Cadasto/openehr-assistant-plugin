@@ -21,13 +21,13 @@ The **openEHR Assistant Plugin** is an AI plugin by Cadasto B.V. that provides c
 The [openehr-assistant-mcp](https://github.com/Cadasto/openehr-assistant-mcp) server provides:
 - **10 MCP tools**: CKM search/retrieval, guide access, terminology resolution, type specifications, ADL idiom lookup
 - **15 MCP prompts**: Guided workflows for common tasks
-- **Resources**: Archetypes, templates, AQL, terminology, type specs, and 28 implementation guides
+- **Resources**: Archetypes, templates, AQL, terminology, type specs, and 31 implementation guides
 
 MCP tool names in this plugin use the format: `mcp__openehr-assistant__<tool_name>`
 
 ## Guide-First Principle
 
-All skills and commands instruct the AI assistant to **load relevant guides from the MCP server before answering**. The guides (28 markdown files across 5 categories) are the authoritative knowledge registry. A compact offline summary lives at `skills/openehr-assistant/reference/openehr-quick-reference.md` for use by the `clinical-modeler` agent and as a quick refresher; canonical guides via MCP always take precedence.
+All skills and commands instruct the AI assistant to **load relevant guides from the MCP server before answering**. The guides (28 markdown files across 5 categories) are the authoritative knowledge registry. A compact offline summary lives at `skills/openehr-assistant/reference/openehr-quick-reference.md` for use by the `clinical-modeler` agent and as a quick refresher; the same folder contains minimal **ADL** and **AQL syntax cheatsheets** (`adl-syntax-cheatsheet.md`, `aql-syntax-cheatsheet.md`) for offline structural/syntax checks. Canonical guides via MCP always take precedence.
 - `archetypes/` (11 files) — principles, rules, ADL syntax, idioms, structural constraints, terminology, anti-patterns, checklist, language standards, formatting
 - `templates/` (5 files) — principles, rules, OET syntax, OET idioms, checklist
 - `aql/` (4 files) — principles, syntax, idioms, checklist
@@ -45,7 +45,7 @@ The written ADL1.4 spec points to adl-antlr for grammars; openEHR-antlr4 is the 
 
 ## Components
 
-### Skills (7)
+### Skills (9)
 | Skill | Purpose |
 |-------|---------|
 | `openehr-assistant` | Auto-invoked openEHR awareness, clinical modeling (template design, archetype selection, constraint specification, terminology binding, model review), and tool routing |
@@ -54,9 +54,11 @@ The written ADL1.4 spec points to adl-antlr for grammars; openEHR-antlr4 is the 
 | `template-authoring` | Create and constrain templates (OET/OPT) |
 | `composition-builder` | Build compositions (FLAT/STRUCTURED/CANONICAL) |
 | `aql-query` | Write, explain, optimize AQL queries |
+| `demographic-modeling` | Design demographic models (PARTY hierarchy, roles, relationships, identity patterns) |
+| `platform-design` | Design against openEHR platform service interfaces, REST API patterns, version update semantics |
 | `guide-prompt-authoring` | Author new implementation guides and MCP prompt files for the openehr-assistant-mcp server |
 
-### Commands (14)
+### Commands (16)
 | Command | Purpose |
 |---------|---------|
 | `/archetype-search` | Find CKM archetypes |
@@ -67,6 +69,8 @@ The written ADL1.4 spec points to adl-antlr for grammars; openEHR-antlr4 is the 
 | `/template-explain` | Explain template semantics |
 | `/aql-designer` | Explain/design/review AQL |
 | `/format-data` | Explain or design openEHR data instances (FLAT/STRUCTURED/CANONICAL) based on a template |
+| `/ehr-structure` | Explain EHR structural concepts (composition categories, ISM states, time, versioning) |
+| `/demographic-structure` | Explain demographic model concepts (PARTY hierarchy, roles, identities, relationships, privacy) |
 | `/guide` | Browse openEHR guides |
 | `/terminology` | Resolve terminology IDs |
 | `/type-spec` | Look up RM/AM types |
@@ -93,6 +97,7 @@ This repo supports **both Claude Code and Cursor**; shared assets (skills, comma
 - **Cursor hooks**: `hooks/cursor-hooks.json` — object `{ "hooks": { "sessionStart": [...] } }`; command runs from plugin root
 - **Shared hook script**: `hooks/session-start.sh` — detects `.openehr-project.json`, `*.adl`, `*.oet`, `*.opt` and prints context
 - **Cursor rules**: `rules/` — `.mdc` files (e.g. `openehr-context.mdc`) for Cursor-only rule guidance
+- **Plans, specs, design docs**: Create in **`input/`**, not in `docs/`. Use `input/` for implementation plans, specifications, design documents, and similar artifacts produced by or for AI assistants.
 
 ## Development
 
@@ -110,6 +115,7 @@ Verify with: `/archetype-search blood pressure`
 - Skills go in `skills/<name>/SKILL.md`
 - Commands go in `commands/<name>.md`
 - Agents go in `agents/<name>.md`
+- **Plans, specs, and design docs** go in **`input/`** (not `docs/`)
 - All markdown files use YAML frontmatter for metadata
 - `allowed-tools` in frontmatter pre-approves MCP tools to avoid permission prompts
 - Skills: use `auto-invocable` / `user-invocable` in frontmatter as needed; follow Guide-First (load MCP guides before acting)

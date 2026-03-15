@@ -11,7 +11,9 @@ This plugin connects Claude Code to the openEHR ecosystem through the companion 
 - **Composition building** — generate FLAT, STRUCTURED, and CANONICAL format instances
 - **AQL queries** — write, explain, and optimize Archetype Query Language queries
 - **CKM discovery** — search the Clinical Knowledge Manager for archetypes and templates
-- **Guide access** — browse 24 authoritative implementation guides
+- **Demographic modeling** — design demographic models using the PARTY hierarchy, roles, and relationships
+- **Platform design** — design against openEHR platform service interfaces and REST API patterns
+- **Guide access** — browse 27 authoritative implementation guides
 
 ## Installation
 
@@ -74,6 +76,8 @@ Run the MCP server locally via Docker with stdio transport:
 | `template-authoring` | Creating/reviewing templates | Template design with CGEM framework and narrowing principle |
 | `composition-builder` | Building compositions | FLAT/STRUCTURED/CANONICAL format generation |
 | `aql-query` | Writing AQL queries | Query authoring with optimization guidance |
+| `demographic-modeling` | Designing demographic models | PARTY hierarchy, roles, relationships, identity patterns |
+| `platform-design` | Designing platform services | Service interfaces, REST API patterns, version update semantics |
 | `openehr-assistant` | Any openEHR mention | Clinical modeling (template design, archetype selection, constraint specification, terminology binding, model review) and tool routing |
 | `guide-prompt-authoring` | Creating guides or prompts | Author new implementation guides and MCP prompt files for the openehr-assistant-mcp server |
 
@@ -89,6 +93,8 @@ Run the MCP server locally via Docker with stdio transport:
 | `/template-explain <id>` | Explain template semantics and structure |
 | `/aql-designer <question or query>` | Explain, design, or review AQL queries |
 | `/format-data <template or question>` | Explain or design openEHR data instances (FLAT/STRUCTURED/CANONICAL) based on a template |
+| `/ehr-structure <concept>` | Explain EHR structural concepts (composition categories, ISM states, time, versioning) |
+| `/demographic-structure <concept>` | Explain demographic model concepts (PARTY hierarchy, roles, identities, privacy) |
 | `/guide <topic>` | Browse openEHR implementation guides |
 | `/terminology <code or term>` | Resolve terminology IDs and rubrics |
 | `/type-spec <type name>` | Look up RM/AM/BASE type specifications |
@@ -107,7 +113,9 @@ Run the MCP server locally via Docker with stdio transport:
 The [openehr-assistant-mcp](https://github.com/Cadasto/openehr-assistant-mcp) server provides:
 - 10 MCP tools (CKM search, guide access, terminology, type specs, ADL idioms)
 - 15 MCP prompts (guided clinical workflows)
-- 24 implementation guides (archetypes, templates, AQL, simplified formats)
+- 27 implementation guides (archetypes, templates, AQL, simplified formats, RM)
+
+Offline reference material in `skills/openehr-assistant/reference/` includes a quick-reference (principles, rules, guide index) and minimal ADL and AQL syntax cheatsheets; see **AGENTS.md** (Syntax and grammar sources) for links to official specs and grammars.
 
 ## License
 
