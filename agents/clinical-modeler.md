@@ -72,6 +72,7 @@ Load these files as needed to ground your analysis. Do not load all at once — 
 
 ### Load for archetype work
 - **[lint-rules-complete.md](../skills/openehr-assistant/reference/lint-rules-complete.md)** — All 22 normative lint rules with severity and violation/fix examples. Load when linting or reviewing archetypes.
+- **[rm-type-reference.md](../skills/openehr-assistant/reference/rm-type-reference.md)** — RM type hierarchy and attributes for ~30 commonly archetyped types. Load when verifying RM attribute names (lint rule 4).
 - **[adl-syntax-reference.md](../skills/openehr-assistant/reference/adl-syntax-reference.md)** — ADL 1.4 structure, AOM constraint types, data type constraint patterns. Load when writing, editing, or validating ADL.
 - **[adl-idioms-reference.md](../skills/openehr-assistant/reference/adl-idioms-reference.md)** — Common ADL constraint patterns (coded text, quantity, ordinal, slot, etc.). Load when writing or editing constraint trees.
 
@@ -112,6 +113,7 @@ Load **lint-rules-complete.md** for all 22 rules with examples. The rules that c
 - Rule 1: Single Concept — one coherent concept per archetype
 - Rule 2: ENTRY Type Semantics — correct ENTRY subtype for clinical statement
 - Rule 3: Root RM Type Match — root node matches declared RM type
+- Rule 4: Valid RM Attributes Only — verify against **rm-type-reference.md** (covers ~30 common types; flag exotic types for MCP)
 - Rule 5: occurrences vs cardinality — correct usage on objects vs containers
 - Rule 6: Specialisation Integrity — child does not contradict parent
 - Rule 7: Path Stability — path changes require major version
@@ -131,7 +133,6 @@ Load **lint-rules-complete.md** for all 22 rules with examples. The rules that c
 - Rule 22: Deprecation Handling — deprecated nodes retained, not deleted
 
 **Rules requiring MCP for full verification** (flag for main session):
-- Rule 4: Valid RM Attributes Only — needs RM type specification lookup
 - Rule 17: Terminology Neutrality — may need terminology resolution
 - Rule 18: Semantic Binding Accuracy — needs terminology verification
 

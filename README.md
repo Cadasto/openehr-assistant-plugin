@@ -26,7 +26,7 @@ This plugin works with the [openEHR Assistant MCP Server](https://github.com/Cad
 - **AQL queries** — Write, explain, and optimize Archetype Query Language queries.
 - **CKM discovery** — Search the Clinical Knowledge Manager for archetypes and templates.
 - **Demographic and platform** — Demographic modeling (PARTY hierarchy, roles) and platform service design (REST API patterns).
-- **Offline reference** — Quick-reference and minimal ADL/AQL syntax cheatsheets in the repo when MCP is unavailable.
+- **Offline reference** — Quick-reference, ADL/AQL syntax cheatsheets, and RM type reference in the repo when MCP is unavailable.
 
 ---
 
@@ -110,7 +110,7 @@ The [openehr-assistant-mcp](https://github.com/Cadasto/openehr-assistant-mcp) se
 
 **Compatibility:** This plugin version is built and tested against **openehr-assistant-mcp v0.15.0** ([releases](https://github.com/Cadasto/openehr-assistant-mcp/releases)). When updating the plugin, align with that server’s changelog so each plugin release stays compatible with a specific MCP server version.
 
-Offline reference material in `skills/openehr-assistant/reference/` includes a quick-reference (principles, rules, guide index) and minimal ADL and AQL syntax cheatsheets; see **AGENTS.md** (Syntax and grammar sources) for links to official specs and grammars.
+Offline reference material in `skills/openehr-assistant/reference/` includes a quick-reference (principles, rules, guide index), minimal ADL and AQL syntax cheatsheets, and an RM type reference (~30 commonly archetyped types with attributes for local lint rule 4 validation); see **AGENTS.md** (Syntax and grammar sources) for links to official specs and grammars.
 
 ---
 

@@ -29,7 +29,7 @@ MCP tool names in this plugin use the format: `mcp__openehr-assistant__<tool_nam
 
 ## Guide-First Principle
 
-All skills and commands instruct the AI assistant to **load relevant guides from the MCP server before answering**. The guides (28 markdown files across 5 categories) are the authoritative knowledge registry. A compact offline summary lives at `skills/openehr-assistant/reference/openehr-quick-reference.md` for use by the `clinical-modeler` agent and as a quick refresher; the same folder contains minimal **ADL** and **AQL syntax cheatsheets** (`adl-syntax-cheatsheet.md`, `aql-syntax-cheatsheet.md`) for offline structural/syntax checks. Canonical guides via MCP always take precedence.
+All skills and commands instruct the AI assistant to **load relevant guides from the MCP server before answering**. The guides (28 markdown files across 5 categories) are the authoritative knowledge registry. A compact offline summary lives at `skills/openehr-assistant/reference/openehr-quick-reference.md` for use by the `clinical-modeler` agent and as a quick refresher; the same folder contains minimal **ADL** and **AQL syntax cheatsheets** (`adl-syntax-cheatsheet.md`, `aql-syntax-cheatsheet.md`) for offline structural/syntax checks, and an **RM type reference** (`rm-type-reference.md`) covering ~30 commonly archetyped RM types with their attributes for local lint rule 4 (Valid RM Attributes Only) validation. Canonical guides via MCP always take precedence.
 - `archetypes/` (11 files) — principles, rules, ADL syntax, idioms, structural constraints, terminology, anti-patterns, checklist, language standards, formatting
 - `templates/` (5 files) — principles, rules, OET syntax, OET idioms, checklist
 - `aql/` (4 files) — principles, syntax, idioms, checklist
@@ -83,7 +83,7 @@ The written ADL1.4 spec points to adl-antlr for grammars; openEHR-antlr4 is the 
 ### Agents (1)
 | Agent | Purpose |
 |-------|---------|
-| `clinical-modeler` | Local clinical model file analyst for reading, writing, reviewing, and editing archetype/template files in the workspace (no MCP tool access) |
+| `clinical-modeler` | Local clinical model file analyst for reading, writing, reviewing, and editing archetype/template files in the workspace. Includes local RM attribute validation via `rm-type-reference.md` (no MCP tool access) |
 
 ### Hooks
 - **SessionStart** — detects openEHR resources in workspace and displays context
