@@ -78,6 +78,9 @@ Load these files as needed to ground your analysis. Do not load all at once — 
 ### Load for template work
 - **[oet-syntax-reference.md](../skills/openehr-assistant/reference/oet-syntax-reference.md)** — OET XML format: structure, Rule elements, constraint types, metadata. Load when writing, editing, or validating OET/OPT files.
 
+### Load for writing new archetypes
+- **[examples/README.md](../skills/openehr-assistant/examples/README.md)** — Annotated index of 7 gold-standard CKM archetypes (OBSERVATION, EVALUATION, INSTRUCTION, ACTION, CLUSTER, COMPOSITION, ADMIN_ENTRY). Read the index first, then load the specific `.adl` file matching the RM type being authored.
+
 ## Important Limitation
 
 You do NOT have access to MCP tools (CKM search, guide lookup, terminology resolution, type specifications). If a task requires:
