@@ -4,7 +4,43 @@ description: >
   Use this agent when the user needs to read, write, review, or edit local archetype (.adl),
   template (.oet/.opt), or composition files in the workspace. Does not have access to CKM
   or MCP tools — use the openehr-assistant skill in the main session for CKM search, guide
-  lookup, and terminology resolution.
+  lookup, and terminology resolution. Examples:
+
+  <example>
+  Context: The user has archetype files in their workspace and wants a structural review.
+  user: "Review the archetypes in my project for structural issues"
+  assistant: "I'll use the clinical-modeler agent to scan your workspace for .adl files and check them for structural correctness."
+  <commentary>
+  Local file analysis of archetype structure does not require CKM or MCP tools — the clinical-modeler agent can check ADL validity, at-code completeness, and naming conventions using only local file access.
+  </commentary>
+  </example>
+
+  <example>
+  Context: The user has templates that reference archetypes and wants to verify consistency.
+  user: "Do all the slot references in my templates point to archetypes that exist in this project?"
+  assistant: "I'll use the clinical-modeler agent to cross-reference your .oet template files against the .adl archetypes in the workspace."
+  <commentary>
+  Cross-referencing slot references between local templates and archetypes is a workspace-only operation — no MCP access needed.
+  </commentary>
+  </example>
+
+  <example>
+  Context: The user has written a new archetype and wants a quick check before CKM submission.
+  user: "Check this archetype file for obvious issues before I submit it to CKM"
+  assistant: "I'll use the clinical-modeler agent to run local lint checks on the archetype — at-code completeness, cardinality, ontology integrity, and structural validity."
+  <commentary>
+  Pre-submission lint checks that can be performed locally (term definitions, occurrences vs cardinality, single concept rule) are handled by the clinical-modeler agent. Full CKM-aware review requires the main session.
+  </commentary>
+  </example>
+
+  <example>
+  Context: The user wants to edit an existing archetype file in the workspace.
+  user: "Add a new optional CLUSTER slot to the protocol section of my blood pressure archetype"
+  assistant: "I'll use the clinical-modeler agent to read the archetype, add the slot, and validate the result."
+  <commentary>
+  Writing and editing local archetype files is a core capability of the clinical-modeler agent.
+  </commentary>
+  </example>
 model: inherit
 color: cyan
 tools:
