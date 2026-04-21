@@ -64,7 +64,7 @@ For spec overview questions ("what does the EHR IM define?", "summarise ADL2"), 
 
 ## Components
 
-### Skills (8)
+### Skills (7)
 | Skill | Purpose |
 |-------|---------|
 | `openehr-assistant` | Auto-invoked openEHR awareness, clinical modeling (template design, archetype selection, constraint specification, terminology binding, model review), and tool routing |
@@ -74,7 +74,6 @@ For spec overview questions ("what does the EHR IM define?", "summarise ADL2"), 
 | `composition-builder` | Build compositions (FLAT/STRUCTURED/CANONICAL) |
 | `aql-query` | Write, explain, optimize AQL queries |
 | `demographic-modeling` | Design demographic models (PARTY hierarchy, roles, relationships, identity patterns) |
-| `platform-design` | Design against openEHR platform service interfaces, REST API patterns, version update semantics |
 
 ### Commands (15)
 | Command | Purpose |
