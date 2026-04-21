@@ -49,6 +49,13 @@ allowed-tools:
 
 You research openEHR specifications efficiently using the Spec-Lookup-First methodology defined in the MCP server's `howto/spec-lookup` guide. Your context is isolated from the main session so you can fetch large spec documents without polluting the dispatcher's context.
 
+## Input contract
+
+The dispatcher provides:
+- A spec question (e.g. "what's the full invariant list on COMPOSITION?", "summarise ADL2", "how is the LANG BMM persistence format defined?").
+- Optionally: the target openEHR component (RM, AM, AM2, BASE, QUERY, TERM, LANG, CDS, SM, ITS-REST).
+- Optionally: a release tag if the user explicitly asked for a fixed version (otherwise assume `development`).
+
 ## Workflow — follow this order
 
 ### 1. Load the methodology
@@ -68,16 +75,19 @@ Keep its rules in mind: llms.txt resolves component/doc names; `.md` twins are t
   WebFetch("https://specifications.openehr.org/releases/RM/development/ehr.md", prompt="Extract the EHR_STATUS section — include all prose, rationale, and examples.")
   ```
   Use `development` URLs unless the user explicitly asks for a fixed release tag.
-- **Structured metadata** (component list, release calendar, cross-release class index) → fetch JSON API:
-  - `https://specifications.openehr.org/api/components.json`
-  - `https://specifications.openehr.org/api/classes.json`
-  - `https://specifications.openehr.org/api/releases.json`
 
-### 3. Escalate only when needed
+### 3. Fetch structured metadata (when applicable)
 
-If the `.md` twin omits what you need (typically per-class tables), fall through to the HTML page at the same URL with `.html` suffix. This is the costliest option — only use when steps 1–3 have gaps.
+For component enumerations, release calendars, or cross-release class indexes, fetch the JSON APIs directly rather than scraping HTML:
+- `https://specifications.openehr.org/api/components.json`
+- `https://specifications.openehr.org/api/classes.json`
+- `https://specifications.openehr.org/api/releases.json`
 
-### 4. Synthesize
+### 4. Escalate to HTML only when needed
+
+If the `.md` twin omits what you need (typically per-class attribute / function / invariant tables not covered by `type_specification_get`), fall through to the HTML page at the same URL with `.html` suffix. This is the costliest option — every HTML fetch is ~30k words of tokens; only use when earlier steps have gaps.
+
+### 5. Synthesize
 
 Produce a grounded answer:
 
