@@ -75,7 +75,7 @@ For spec overview questions ("what does the EHR IM define?", "summarise ADL2"), 
 | `aql-query` | Write, explain, optimize AQL queries |
 | `demographic-modeling` | Design demographic models (PARTY hierarchy, roles, relationships, identity patterns) |
 
-### Commands (16)
+### Commands (17)
 | Command | Purpose |
 |---------|---------|
 | `/archetype-search` | Find CKM archetypes |
@@ -94,6 +94,7 @@ For spec overview questions ("what does the EHR IM define?", "summarise ADL2"), 
 | `/archetype-fix-syntax` | Fix ADL syntax |
 | `/archetype-translate` | Translate archetype language |
 | `/archetype-rationale` | Generate CKM-quality rationale prose (description, purpose, misuse, use) for an archetype |
+| `/composition-from-form` | Map a clinical form to archetype composition + template sketch with narrowing notes |
 
 ### Agents (2)
 | Agent | Purpose |

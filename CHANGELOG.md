@@ -12,6 +12,7 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 ### Added
 - Commands: `/archetype-rationale` — generate CKM-quality rationale prose (description, purpose, misuse, use) for an archetype.
 - Agents: `ckm-scout` subagent — reuse-first CKM search with parallel phrasings and ranked recommendation.
+- Commands: `/composition-from-form` — inverse modelling from form description to archetype composition and template sketch.
 
 ### Changed
 - Commands [`archetype-translate.md`](commands/archetype-translate.md) and [`archetype-fix-syntax.md`](commands/archetype-fix-syntax.md): wording aligned with ADL 1.4 (`ontology.term_definitions`, `language.translations` vs legacy names; no top-level `terminology` section).
