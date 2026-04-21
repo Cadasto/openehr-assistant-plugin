@@ -59,7 +59,7 @@ DATA_VALUE
         DV_DATE (value)
         DV_TIME (value)
     DV_SCALE (symbol, value)
-    DV_ORDINAL (symbol, value)  [integer-only variant of DV_SCALE]
+    DV_ORDINAL (symbol, value)  [integer scores; sibling use-case to DV_SCALE per RM — DV_SCALE also allows Real magnitudes]
   DV_INTERVAL<T> (lower, upper, lower_unbounded, upper_unbounded, lower_included, upper_included)
   DV_ENCAPSULATED (charset, language)
     DV_PARSABLE (value, formalism)

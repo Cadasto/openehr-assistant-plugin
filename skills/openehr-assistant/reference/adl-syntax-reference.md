@@ -6,10 +6,17 @@
 
 ## Archetype Sections (required order)
 
-1. **Header** — `archetype (adl_version=1.4)` line, archetype ID, `concept`, `language`, optional `description`
-2. **definition** — cADL constraint tree
-3. **invariant** — optional first-order predicate logic assertions
-4. **ontology** / **terminology** — at-codes, ac-codes, term bindings
+Matches ADL 1.4 archetype structure (see openEHR ADL 1.4 spec, archetype overview figure):
+
+1. **`archetype`** — version line and archetype id
+2. **`specialise` / `specialize`** (optional)
+3. **`concept`**
+4. **`language`**
+5. **`description`** (optional)
+6. **`definition`** — cADL constraint tree
+7. **`invariant`** (optional) — top-level assertions
+8. **`ontology`** — term definitions, constraint definitions (`ac` codes), term bindings (external terminology is wired here; not a separate top-level `terminology` section in standard ADL 1.4)
+9. **`revision_history`** (optional)
 
 Sections must appear in this order. Every node in the definition must have a corresponding at-code in the ontology.
 
@@ -255,7 +262,19 @@ use_node CLUSTER[at0010] /data[at0001]/items[at0005]
 
 ---
 
+## Invariant Section
+
+Optional assertions for cross-node constraints:
+```adl
+invariant
+    systolic_greater: /data[at0001]/events[at0006]/data[at0003]/items[at0004]/value/magnitude >= /data[at0001]/events[at0006]/data[at0003]/items[at0005]/value/magnitude
+```
+
+---
+
 ## Ontology / Terminology Section
+
+Ontology follows **`invariant`** in a valid ADL 1.4 file. Terminology bindings are part of this block, not a separate top-level section.
 
 ### Term definitions
 ```adl
@@ -295,16 +314,6 @@ ontology
             >
         >
     >
-```
-
----
-
-## Invariant Section
-
-Optional assertions for cross-node constraints:
-```adl
-invariant
-    systolic_greater: /data[at0001]/events[at0006]/data[at0003]/items[at0004]/value/magnitude >= /data[at0001]/events[at0006]/data[at0003]/items[at0005]/value/magnitude
 ```
 
 ---
