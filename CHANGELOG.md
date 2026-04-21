@@ -9,45 +9,37 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-04-22
+
 ### Added
-- Commands: `/archetype-rationale` — generate CKM-quality rationale prose (description, purpose, misuse, use) for an archetype.
-- Agents: `ckm-scout` subagent — reuse-first CKM search with parallel phrasings and ranked recommendation.
-- Commands: `/template-from-form` — inverse modelling from a form description to a template sketch (archetypes to aggregate + per-archetype narrowing). In openEHR, "composition" denotes a runtime data instance, so the command avoids that term for a design-time artefact.
-- Hooks: PostToolUse `lint-on-save` — emits a lint reminder when any `.adl` file is written or edited (Claude Code only; Cursor has no PostToolUse equivalent).
-- Agents: `spec-researcher` subagent — context-isolated openEHR spec research using the `howto/spec-lookup` methodology.
-- Commands: `/archetype-impact` — scan workspace for references to a given archetype across templates and AQL files.
-- Commands: `/archetype-diff` and `/template-diff` — semantic diff with version-bump classification (patch / minor / major) per rule G1. Shared rubric in `commands/references/semantic-diff-rubric.md`.
+- Commands `/archetype-rationale` and `/template-from-form` (rationale prose; inverse form → template sketch).
+- Commands `/archetype-impact`, `/archetype-diff`, `/template-diff` (workspace impact scan; semantic diffs with G1 version-bump rubric in `commands/references/semantic-diff-rubric.md`).
+- Agents `ckm-scout` (reuse-first CKM search) and `spec-researcher` (isolated spec lookup via `howto/spec-lookup`).
+- Hook `lint-on-save` (Claude PostToolUse): reminder after `.adl` writes/edits.
 
 ### Changed
-- Commands [`archetype-translate.md`](commands/archetype-translate.md) and [`archetype-fix-syntax.md`](commands/archetype-fix-syntax.md): wording aligned with ADL 1.4 (`ontology.term_definitions`, `language.translations` vs legacy names; no top-level `terminology` section).
-- [`agents/clinical-modeler.md`](agents/clinical-modeler.md): structural review checklist aligned with ADL 1.4 spec section order and ontology/`term_definitions` (not a separate `terminology` section); documented Rule 19 (INFO).
-- Offline ADL/RM reference docs aligned with MCP spec copies ([`docs/specs/AM/ADL1.4.md`](https://github.com/Cadasto/openehr-assistant-mcp/blob/main/docs/specs/AM/ADL1.4.md), RM data types): [`adl-syntax-cheatsheet.md`](skills/openehr-assistant/reference/adl-syntax-cheatsheet.md), [`adl-syntax-reference.md`](skills/openehr-assistant/reference/adl-syntax-reference.md), [`rm-type-reference.md`](skills/openehr-assistant/reference/rm-type-reference.md).
-- Cursor rule [`rules/openehr-context.mdc`](rules/openehr-context.mdc): added frontmatter `name: openehr-context`.
+- Commands `archetype-translate` and `archetype-fix-syntax`: ADL 1.4 wording (`ontology`, `language.translations`; no top-level `terminology` section).
+- Agent `clinical-modeler` and offline refs under `skills/openehr-assistant/reference/`: ADL section order and ontology vs terminology clarified against MCP spec copies.
+- Cursor rule `openehr-context.mdc`: `name` in frontmatter.
 
 ### Removed
-- Skill `platform-design` — routing absorbed into `openehr-assistant` (suggest `guide_get("specs/sm-openehr_platform")` / `guide_get("specs/its-rest-api")` for platform/service work). Skills: 8 → 7.
+- Skill `platform-design`; use `openehr-assistant` with `guide_get("specs/…")` / ITS digests instead (8 → 7 skills).
 
 ## [0.5.0] - 2026-04-21
 
 ### Added
-- MCP v0.16.0: `examples_search` / `examples_get` tools and `openehr://examples/{kind}/{name}` resource namespace routed via `openehr-assistant` skill.
-- Guide categories `specs/` (digests tracking `development`) and `howto/` (e.g. `spec-lookup`) surfaced in the router.
-- Conditional example-retrieval hints in `aql-query`, `composition-builder`, `archetype-authoring` skills.
-- Offline quick-reference appendix: `llms.txt`, `.md` twin URL pattern, class-table caveat.
-- `.gitattributes` `export-ignore` for maintainer-only paths (`AGENTS.md`, `CONTRIBUTING.md`, `.github/**`).
-- `**Synced from:**` version tag in `skills/openehr-assistant/examples/README.md` (byte-verified against MCP v0.16.0).
-- CONTRIBUTING.md: "Repository archives" and "When bumping openehr-assistant-mcp compatibility" sections; README link to the contributor workflow.
+- MCP **v0.16.0**: `examples_search` / `examples_get`, `openehr://examples/{kind}/{name}`; router and `openehr-assistant` skill updated accordingly.
+- Guide routing: `specs/` and `howto/` categories; conditional example hints in `aql-query`, `composition-builder`, `archetype-authoring`.
+- Offline spec appendix (`llms.txt`, Markdown twin caveat); bundled example archetypes tagged **Synced from** v0.16.0.
+- `.gitattributes` `export-ignore` for maintainer-only paths; CONTRIBUTING sections on archives and MCP bumps; README contributor link.
 
 ### Changed
-- Commands: merged `/ehr-structure` + `/demographic-structure` → `/rm-structure <domain> <concept>`. 16 → 15.
-- Guide URIs: `rm/*` → `specs/*` (`rm-ehr`, `rm-demographic`, `sm-openehr_platform`); stale `rm/` fixed in `/guide` help.
-- External spec retrieval: replaced `releases/XX/latest` URLs with a methodology tracking `development` via `howto/spec-lookup`.
-- Cursor rule `rules/openehr-context.mdc`: dropped AGENTS.md dependency; added curated-examples and slash-command hints.
-- Claude manifest: `displayName` and `keywords` aligned with Cursor manifest.
-- Compatibility pointer: openehr-assistant-mcp **v0.16.0**.
+- Commands `/ehr-structure` and `/demographic-structure` merged into `/rm-structure <domain> <concept>` (16 → 15 commands).
+- Guide and doc URIs: `rm/*` → `specs/*`; external spec links follow `development` and `howto/spec-lookup` instead of `latest`.
+- Cursor rule decoupled from AGENTS.md for end users; Claude manifest aligned with Cursor (`displayName`, `keywords`); MCP compatibility set to v0.16.0.
 
 ### Removed
-- Skill `guide-prompt-authoring` — relocated to openehr-assistant-mcp as a Cursor project skill.
+- Skill `guide-prompt-authoring` (canonical copy under openehr-assistant-mcp `.cursor/skills/guide-prompt-authoring/`).
 
 ## [0.4.0] - 2026-03-15
 
