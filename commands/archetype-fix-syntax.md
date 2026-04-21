@@ -31,7 +31,7 @@ Fix ADL syntax errors while preserving clinical semantics.
    - Invalid ADL structure (missing sections, malformed blocks)
    - Incorrect constraint syntax (use `guide_adl_idiom_lookup` for correct patterns)
    - Missing or mismatched at-codes
-   - Terminology section inconsistencies
+   - **Ontology** inconsistencies (`term_definitions`, `constraint_definitions`, `term_bindings` — standard ADL 1.4 has no separate top-level `terminology` section)
    - Invalid RM type references (verify with `type_specification_get`)
 4. Fix each issue while preserving:
    - All clinical semantics and intent

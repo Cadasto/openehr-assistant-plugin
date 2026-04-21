@@ -10,6 +10,7 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 ## [Unreleased]
 
 ### Changed
+- Commands [`archetype-translate.md`](commands/archetype-translate.md) and [`archetype-fix-syntax.md`](commands/archetype-fix-syntax.md): wording aligned with ADL 1.4 (`ontology.term_definitions`, `language.translations` vs legacy names; no top-level `terminology` section).
 - [`agents/clinical-modeler.md`](agents/clinical-modeler.md): structural review checklist aligned with ADL 1.4 spec section order and ontology/`term_definitions` (not a separate `terminology` section); documented Rule 19 (INFO).
 - Offline ADL/RM reference docs aligned with MCP spec copies ([`docs/specs/AM/ADL1.4.md`](https://github.com/Cadasto/openehr-assistant-mcp/blob/main/docs/specs/AM/ADL1.4.md), RM data types): [`adl-syntax-cheatsheet.md`](skills/openehr-assistant/reference/adl-syntax-cheatsheet.md), [`adl-syntax-reference.md`](skills/openehr-assistant/reference/adl-syntax-reference.md), [`rm-type-reference.md`](skills/openehr-assistant/reference/rm-type-reference.md).
 - Cursor rule [`rules/openehr-context.mdc`](rules/openehr-context.mdc): added frontmatter `name: openehr-context`.
