@@ -1,0 +1,4 @@
+# Exclude from `git archive` (and similar export) bundles — maintainer / repo infra, not runtime plugin UX
+AGENTS.md export-ignore
+CONTRIBUTING.md export-ignore
+.github/** export-ignore
