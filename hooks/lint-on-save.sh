@@ -15,8 +15,10 @@ payload="$(cat)"
 # back to grep/sed. jq is present on most dev boxes; the fallback keeps the hook
 # working on minimal systems.
 if command -v jq >/dev/null 2>&1; then
-  tool_name="$(printf '%s' "$payload" | jq -r '.tool_name // empty')"
-  file_path="$(printf '%s' "$payload" | jq -r '.tool_input.file_path // empty')"
+  # `|| printf ''` swallows jq parse errors (malformed payloads) so the hook
+  # stays non-blocking under `set -euo pipefail`.
+  tool_name="$(printf '%s' "$payload" | jq -r '.tool_name // empty' 2>/dev/null || printf '')"
+  file_path="$(printf '%s' "$payload" | jq -r '.tool_input.file_path // empty' 2>/dev/null || printf '')"
 else
   tool_name="$(printf '%s' "$payload" | sed -n 's/.*"tool_name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -1)"
   file_path="$(printf '%s' "$payload" | sed -n 's/.*"file_path"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -1)"
