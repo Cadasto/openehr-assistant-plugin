@@ -59,6 +59,8 @@ ckm_archetype_search("<concept>")
 
 **Reuse-first principle**: If a suitable archetype exists, use it. Only create new archetypes when no existing archetype covers the concept. If a close match exists, consider specialization instead.
 
+**For deep reuse surveys** (unfamiliar domain, or the first few hits look marginal), dispatch the `ckm-scout` agent instead of running searches inline. It runs 3 parallel phrasings, ranks candidates, and returns a reuse/specialize/new recommendation — keeping CKM search noise out of this skill's context.
+
 ### Consult gold-standard reference archetypes (when applicable)
 
 For a small set of well-curated CKM archetypes — blood pressure, medication order, problem/diagnosis, encounter, procedure, anatomical location (CLUSTER), translation requirements (ADMIN_ENTRY) — try `examples_search(kind="archetypes")` when authoring or reviewing an archetype of the same type. These are native `.adl` files exposed as `openehr://examples/archetypes/{name}` and serve as concrete prior-art references for RM-type intent, terminology binding patterns, and structural idioms. Skip this step when the concept is outside the curated set.

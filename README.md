@@ -100,11 +100,12 @@ Environment variables (e.g. `CKM_API_BASE_URL`) and Docker/stdio details are doc
 | `/archetype-translate <file> <lang>` | Add/translate archetype language entries |
 | `/archetype-rationale <file or id> [--section]` | Generate CKM-quality rationale prose (description, purpose, misuse, use) |
 
-### Agent
+### Agents
 
 | Agent | Description |
 |-------|-------------|
 | `clinical-modeler` | Local clinical model file analyst for reading, writing, reviewing, and editing archetype/template files in the workspace |
+| `ckm-scout` | CKM reuse-search specialist — parallel searches, ranked recommendation |
 
 ---
 
