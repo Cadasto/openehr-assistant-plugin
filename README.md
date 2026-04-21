@@ -104,9 +104,10 @@ Environment variables (e.g. `CKM_API_BASE_URL`) and Docker/stdio details are doc
 
 The [openehr-assistant-mcp](https://github.com/Cadasto/openehr-assistant-mcp) server provides:
 
-- 10 MCP tools (CKM search, guide access, terminology, type specs, ADL idioms)
+- 12 MCP tools (CKM search, guide access, terminology, type specs, ADL idioms, curated examples)
 - 15 MCP prompts (guided clinical workflows)
-- 27 implementation guides (archetypes, templates, AQL, simplified formats, RM)
+- Implementation guides across six categories: `archetypes/`, `templates/`, `aql/`, `simplified_formats/`, `specs/` (openEHR specification digests tracking the `development` branch), and `howto/` (toolchain how-tos)
+- Curated worked examples at `openehr://examples/{kind}/{name}` — AQL, FLAT, STRUCTURED payloads, and CKM-published reference `.adl` archetypes
 
 **Compatibility:** This plugin version is built and tested against **openehr-assistant-mcp v0.16.0** ([releases](https://github.com/Cadasto/openehr-assistant-mcp/releases)). When updating the plugin, align with that server’s changelog so each plugin release stays compatible with a specific MCP server version.
 

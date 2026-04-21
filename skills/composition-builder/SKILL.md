@@ -14,6 +14,8 @@ allowed-tools:
   - mcp__openehr-assistant__ckm_template_get
   - mcp__openehr-assistant__guide_get
   - mcp__openehr-assistant__type_specification_get
+  - mcp__openehr-assistant__examples_search
+  - mcp__openehr-assistant__examples_get
 ---
 
 # Composition Builder
@@ -27,6 +29,10 @@ guide_get("simplified_formats/principles")
 guide_get("simplified_formats/rules")
 guide_get("simplified_formats/idioms-cheatsheet")
 ```
+
+### Consult worked examples (when applicable)
+
+For sample payloads on common concepts (e.g. blood pressure / vital signs, encounter with RM attributes, coded-text handling, raw-escape patterns), consult `examples_search(kind="flat")` or `examples_search(kind="structured")` before hand-crafting. Curated samples live under `openehr://examples/{flat|structured}/{name}` with pattern and related-guide metadata. Skip this step for novel or highly template-specific payloads.
 
 ## Step 2: Retrieve Template
 

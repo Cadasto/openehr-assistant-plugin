@@ -17,6 +17,8 @@ allowed-tools:
   - mcp__openehr-assistant__type_specification_search
   - mcp__openehr-assistant__type_specification_get
   - mcp__openehr-assistant__terminology_resolve
+  - mcp__openehr-assistant__examples_search
+  - mcp__openehr-assistant__examples_get
 ---
 
 # openEHR Assistant
@@ -70,11 +72,15 @@ Use these tools to provide accurate answers:
 | `ckm_template_search` | Find existing templates in CKM |
 | `ckm_template_get` | Retrieve full template content |
 | `guide_search` | Search implementation guides by topic |
-| `guide_get` | Load a specific guide by path |
+| `guide_get` | Load a specific guide by path (including `specs/*` digests and `howto/*` how-tos) |
 | `guide_adl_idiom_lookup` | Quick lookup of ADL constraint patterns |
-| `type_specification_search` | Search RM/AM/BASE type specifications |
-| `type_specification_get` | Get detailed type specification |
+| `type_specification_search` | Search RM/AM/BASE/LANG type specifications (BMM-backed) |
+| `type_specification_get` | Get detailed type specification, including class-level attribute/function/invariant tables |
 | `terminology_resolve` | Resolve terminology codes, rubrics, and value sets |
+| `examples_search` | Find curated worked examples (AQL queries, FLAT/STRUCTURED payloads, reference `.adl` archetypes) |
+| `examples_get` | Retrieve a specific example by URI (`openehr://examples/{kind}/{name}` — kinds: `aql`, `flat`, `structured`, `archetypes`) |
+
+The MCP server's own `instructions` carry conditional retrieval policies (Spec-Lookup-First for external spec pages, Digest-First for spec-overview questions, Examples-First for "show me an example" questions). Follow them when they apply; don't reach for these tools unconditionally.
 
 ## Clinical Modeling Capabilities
 

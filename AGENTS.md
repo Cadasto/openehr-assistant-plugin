@@ -19,9 +19,9 @@ The **openEHR Assistant Plugin** is an AI plugin by Cadasto B.V. that provides c
 ## Companion MCP Server
 
 The [openehr-assistant-mcp](https://github.com/Cadasto/openehr-assistant-mcp) server provides:
-- **10 MCP tools**: CKM search/retrieval, guide access, terminology resolution, type specifications, ADL idiom lookup
+- **12 MCP tools**: CKM search/retrieval, guide access, terminology resolution, type specifications, ADL idiom lookup, curated examples search/retrieval
 - **15 MCP prompts**: Guided workflows for common tasks
-- **Resources**: Archetypes, templates, AQL, terminology, type specs, and 31 implementation guides
+- **Resources**: Archetypes, templates, AQL, terminology, type specs, a guide registry spanning six categories (`archetypes/`, `templates/`, `aql/`, `simplified_formats/`, `specs/`, `howto/`), and the `openehr://examples/{kind}/{name}` namespace for curated worked examples (AQL, FLAT, STRUCTURED, reference `.adl` archetypes)
 
 This plugin is aligned with **openehr-assistant-mcp v0.16.0**. When syncing or aligning plugin changes (skills, commands, allowed-tools, guide URIs), refer to that server’s [releases](https://github.com/Cadasto/openehr-assistant-mcp/releases) and changelog so each plugin version remains compatible with a specific MCP server version.
 
@@ -49,6 +49,18 @@ Use these when you need authoritative ADL or AQL syntax (e.g. for `/archetype-fi
 - **AQL syntax**: Official narrative and grammar in [specifications-QUERY](https://github.com/openEHR/specifications-QUERY) (`docs/AQL/`). ANTLR4 grammars: [openEHR-antlr4](https://github.com/openEHR/openEHR-antlr4) `reader_aql`. MCP guide: `guide_get("aql/syntax")`. Published spec: `https://specifications.openehr.org/releases/QUERY/development/` (see retrieval methodology below).
 
 The written ADL1.4 spec points to adl-antlr for grammars; openEHR-antlr4 is the single consolidated ANTLR source for both ADL and AQL and is valid for implementation and tooling.
+
+## Retrieving openEHR specifications
+
+The MCP server's `guide_get("howto/spec-lookup")` is the canonical reference for efficient spec retrieval. Key points this plugin depends on:
+
+1. **Site index** — `https://specifications.openehr.org/llms.txt` enumerates every release, document, and JSON endpoint as a machine-readable list; use it to resolve component/doc phrases to canonical URLs and discover sibling docs.
+2. **Markdown twin** — every `*.html` spec page has a `.md` counterpart with the same path (e.g. `releases/RM/development/ehr.html` ↔ `releases/RM/development/ehr.md`). The same payload is obtainable by sending `Accept: text/markdown` against the HTML URL. Prefer the Markdown twin for prose, rationale, and examples — it is the cheapest textual source.
+3. **Class-table caveat** — the Markdown twin **omits** per-class attribute, function, and invariant tables. For those, fall through to the HTML page or the MCP's `type_specification_get` tool, which is backed by the BMM definitions.
+4. **Structured JSON APIs** — `/api/components.json`, `/api/classes.json`, `/api/releases.json` return component enumerations, cross-release class indexes, and release calendars; prefer these over scraping HTML when doing class or release lookups.
+5. **Development branch, not latest** — this plugin targets `releases/XX/development/` (mirroring where the MCP's `specs/` digests point). Only use a specific release tag (e.g. `Release-1.1.0`) when the user explicitly asks for a fixed release version.
+
+For spec overview questions ("what does the EHR IM define?", "summarise ADL2"), prefer `guide_get(category="specs", name="<component>-<doc>")` before fetching the full spec — digests are 250–900 words and link onward to canonical URLs.
 
 ## Components
 

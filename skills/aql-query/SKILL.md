@@ -14,6 +14,8 @@ allowed-tools:
   - mcp__openehr-assistant__ckm_archetype_get
   - mcp__openehr-assistant__ckm_template_get
   - mcp__openehr-assistant__type_specification_get
+  - mcp__openehr-assistant__examples_search
+  - mcp__openehr-assistant__examples_get
 ---
 
 # AQL Query Authoring
@@ -27,6 +29,10 @@ guide_get("aql/principles")
 guide_get("aql/syntax")
 guide_get("aql/idioms-cheatsheet")
 ```
+
+### Consult worked examples (when applicable)
+
+When the user asks for a query to adapt, or when the clinical question matches a common pattern (cohort selection, pagination with total count, time-window filtering, cross-composition joins, terminology value-set matching, "latest per EHR", ISM-state filtering), try `examples_search(kind="aql")` before drafting. The curated AQL examples are under `openehr://examples/aql/{name}` and include pattern metadata and related-spec links — reuse and adapt rather than invent. Skip this step if the question is clearly novel or the user already provided the skeleton.
 
 ## Step 2: Understand the Data Model
 
