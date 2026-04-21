@@ -56,7 +56,8 @@ Key guide categories:
 - `templates/` — template design, OET syntax, CGEM framework
 - `aql/` — query syntax, patterns, optimization
 - `simplified_formats/` — FLAT, STRUCTURED, CANONICAL composition formats
-- `rm/` — EHR information model, demographic model, platform services
+- `specs/` — openEHR specification digests (RM, AM, AM2, BASE, QUERY, TERM, LANG, CDS, SM, ITS-REST); these digests track the `development` branch of the openEHR specifications and replace the legacy `rm/` category
+- `howto/` — toolchain how-tos (e.g. `spec-lookup` for efficient external spec retrieval via `llms.txt` and Markdown twin URLs)
 
 ## MCP Tool Reference
 

@@ -37,12 +37,12 @@ When guides conflict, apply this priority (highest first):
 Before any demographic modeling work, load the authoritative guides:
 
 ```
-guide_get("rm/demographic-model")
+guide_get("specs/rm-demographic")
 guide_get("archetypes/principles")
 ```
 
 Load additional guides as needed:
-- `guide_get("rm/ehr-information-model")` — for EHR/demographic separation context and cross-referencing patterns
+- `guide_get("specs/rm-ehr")` — for EHR/demographic separation context and cross-referencing patterns
 
 ## Step 2: Clarify Use Case
 

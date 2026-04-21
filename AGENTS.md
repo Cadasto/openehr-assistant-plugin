@@ -23,25 +23,30 @@ The [openehr-assistant-mcp](https://github.com/Cadasto/openehr-assistant-mcp) se
 - **15 MCP prompts**: Guided workflows for common tasks
 - **Resources**: Archetypes, templates, AQL, terminology, type specs, and 31 implementation guides
 
-This plugin is aligned with **openehr-assistant-mcp v0.15.0**. When syncing or aligning plugin changes (skills, commands, allowed-tools, guide URIs), refer to that server’s [releases](https://github.com/Cadasto/openehr-assistant-mcp/releases) and changelog so each plugin version remains compatible with a specific MCP server version.
+This plugin is aligned with **openehr-assistant-mcp v0.16.0**. When syncing or aligning plugin changes (skills, commands, allowed-tools, guide URIs), refer to that server’s [releases](https://github.com/Cadasto/openehr-assistant-mcp/releases) and changelog so each plugin version remains compatible with a specific MCP server version.
 
 MCP tool names in this plugin use the format: `mcp__openehr-assistant__<tool_name>`
 
 ## Guide-First Principle
 
-All skills and commands instruct the AI assistant to **load relevant guides from the MCP server before answering**. The guides (28 markdown files across 5 categories) are the authoritative knowledge registry. A compact offline summary lives at `skills/openehr-assistant/reference/openehr-quick-reference.md` for use by the `clinical-modeler` agent and as a quick refresher; the same folder contains minimal **ADL** and **AQL syntax cheatsheets** (`adl-syntax-cheatsheet.md`, `aql-syntax-cheatsheet.md`) for offline structural/syntax checks, and an **RM type reference** (`rm-type-reference.md`) covering ~30 commonly archetyped RM types with their attributes for local lint rule 4 (Valid RM Attributes Only) validation. Canonical guides via MCP always take precedence.
-- `archetypes/` (11 files) — principles, rules, ADL syntax, idioms, structural constraints, terminology, anti-patterns, checklist, language standards, formatting
-- `templates/` (5 files) — principles, rules, OET syntax, OET idioms, checklist
-- `aql/` (4 files) — principles, syntax, idioms, checklist
-- `simplified_formats/` (4 files) — principles, rules, idioms, checklist
-- `rm/` (3 files) — EHR information model, demographic model, platform services
+All skills and commands instruct the AI assistant to **load relevant guides from the MCP server before answering**. The guides are the authoritative knowledge registry, organised across six categories. A compact offline summary lives at `skills/openehr-assistant/reference/openehr-quick-reference.md` for use by the `clinical-modeler` agent and as a quick refresher; the same folder contains minimal **ADL** and **AQL syntax cheatsheets** (`adl-syntax-cheatsheet.md`, `aql-syntax-cheatsheet.md`) for offline structural/syntax checks, and an **RM type reference** (`rm-type-reference.md`) covering ~30 commonly archetyped RM types with their attributes for local lint rule 4 (Valid RM Attributes Only) validation. Canonical guides via MCP always take precedence.
+- `archetypes/` — principles, rules, ADL syntax, idioms, structural constraints, terminology, anti-patterns, checklist, language standards, formatting
+- `templates/` — principles, rules, OET syntax, OET idioms, checklist
+- `aql/` — principles, syntax, idioms, checklist
+- `simplified_formats/` — principles, rules, idioms, checklist
+- `specs/` — openEHR specification digests covering AM, AM2, BASE, RM (including EHR, Demographic, Common, Data Types, Data Structures), QUERY (AQL), TERM, LANG, CDS (GDL2), SM (platform services), ITS-REST. Digests track the openEHR **development** branch; the former `rm/` category has been migrated into this namespace.
+- `howto/` — toolchain how-tos (e.g. `spec-lookup` for efficient external spec retrieval via `llms.txt` and Markdown twin URLs).
+
+### Curated worked examples (new in MCP v0.16)
+
+The MCP server exposes `openehr://examples/{kind}/{name}` for gold-standard patterns. Skills and commands may consult `examples_search` / `examples_get` when a concrete worked example would help — this is a **conditional** aid, not a mandatory first step. Kinds: `aql`, `flat`, `structured`, `archetypes` (CKM-published native `.adl` files).
 
 ## Syntax and grammar sources
 
 Use these when you need authoritative ADL or AQL syntax (e.g. for `/archetype-fix-syntax`, AQL authoring, or when MCP guides are unavailable). Canonical detail lives in MCP guides and official specs; treat the following as pointers.
 
-- **ADL syntax**: Official narrative in [specifications-AM](https://github.com/openEHR/specifications-AM) (e.g. `docs/ADL1.4/`, appendix C references ANTLR grammars). Normative grammars: [adl-antlr](https://github.com/openEHR/adl-antlr) (referenced by the spec). Consolidated ANTLR4 grammars (ADL1.4, ADL2): [openEHR-antlr4](https://github.com/openEHR/openEHR-antlr4) (`reader_adl14`, `reader_adl2`). MCP guide: `guide_get("archetypes/adl-syntax")`. Published spec: [specifications.openehr.org/releases/AM/latest](https://specifications.openehr.org/releases/AM/latest).
-- **AQL syntax**: Official narrative and grammar in [specifications-QUERY](https://github.com/openEHR/specifications-QUERY) (`docs/AQL/`). ANTLR4 grammars: [openEHR-antlr4](https://github.com/openEHR/openEHR-antlr4) `reader_aql`. MCP guide: `guide_get("aql/syntax")`. Published spec: [specifications.openehr.org/releases/QUERY/latest](https://specifications.openehr.org/releases/QUERY/latest).
+- **ADL syntax**: Official narrative in [specifications-AM](https://github.com/openEHR/specifications-AM) (e.g. `docs/ADL1.4/`, appendix C references ANTLR grammars). Normative grammars: [adl-antlr](https://github.com/openEHR/adl-antlr) (referenced by the spec). Consolidated ANTLR4 grammars (ADL1.4, ADL2): [openEHR-antlr4](https://github.com/openEHR/openEHR-antlr4) (`reader_adl14`, `reader_adl2`). MCP guide: `guide_get("archetypes/adl-syntax")`. Published spec: `https://specifications.openehr.org/releases/AM/development/` (see retrieval methodology below).
+- **AQL syntax**: Official narrative and grammar in [specifications-QUERY](https://github.com/openEHR/specifications-QUERY) (`docs/AQL/`). ANTLR4 grammars: [openEHR-antlr4](https://github.com/openEHR/openEHR-antlr4) `reader_aql`. MCP guide: `guide_get("aql/syntax")`. Published spec: `https://specifications.openehr.org/releases/QUERY/development/` (see retrieval methodology below).
 
 The written ADL1.4 spec points to adl-antlr for grammars; openEHR-antlr4 is the single consolidated ANTLR source for both ADL and AQL and is valid for implementation and tooling.
 

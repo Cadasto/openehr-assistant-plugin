@@ -15,7 +15,7 @@ Explain openEHR demographic model concepts.
 
 1. Load the demographic model guide:
    ```
-   guide_get("rm/demographic-model")
+   guide_get("specs/rm-demographic")
    ```
 2. Identify which concept the user is asking about: **$ARGUMENTS**
 3. Use `type_specification_get` to look up specific RM types if the user needs class-level detail

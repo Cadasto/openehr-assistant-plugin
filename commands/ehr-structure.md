@@ -15,7 +15,7 @@ Explain openEHR EHR structural concepts.
 
 1. Load the EHR information model guide:
    ```
-   guide_get("rm/ehr-information-model")
+   guide_get("specs/rm-ehr")
    ```
 2. Identify which concept the user is asking about: **$ARGUMENTS**
 3. Use `type_specification_get` to look up specific RM types if the user needs class-level detail

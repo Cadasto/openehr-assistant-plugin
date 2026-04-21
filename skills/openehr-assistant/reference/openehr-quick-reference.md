@@ -78,7 +78,7 @@ INITIAL → PLANNED → SCHEDULED → ACTIVE → COMPLETED
 
 Query for active medications or planned interventions via standardised ISM states.
 
-> Full guide: `openehr://guides/rm/ehr-information-model`
+> Full guide: `openehr://guides/specs/rm-ehr`
 
 ---
 
@@ -101,7 +101,7 @@ Query for active medications or planned interventions via standardised ISM state
 - **Lifecycle states** — `complete`, `incomplete`, `deleted`, `inactive`, `abandoned`
 - **AUDIT_DETAILS** — every commit: system_id, committer, time_committed, change_type
 
-> Full guide: `openehr://guides/rm/ehr-information-model`
+> Full guide: `openehr://guides/specs/rm-ehr`
 
 ---
 
@@ -120,7 +120,7 @@ PARTY (abstract)
 - **PARTY_IDENTITY** — names (legal, alias). State-issued identifiers go in `PARTY.details`.
 - **PARTY_RELATIONSHIP** — directed: source → target (e.g., patient-of, employed-by)
 
-> Full guide: `openehr://guides/rm/demographic-model`
+> Full guide: `openehr://guides/specs/rm-demographic`
 
 ---
 
@@ -134,7 +134,7 @@ Three levels of subject identification via PARTY_SELF:
 | **Single reference** | In EHR_STATUS.subject only | EHR contents remain anonymous |
 | **Embedded** | In every PARTY_SELF instance | Convenient for closed/secure environments |
 
-> Full guide: `openehr://guides/rm/demographic-model`
+> Full guide: `openehr://guides/specs/rm-demographic`
 
 ---
 
@@ -255,12 +255,14 @@ Minimal offline syntax reminders (full detail: MCP guides or AGENTS.md):
 | Idioms | `openehr://guides/simplified_formats/idioms-cheatsheet` |
 | Checklist | `openehr://guides/simplified_formats/checklist` |
 
-### Reference Model
+### Specification digests (reference-model and related)
 | Guide | URI |
 |-------|-----|
-| EHR Information Model | `openehr://guides/rm/ehr-information-model` |
-| Demographic Model | `openehr://guides/rm/demographic-model` |
-| Platform Services | `openehr://guides/rm/platform-services` |
+| EHR Information Model | `openehr://guides/specs/rm-ehr` |
+| Demographic Model | `openehr://guides/specs/rm-demographic` |
+| Platform Services | `openehr://guides/specs/sm-openehr_platform` |
+
+The MCP server exposes additional spec digests under `openehr://guides/specs/` covering AM (ADL1.4, AOM1.4, Overview, Identification), AM2 (ADL2, AOM2, OPT2), BASE, QUERY (AQL), TERM, LANG, CDS (GDL2), SM, and ITS-REST. Digests track the openEHR **development** branch.
 
 ### OpenAPI REST Schemas
 
@@ -277,5 +279,18 @@ https://github.com/openEHR/specifications-ITS-REST/tree/master/computable/OAS
 | `admin-validation.openapi.yaml` | EHR deletion (admin) |
 | `system-validation.openapi.yaml` | Service discovery, conformance |
 | `overview-validation.openapi.yaml` | Cross-cutting: HTTP conventions, headers, status codes |
+
+---
+
+## Online retrieval path (when MCP is available)
+
+When MCP access is available, prefer routed retrieval over direct HTTP fetches:
+
+1. **Spec overview questions** → `guide_get(category="specs", name="<component>-<doc>")` (250–900 word digests tracking the `development` branch).
+2. **Class-level attribute / function / invariant detail** → `type_specification_get("<TYPE_NAME>")` (BMM-backed, exhaustive).
+3. **Worked examples** (AQL, FLAT, STRUCTURED, reference `.adl` archetypes) → `examples_search(kind=...)` / `examples_get("openehr://examples/<kind>/<name>")`.
+4. **Efficient external spec retrieval** → `guide_get("howto/spec-lookup")`; it documents the `llms.txt` site index, the `.md` twin URL pattern (every `*.html` spec page has a `.md` counterpart — prose only, not per-class tables), and the `/api/{components,classes,releases}.json` endpoints.
+
+This plugin tracks `releases/XX/development/` for external spec URLs unless the user explicitly asks for a fixed release tag.
 
 ---

@@ -85,7 +85,12 @@ For **guides**, place the file in the correct category directory:
 | Templates | `resources/guides/templates/` | Template design, OET/OPT syntax, narrowing |
 | AQL | `resources/guides/aql/` | Query language, syntax, patterns |
 | Simplified Formats | `resources/guides/simplified_formats/` | Flat/Structured JSON serialization |
-| Reference Model | `resources/guides/rm/` | RM type guidance |
+| Specifications | `resources/guides/specs/` | openEHR specification digests (250–900 words) covering AM, AM2, BASE, RM, QUERY, TERM, LANG, CDS, SM, ITS-REST; filenames follow `<component>-<doc>.md` (e.g. `rm-ehr.md`, `am2-ADL2.md`); digests track the `development` branch |
+| How-Tos | `resources/guides/howto/` | Toolchain how-tos (e.g. `spec-lookup.md` for efficient external spec retrieval) |
+
+The legacy `rm/` category has been retired — its three guides were migrated to `specs/rm-ehr`, `specs/rm-demographic`, and `specs/sm-openehr_platform`. New RM-adjacent digests belong in `specs/`.
+
+**Spec digest schema.** Files in `resources/guides/specs/` follow a specific digest schema (scope, key classes, relations, canonical URLs) and are validated against it. Before authoring, inspect a sibling digest (e.g. `specs/rm-ehr.md`, `specs/am-ADL1.4.md`) and the category's README/validator to match conventions.
 
 For **prompts**, identify the action pattern:
 

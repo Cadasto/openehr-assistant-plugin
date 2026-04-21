@@ -26,12 +26,12 @@ allowed-tools:
 Before any platform design work, load the authoritative guides:
 
 ```
-guide_get("rm/platform-services")
-guide_get("rm/ehr-information-model")
+guide_get("specs/sm-openehr_platform")
+guide_get("specs/rm-ehr")
 ```
 
 Load additional guides as needed:
-- `guide_get("rm/demographic-model")` — if demographic service is in scope
+- `guide_get("specs/rm-demographic")` — if demographic service is in scope
 
 ## Step 2: Clarify Scope
 
