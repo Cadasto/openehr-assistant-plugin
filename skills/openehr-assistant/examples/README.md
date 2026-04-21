@@ -3,6 +3,7 @@
 **Purpose:** Curated, published CKM archetypes (English-only) as few-shot references for writing, editing, and reviewing archetypes. Load specific examples by RM type as needed — do not load all at once.
 
 **Source:** Exported from CKM (2026-03). Translations stripped to English-only for context efficiency.
+**Synced from:** openehr-assistant-mcp v0.16.0 (`resources/examples/archetypes/`). When the plugin bumps MCP compatibility, diff this directory against the MCP's `resources/examples/archetypes/` and sync any changed files — then update this header. See `CONTRIBUTING.md` → "Syncing bundled examples".
 
 ---
 

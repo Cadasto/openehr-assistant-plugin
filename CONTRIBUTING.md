@@ -100,6 +100,16 @@ When adding or renaming components, update all references in:
 - `README.md` (commands/skills tables)
 - `hooks/session-start.sh` (available commands list)
 
+### Syncing bundled examples
+The `skills/openehr-assistant/examples/` directory bundles the 7 gold-standard CKM archetypes for the offline `clinical-modeler` agent (which has no MCP access). The same files are published by `openehr-assistant-mcp` under `resources/examples/archetypes/`.
+
+When bumping the MCP compatibility version in `AGENTS.md` / `README.md` / `CHANGELOG.md`, also:
+1. `diff skills/openehr-assistant/examples/*.adl` against the matching MCP release's `resources/examples/archetypes/*.adl`.
+2. Sync any changed files (keep the "English-only, translations stripped" convention documented in `examples/README.md`).
+3. Update the `**Synced from:**` line in `examples/README.md` to the new MCP version.
+
+Do not bundle the other example kinds (`aql`, `flat`, `structured`) — their consumers (main-session skills such as `aql-query`, `composition-builder`) retrieve via MCP's `examples_search` / `examples_get` on demand, so bundling would only add drift risk without offline value.
+
 
 ## Testing locally
 
