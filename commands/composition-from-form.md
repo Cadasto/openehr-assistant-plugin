@@ -23,7 +23,7 @@ Inverse clinical-modelling workflow: start from a form the user wants to impleme
    guide_get("templates/principles")
    guide_get("templates/rules")
    ```
-3. Parse the form into a structured field list. For each form field, capture: label, data type (free text / coded / quantity / date / boolean), cardinality (single / repeating), mandatoriness.
+3. Parse the form into a structured field list. For each form field, capture: label, data type (free text / coded / quantity / date / boolean), cardinality (single / repeating), mandatoriness. Surface this inventory as a `## Parsed form inventory` section in your output so the user can verify interpretation before committing to a composition.
 4. For each field group (a cluster of related fields, e.g. vital signs together), decide the target RM entry type using this mapping:
 
 | Form field group resembles… | RM entry type |
@@ -79,12 +79,12 @@ Maps:
 
 ## Next steps
 
-- Refine the template with `/template-authoring` or the `template-authoring` skill.
+- Refine the template with the `template-authoring` skill.
 - For gap fields, dispatch `ckm-scout` for deeper reuse search before authoring new archetypes.
 ```
 
 ## Constraints
 
 - Do NOT invent CKM archetype IDs. Only cite archetypes returned by `ckm_archetype_search`.
-- Do NOT produce OET XML. This command outputs a design sketch; OET authoring is the `/template-authoring` skill's job.
+- Do NOT produce OET XML. This command outputs a design sketch; OET authoring is the `template-authoring` skill's job.
 - If the form is incomplete (missing data types, cardinality, field labels), ask up to 3 clarifying questions before sketching.
