@@ -98,6 +98,7 @@ Environment variables (e.g. `CKM_API_BASE_URL`) and Docker/stdio details are doc
 | `/adl-idiom <pattern>` | Quick ADL constraint pattern lookup |
 | `/archetype-fix-syntax <file>` | Fix ADL syntax errors preserving semantics |
 | `/archetype-translate <file> <lang>` | Add/translate archetype language entries |
+| `/archetype-rationale <file or id> [--section]` | Generate CKM-quality rationale prose (description, purpose, misuse, use) |
 
 ### Agent
 

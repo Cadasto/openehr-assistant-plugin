@@ -9,6 +9,9 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 
 ## [Unreleased]
 
+### Added
+- Commands: `/archetype-rationale` — generate CKM-quality rationale prose (description, purpose, misuse, use) for an archetype.
+
 ### Changed
 - Commands [`archetype-translate.md`](commands/archetype-translate.md) and [`archetype-fix-syntax.md`](commands/archetype-fix-syntax.md): wording aligned with ADL 1.4 (`ontology.term_definitions`, `language.translations` vs legacy names; no top-level `terminology` section).
 - [`agents/clinical-modeler.md`](agents/clinical-modeler.md): structural review checklist aligned with ADL 1.4 spec section order and ontology/`term_definitions` (not a separate `terminology` section); documented Rule 19 (INFO).
