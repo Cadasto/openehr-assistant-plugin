@@ -82,8 +82,7 @@ Environment variables (e.g. `CKM_API_BASE_URL`) and Docker/stdio details are doc
 | `/template-explain <id>` | Explain template semantics and structure |
 | `/aql-designer <question or query>` | Explain, design, or review AQL queries |
 | `/format-data <template or question>` | Explain or design openEHR data instances (FLAT/STRUCTURED/CANONICAL) based on a template |
-| `/ehr-structure <concept>` | Explain EHR structural concepts (composition categories, ISM states, time, versioning) |
-| `/demographic-structure <concept>` | Explain demographic model concepts (PARTY hierarchy, roles, identities, privacy) |
+| `/rm-structure <domain> <concept>` | Explain RM structural concepts in a given domain (`ehr` or `demographic`) — composition categories, ISM states, time, versioning, PARTY hierarchy, identities, privacy |
 | `/guide <topic>` | Browse openEHR implementation guides |
 | `/terminology <code or term>` | Resolve terminology IDs and rubrics |
 | `/type-spec <type name>` | Look up RM/AM/BASE type specifications |

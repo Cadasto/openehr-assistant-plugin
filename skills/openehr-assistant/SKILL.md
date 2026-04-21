@@ -144,5 +144,4 @@ When users need deeper task-specific workflows, suggest the appropriate skill or
 - **Translations** -> `/archetype-translate`
 - **Demographic modeling** -> demographic-modeling skill
 - **Platform/service design** -> platform-design skill
-- **EHR structure lookups** -> `/ehr-structure`
-- **Demographic structure lookups** -> `/demographic-structure`
+- **RM structure lookups** (EHR or demographic domain) -> `/rm-structure`

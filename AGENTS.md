@@ -76,7 +76,7 @@ For spec overview questions ("what does the EHR IM define?", "summarise ADL2"), 
 | `demographic-modeling` | Design demographic models (PARTY hierarchy, roles, relationships, identity patterns) |
 | `platform-design` | Design against openEHR platform service interfaces, REST API patterns, version update semantics |
 
-### Commands (16)
+### Commands (15)
 | Command | Purpose |
 |---------|---------|
 | `/archetype-search` | Find CKM archetypes |
@@ -87,8 +87,7 @@ For spec overview questions ("what does the EHR IM define?", "summarise ADL2"), 
 | `/template-explain` | Explain template semantics |
 | `/aql-designer` | Explain/design/review AQL |
 | `/format-data` | Explain or design openEHR data instances (FLAT/STRUCTURED/CANONICAL) based on a template |
-| `/ehr-structure` | Explain EHR structural concepts (composition categories, ISM states, time, versioning) |
-| `/demographic-structure` | Explain demographic model concepts (PARTY hierarchy, roles, identities, relationships, privacy) |
+| `/rm-structure` | Explain RM structural concepts in a given domain (ehr or demographic) — composition categories, ISM states, time, versioning, PARTY hierarchy, identities, privacy |
 | `/guide` | Browse openEHR guides |
 | `/terminology` | Resolve terminology IDs |
 | `/type-spec` | Look up RM/AM types |
