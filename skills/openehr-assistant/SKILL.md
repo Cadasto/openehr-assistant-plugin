@@ -145,3 +145,4 @@ When users need deeper task-specific workflows, suggest the appropriate skill or
 - **Demographic modeling** -> demographic-modeling skill
 - **Platform/service design** -> platform-design skill
 - **RM structure lookups** (EHR or demographic domain) -> `/rm-structure`
+- **Curated worked examples** (AQL queries, FLAT/STRUCTURED payloads, reference archetypes) -> `examples_search` / `examples_get` MCP tools; resources at `openehr://examples/{kind}/{name}`

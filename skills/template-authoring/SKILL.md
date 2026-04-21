@@ -11,7 +11,6 @@ allowed-tools:
   - Grep
   - Write
   - Edit
-  - Bash
   - mcp__openehr-assistant__ckm_template_search
   - mcp__openehr-assistant__ckm_template_get
   - mcp__openehr-assistant__ckm_archetype_search

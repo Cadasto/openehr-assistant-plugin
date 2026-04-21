@@ -9,7 +9,6 @@ allowed-tools:
   - Read
   - Glob
   - Grep
-  - Bash
   - mcp__openehr-assistant__guide_get
   - mcp__openehr-assistant__ckm_archetype_get
   - mcp__openehr-assistant__ckm_template_get

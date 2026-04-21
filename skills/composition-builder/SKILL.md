@@ -10,7 +10,6 @@ allowed-tools:
   - Glob
   - Grep
   - Write
-  - Bash
   - mcp__openehr-assistant__ckm_template_get
   - mcp__openehr-assistant__guide_get
   - mcp__openehr-assistant__type_specification_get
