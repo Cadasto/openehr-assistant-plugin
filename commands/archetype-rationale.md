@@ -52,6 +52,8 @@ use:
   - <generated bullet>
 ```
 
+This layout is a **logical sketch for readability**, not valid ADL syntax. In ADL 1.4, these fields live under `description.details["<lang>"]` as multi-line string values (`misuse` and `use` are single string fields, not bullet arrays). When pasting into an archetype, join the bullets into newline-separated prose and wrap each section as an ADL string literal. Point this out to the user in your response.
+
 ## Quality standards
 
 - Use consistent openEHR vocabulary (see `guide_get("archetypes/language-standards")`) — prefer "record" over "capture", "clinical statement" over "entry", etc.
