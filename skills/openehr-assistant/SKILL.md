@@ -145,4 +145,5 @@ When users need deeper task-specific workflows, suggest the appropriate skill or
 - **Demographic modeling** -> demographic-modeling skill
 - **Platform / REST service integration** -> consult `guide_get("specs/sm-openehr_platform")` and `guide_get("specs/its-rest-api")`
 - **RM structure lookups** (EHR or demographic domain) -> `/rm-structure`
+- **Deep spec research** (precise attribute/function/invariant questions; cross-document reconciliation) -> dispatch the `spec-researcher` agent
 - **Curated worked examples** (AQL queries, FLAT/STRUCTURED payloads, reference archetypes) -> `examples_search` / `examples_get` MCP tools; resources at `openehr://examples/{kind}/{name}`

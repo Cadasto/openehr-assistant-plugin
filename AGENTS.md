@@ -96,11 +96,12 @@ For spec overview questions ("what does the EHR IM define?", "summarise ADL2"), 
 | `/archetype-rationale` | Generate CKM-quality rationale prose (description, purpose, misuse, use) for an archetype |
 | `/composition-from-form` | Map a clinical form to archetype composition + template sketch with narrowing notes |
 
-### Agents (2)
+### Agents (3)
 | Agent | Purpose |
 |-------|---------|
 | `clinical-modeler` | Local clinical model file analyst for reading, writing, reviewing, and editing archetype/template files in the workspace. Includes local RM attribute validation via `rm-type-reference.md` (no MCP tool access) |
 | `ckm-scout` | Context-isolated CKM reuse-search specialist. Runs parallel searches with varied phrasings and returns ranked reuse/specialize/new recommendations. Dispatched by `archetype-authoring` skill or directly by the user |
+| `spec-researcher` | Context-isolated openEHR spec research using the `howto/spec-lookup` methodology (llms.txt, `.md` twin, BMM, HTML fallthrough). Tracks the `development` branch |
 
 ### Hooks
 - **SessionStart** — detects openEHR resources in workspace and displays context
