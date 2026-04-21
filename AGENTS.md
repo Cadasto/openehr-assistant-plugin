@@ -104,6 +104,7 @@ For spec overview questions ("what does the EHR IM define?", "summarise ADL2"), 
 
 ### Hooks
 - **SessionStart** — detects openEHR resources in workspace and displays context
+- **PostToolUse** (Claude Code only) — when `Write` or `Edit` targets an `.adl` file, emits a reminder to run `/archetype-lint`. Cursor's hook schema does not expose a PostToolUse equivalent at the time of writing; Cursor users can trigger the reminder manually.
 
 ## Repository Layout
 
