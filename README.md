@@ -1,5 +1,13 @@
 # openEHR Assistant Plugin
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-0.5.0-blue)](CHANGELOG.md)
+[![Claude Code](https://img.shields.io/badge/Claude_Code-plugin-D97757?logo=anthropic&logoColor=white)](https://claude.ai/code)
+[![Cursor](https://img.shields.io/badge/Cursor-plugin-000?logo=cursor&logoColor=white)](https://cursor.com)
+[![openehr-assistant-mcp](https://img.shields.io/badge/openehr--assistant--mcp-v0.16.0-brightgreen)](https://github.com/Cadasto/openehr-assistant-mcp)
+[![openEHR](https://img.shields.io/badge/openEHR-compatible-009688)](https://openehr.org)
+[![Keep a Changelog](https://img.shields.io/badge/Keep%20a%20Changelog-1.1.0-E05735)](CHANGELOG.md)
+
 AI plugin suite for clinical workflow integration with [openEHR](https://openehr.org/) systems. Adds skills, commands, agents, and hooks for **[Claude Code](https://claude.ai/code)** and **[Cursor](https://cursor.com)** that guide AI assistants through openEHR modeling, CKM discovery, and specification lookups.
 
 This plugin works with the [openEHR Assistant MCP Server](https://github.com/Cadasto/openehr-assistant-mcp), which provides the tools, prompts, and resources (CKM, guides, terminology, type specs). The plugin supplies the workflow layer: when to load which guides, which commands to offer, and how to stay aligned with openEHR best practices.
@@ -25,7 +33,7 @@ This plugin works with the [openEHR Assistant MCP Server](https://github.com/Cad
 - **Composition building** — Generate FLAT, STRUCTURED, and CANONICAL format instances.
 - **AQL queries** — Write, explain, and optimize Archetype Query Language queries.
 - **CKM discovery** — Search the Clinical Knowledge Manager for archetypes and templates.
-- **Demographic and platform** — Demographic modeling (PARTY hierarchy, roles) and platform service design (REST API patterns).
+- **Demographic modeling** — PARTY hierarchy, roles, relationships, identity patterns.
 - **Offline reference** — Quick-reference, ADL/AQL syntax cheatsheets, and RM type reference in the repo when MCP is unavailable.
 
 ---
@@ -38,7 +46,7 @@ This plugin works with the [openEHR Assistant MCP Server](https://github.com/Cad
 claude plugin add cadasto/openehr-assistant-plugin
 ```
 
-**Cursor** — Add the plugin via Cursor’s plugin flow (e.g. from a Git URL or local path). The repo includes a Cursor manifest at `.cursor-plugin/plugin.json`; skills, commands, agents, and MCP config are shared with the Claude plugin.
+**Cursor** — Add the plugin via Cursor’s plugin flow (e.g. from a Git URL or local path). The repo includes a Cursor manifest at [`.cursor-plugin/plugin.json`](.cursor-plugin/plugin.json); skills, commands, agents, and MCP config are shared with the Claude plugin.
 
 **Contributors:** See [CONTRIBUTING.md](CONTRIBUTING.md) for maintainer workflows, **clone vs `git archive`** (`.gitattributes` `export-ignore`), and how to bump compatibility with [openehr-assistant-mcp](https://github.com/Cadasto/openehr-assistant-mcp).
 
@@ -110,10 +118,12 @@ The [openehr-assistant-mcp](https://github.com/Cadasto/openehr-assistant-mcp) se
 
 **Compatibility:** This plugin version is built and tested against **openehr-assistant-mcp v0.16.0** ([releases](https://github.com/Cadasto/openehr-assistant-mcp/releases)). When updating the plugin, align with that server’s changelog so each plugin release stays compatible with a specific MCP server version.
 
-Offline reference material in `skills/openehr-assistant/reference/` includes a quick-reference (principles, rules, guide index), minimal ADL and AQL syntax cheatsheets, and an RM type reference (~30 commonly archetyped types with attributes for local lint rule 4 validation); see **AGENTS.md** (Syntax and grammar sources) for links to official specs and grammars.
+Offline reference material in [`skills/openehr-assistant/reference/`](skills/openehr-assistant/reference/) includes a quick-reference (principles, rules, guide index), minimal ADL and AQL syntax cheatsheets, and an RM type reference (~30 commonly archetyped types with attributes for local lint rule 4 validation); see [AGENTS.md](AGENTS.md) (Syntax and grammar sources) for links to official specs and grammars.
+
+See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
 ---
 
 ## License
 
-MIT - Cadasto B.V.
+[MIT License](LICENSE) — Cadasto B.V.

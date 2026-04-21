@@ -9,6 +9,12 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 
 ## [Unreleased]
 
+### Changed
+- Cursor rule [`rules/openehr-context.mdc`](rules/openehr-context.mdc): added frontmatter `name: openehr-context`.
+
+### Removed
+- Skill `platform-design` — routing absorbed into `openehr-assistant` (suggest `guide_get("specs/sm-openehr_platform")` / `guide_get("specs/its-rest-api")` for platform/service work). Skills: 8 → 7.
+
 ## [0.5.0] - 2026-04-21
 
 ### Added
