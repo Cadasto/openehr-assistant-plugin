@@ -35,5 +35,5 @@ if [ ${#found[@]} -gt 0 ]; then
     echo "  - ${item}"
   done
   echo ""
-  echo "Available: /archetype-search, /archetype-explain, /archetype-lint, /archetype-review, /archetype-rationale, /composition-from-form, /template-search, /template-explain, /aql-designer, /format-data, /rm-structure, /guide, /terminology, /type-spec, /adl-idiom, /archetype-fix-syntax, /archetype-translate"
+  echo "Available: /archetype-search, /archetype-explain, /archetype-lint, /archetype-review, /archetype-rationale, /composition-from-form, /archetype-impact, /template-search, /template-explain, /aql-designer, /format-data, /rm-structure, /guide, /terminology, /type-spec, /adl-idiom, /archetype-fix-syntax, /archetype-translate"
 fi

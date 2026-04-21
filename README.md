@@ -100,6 +100,7 @@ Environment variables (e.g. `CKM_API_BASE_URL`) and Docker/stdio details are doc
 | `/archetype-translate <file> <lang>` | Add/translate archetype language entries |
 | `/archetype-rationale <file or id> [--section]` | Generate CKM-quality rationale prose (description, purpose, misuse, use) |
 | `/composition-from-form <form text or path>` | Map a clinical form to archetype composition + template sketch |
+| `/archetype-impact <archetype-id>` | Scan workspace for all references to an archetype (templates, AQL) |
 
 ### Agents
 
