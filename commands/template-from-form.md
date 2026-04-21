@@ -1,6 +1,6 @@
 ---
-name: composition-from-form
-description: Given a clinical form description (text or file), suggest an archetype composition and template sketch, mapping form fields to RM entry types with narrowing notes.
+name: template-from-form
+description: Given a clinical form description (text or file), suggest a template sketch — the archetypes to aggregate, the RM entry type per field group, and narrowing notes per archetype. Output is a design sketch, not valid OET XML.
 argument-hint: "<form description text OR path to form description file>"
 allowed-tools:
   - Read
@@ -9,9 +9,9 @@ allowed-tools:
   - mcp__openehr-assistant__guide_get
 ---
 
-# /composition-from-form
+# /template-from-form
 
-Inverse clinical-modelling workflow: start from a form the user wants to implement and work backwards to an archetype composition and template.
+Inverse clinical-modelling workflow: start from a form the user wants to implement and work backwards to a template design — the set of archetypes to include and the narrowing to apply per archetype.
 
 ## Instructions
 
@@ -23,7 +23,7 @@ Inverse clinical-modelling workflow: start from a form the user wants to impleme
    guide_get("templates/principles")
    guide_get("templates/rules")
    ```
-3. Parse the form into a structured field list. For each form field, capture: label, data type (free text / coded / quantity / date / boolean), cardinality (single / repeating), mandatoriness. Surface this inventory as a `## Parsed form inventory` section in your output so the user can verify interpretation before committing to a composition.
+3. Parse the form into a structured field list. For each form field, capture: label, data type (free text / coded / quantity / date / boolean), cardinality (single / repeating), mandatoriness. Surface this inventory as a `## Parsed form inventory` section in your output so the user can verify interpretation before committing to a template.
 4. For each field group (a cluster of related fields, e.g. vital signs together), decide the target RM entry type using this mapping:
 
 | Form field group resembles… | RM entry type |
@@ -48,14 +48,14 @@ Inverse clinical-modelling workflow: start from a form the user wants to impleme
 ## Output format
 
 ```
-# Composition sketch — <form name>
+# Template sketch — <form name>
 
 ## Proposed template
 
 - **Name**: <suggested_template_id>
 - **RM root**: COMPOSITION (category: event | persistent | episodic — justified)
 
-## Archetype composition
+## Archetypes to aggregate
 
 ### 1. <openEHR-EHR-OBSERVATION.vital_signs.v1> (existing CKM)
 Maps these form fields:
@@ -87,4 +87,5 @@ Maps:
 
 - Do NOT invent CKM archetype IDs. Only cite archetypes returned by `ckm_archetype_search`.
 - Do NOT produce OET XML. This command outputs a design sketch; OET authoring is the `template-authoring` skill's job.
+- The word "composition" in openEHR denotes a runtime data instance (a `COMPOSITION` RM object), not a design-time aggregation of archetypes. This command's output is a **template** — a design-time constraint set that, once instantiated, will produce compositions.
 - If the form is incomplete (missing data types, cardinality, field labels), ask up to 3 clarifying questions before sketching.

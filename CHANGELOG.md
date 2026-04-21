@@ -12,7 +12,7 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 ### Added
 - Commands: `/archetype-rationale` — generate CKM-quality rationale prose (description, purpose, misuse, use) for an archetype.
 - Agents: `ckm-scout` subagent — reuse-first CKM search with parallel phrasings and ranked recommendation.
-- Commands: `/composition-from-form` — inverse modelling from form description to archetype composition and template sketch.
+- Commands: `/template-from-form` — inverse modelling from a form description to a template sketch (archetypes to aggregate + per-archetype narrowing). In openEHR, "composition" denotes a runtime data instance, so the command avoids that term for a design-time artefact.
 - Hooks: PostToolUse `lint-on-save` — emits a lint reminder when any `.adl` file is written or edited (Claude Code only; Cursor has no PostToolUse equivalent).
 - Agents: `spec-researcher` subagent — context-isolated openEHR spec research using the `howto/spec-lookup` methodology.
 - Commands: `/archetype-impact` — scan workspace for references to a given archetype across templates and AQL files.

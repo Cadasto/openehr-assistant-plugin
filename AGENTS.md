@@ -94,7 +94,7 @@ For spec overview questions ("what does the EHR IM define?", "summarise ADL2"), 
 | `/archetype-fix-syntax` | Fix ADL syntax |
 | `/archetype-translate` | Translate archetype language |
 | `/archetype-rationale` | Generate CKM-quality rationale prose (description, purpose, misuse, use) for an archetype |
-| `/composition-from-form` | Map a clinical form to archetype composition + template sketch with narrowing notes |
+| `/template-from-form` | Map a clinical form to a template sketch — archetypes to aggregate and per-archetype narrowing notes |
 | `/archetype-impact` | Scan workspace for references to a given archetype across templates and AQL files |
 | `/archetype-diff` | Semantic diff between two archetype versions; classifies the version bump (patch / minor / major) per rule G1 |
 | `/template-diff` | Semantic diff between two template versions; classifies the version bump |
