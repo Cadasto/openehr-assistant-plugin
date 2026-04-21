@@ -9,6 +9,28 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-04-21
+
+### Added
+- MCP v0.16.0: `examples_search` / `examples_get` tools and `openehr://examples/{kind}/{name}` resource namespace routed via `openehr-assistant` skill.
+- Guide categories `specs/` (digests tracking `development`) and `howto/` (e.g. `spec-lookup`) surfaced in the router.
+- Conditional example-retrieval hints in `aql-query`, `composition-builder`, `archetype-authoring` skills.
+- Offline quick-reference appendix: `llms.txt`, `.md` twin URL pattern, class-table caveat.
+- `.gitattributes` `export-ignore` for maintainer-only paths (`AGENTS.md`, `CONTRIBUTING.md`, `.github/**`).
+- `**Synced from:**` version tag in `skills/openehr-assistant/examples/README.md` (byte-verified against MCP v0.16.0).
+- CONTRIBUTING.md: "Repository archives" and "When bumping openehr-assistant-mcp compatibility" sections; README link to the contributor workflow.
+
+### Changed
+- Commands: merged `/ehr-structure` + `/demographic-structure` → `/rm-structure <domain> <concept>`. 16 → 15.
+- Guide URIs: `rm/*` → `specs/*` (`rm-ehr`, `rm-demographic`, `sm-openehr_platform`); stale `rm/` fixed in `/guide` help.
+- External spec retrieval: replaced `releases/XX/latest` URLs with a methodology tracking `development` via `howto/spec-lookup`.
+- Cursor rule `rules/openehr-context.mdc`: dropped AGENTS.md dependency; added curated-examples and slash-command hints.
+- Claude manifest: `displayName` and `keywords` aligned with Cursor manifest.
+- Compatibility pointer: openehr-assistant-mcp **v0.16.0**.
+
+### Removed
+- Skill `guide-prompt-authoring` — relocated to openehr-assistant-mcp as a Cursor project skill.
+
 ## [0.4.0] - 2026-03-15
 
 ### Added

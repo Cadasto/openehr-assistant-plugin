@@ -144,6 +144,14 @@ When adding or renaming components, update: **AGENTS.md** (component tables), **
 ### Versioning
 - Plugin version (and, for consistency, description and author) must be kept in sync in **both** `.claude-plugin/plugin.json` and `.cursor-plugin/plugin.json`. Follow Semantic Versioning; update both manifests and **CHANGELOG.md** (Keep a Changelog format) when releasing.
 
+### CHANGELOG style
+- Entries go under `## [Unreleased]` while work is in flight and get folded into the next `## [X.Y.Z] - YYYY-MM-DD` section at release.
+- Use the Keep a Changelog groups in order: **Added**, **Changed**, **Deprecated**, **Removed**, **Fixed**, **Security**. Omit empty groups.
+- One line per bullet. Lead with the subsystem (`Commands:`, `Guide URIs:`, `Cursor rule <path>:`) and state the change tersely. Use backticks for file, command, tool, URI, and frontmatter-key names.
+- No rationale, no PR links, no restating *why* — that belongs in commit messages or the PR description. CHANGELOG captures *what* changed for a reader who wants a compact release delta.
+- If a bullet is three lines, it is too long.
+- When consolidating accumulated `[Unreleased]` work into a new release, check `git log <last-tag>..HEAD` to ensure every commit is represented exactly once across the groups.
+
 ### Commit Messages
 - Follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), e.g. `fix(commands): corrected allowed-tools in archetype-search`, `feat(skills): added composition-builder skill`.
 - Scopes: `skills`, `commands`, `agents`, `hooks`, `docs`, `mcp`.

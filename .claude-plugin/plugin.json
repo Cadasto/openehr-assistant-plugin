@@ -1,6 +1,7 @@
 {
   "name": "openehr-assistant",
-  "version": "0.4.0",
+  "displayName": "openEHR Assistant",
+  "version": "0.5.0",
   "description": "AI plugin to assist on various openEHR related tasks",
   "author": {
     "name": "Cadasto B.V.",
@@ -8,5 +9,13 @@
   },
   "license": "MIT",
   "repository": "https://github.com/cadasto/openehr-assistant-plugin",
-  "keywords": ["openehr", "clinical", "ehr", "archetypes", "templates", "aql"]
+  "keywords": [
+    "openehr",
+    "clinical",
+    "ehr",
+    "archetypes",
+    "templates",
+    "aql",
+    "ckm"
+  ]
 }
