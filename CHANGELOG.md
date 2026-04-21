@@ -16,6 +16,7 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 - Hooks: PostToolUse `lint-on-save` — emits a lint reminder when any `.adl` file is written or edited (Claude Code only; Cursor has no PostToolUse equivalent).
 - Agents: `spec-researcher` subagent — context-isolated openEHR spec research using the `howto/spec-lookup` methodology.
 - Commands: `/archetype-impact` — scan workspace for references to a given archetype across templates and AQL files.
+- Commands: `/archetype-diff` and `/template-diff` — semantic diff with version-bump classification (patch / minor / major) per rule G1. Shared rubric in `commands/references/semantic-diff-rubric.md`.
 
 ### Changed
 - Commands [`archetype-translate.md`](commands/archetype-translate.md) and [`archetype-fix-syntax.md`](commands/archetype-fix-syntax.md): wording aligned with ADL 1.4 (`ontology.term_definitions`, `language.translations` vs legacy names; no top-level `terminology` section).
