@@ -44,7 +44,7 @@ AQL queries operate on archetypes. Before writing a query:
    ```
    ckm_archetype_get("<archetype-id>")
    ```
-3. Use `type_specification_get` if you need to understand RM type details
+4. Use `type_specification_get` if you need to understand RM type details
 
 ## Step 3: AQL Syntax
 

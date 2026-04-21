@@ -14,6 +14,7 @@ allowed-tools:
   - mcp__openehr-assistant__ckm_template_get
   - mcp__openehr-assistant__guide_get
   - mcp__openehr-assistant__type_specification_get
+  - mcp__openehr-assistant__terminology_resolve
   - mcp__openehr-assistant__examples_search
   - mcp__openehr-assistant__examples_get
 ---

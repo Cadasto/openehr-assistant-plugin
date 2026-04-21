@@ -19,6 +19,7 @@ allowed-tools:
   - mcp__openehr-assistant__guide_get
   - mcp__openehr-assistant__guide_adl_idiom_lookup
   - mcp__openehr-assistant__type_specification_get
+  - mcp__openehr-assistant__terminology_resolve
 ---
 
 # Template Authoring
