@@ -69,7 +69,6 @@ Environment variables (e.g. `CKM_API_BASE_URL`) and Docker/stdio details are doc
 | `demographic-modeling` | Designing demographic models | PARTY hierarchy, roles, relationships, identity patterns |
 | `platform-design` | Designing platform services | Service interfaces, REST API patterns, version update semantics |
 | `openehr-assistant` | Any openEHR mention | Clinical modeling and tool routing |
-| `guide-prompt-authoring` | Creating guides or prompts | Author implementation guides and MCP prompt files for openehr-assistant-mcp |
 
 ### Commands
 
