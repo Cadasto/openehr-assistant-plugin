@@ -8,7 +8,9 @@ Thank you for your interest in contributing! This document explains how to propo
 - [Getting help and asking questions](#getting-help-and-asking-questions)
 - [Project setup](#project-setup)
 - [Plugin structure](#plugin-structure)
+- [Repository archives (.gitattributes)](#repository-archives-gitattributes)
 - [Adding or modifying components](#adding-or-modifying-components)
+- [When bumping openehr-assistant-mcp compatibility](#when-bumping-openehr-assistant-mcp-compatibility)
 - [Testing locally](#testing-locally)
 - [Commit messages and pull requests](#commit-messages-and-pull-requests)
 - [Branching, issues, and release notes](#branching-issues-and-release-notes)
@@ -54,11 +56,12 @@ commands/                      # Slash commands (thin MCP tool wrappers)
 agents/                        # Specialized subagents
   <name>.md
 hooks/                         # Event hooks
-  hooks.json                   # Claude format (array with type + command)
+  hooks.json                   # Claude Code SessionStart hook config
   cursor-hooks.json            # Cursor format (hooks.sessionStart, etc.)
   session-start.sh             # Shared script
 rules/                         # Cursor-only rules (.mdc)
   openehr-context.mdc
+.gitattributes                 # export-ignore: paths omitted from `git archive` only (see below)
 ```
 
 Key conventions:
@@ -67,6 +70,23 @@ Key conventions:
 - Agents go in `agents/<name>.md` with YAML frontmatter.
 - All components use `allowed-tools` in frontmatter to pre-approve MCP tools.
 - MCP tool names follow the format `mcp__openehr-assistant__<tool_name>`.
+
+## Repository archives (.gitattributes)
+
+[`.gitattributes`](.gitattributes) marks some paths with **`export-ignore`**. Those paths are **excluded from `git archive`** (and from other tooling that respects Git export attributes). They are **not** excluded from a normal **`git clone`** or checkout of `main`.
+
+Currently omitted from archives:
+
+- `AGENTS.md` — maintainer / AI guidelines for **this** repository (not required for end users running the plugin).
+- `CONTRIBUTING.md` — this file.
+- `.github/**` — issue templates and Copilot instructions.
+
+**Implications**
+
+- Prefer **`git clone`** (or full-repo checkouts) when developing the plugin so you keep maintainer docs and GitHub metadata.
+- If you ship or consume a **source tarball** produced with `git archive`, do not expect `AGENTS.md` or `CONTRIBUTING.md` inside it. Runtime plugin behavior does not depend on those files; user-facing behavior lives in README, skills, commands, rules, and MCP guides.
+
+`export-ignore` does **not** change what Cursor or Claude install when they pull from a Git URL (typically a clone). It only affects archive-style exports.
 
 
 ## Adding or modifying components
@@ -100,15 +120,34 @@ When adding or renaming components, update all references in:
 - `README.md` (commands/skills tables)
 - `hooks/session-start.sh` (available commands list)
 
-### Syncing bundled examples
+## When bumping openehr-assistant-mcp compatibility
+
+When aligning this plugin with a new **[openehr-assistant-mcp](https://github.com/Cadasto/openehr-assistant-mcp)** release, work through the following in order.
+
+### 1. Version and compatibility strings
+
+- Update the compatibility pointer in **`AGENTS.md`**, **`README.md`** (Companion MCP section), and **`CHANGELOG.md`** for the release under `[Unreleased]` or the new version section.
+
+### 2. MCP tool names (`allowed-tools`)
+
+- Compare every `mcp__openehr-assistant__*` tool id in `skills/**`, `commands/**`, and `agents/**` frontmatter against the tools actually exposed by that MCP version (see the MCP repo **README** and release notes, or the server’s tool registry in source under `src/Tools`).
+- Add, remove, or rename entries in frontmatter when the server adds, deprecates, or renames tools so hosts do not prompt for unknown tools or block missing ones.
+
+### 3. Guide URIs and categories
+
+- If guide paths or categories changed (e.g. `specs/`, `howto/`, retired namespaces), update `guide_get` / `guide_search` examples in skills and commands so they match the server’s guide layout.
+
+### 4. Bundled archetype examples (offline corpus)
+
 The `skills/openehr-assistant/examples/` directory bundles the 7 gold-standard CKM archetypes for the offline `clinical-modeler` agent (which has no MCP access). The same files are published by `openehr-assistant-mcp` under `resources/examples/archetypes/`.
 
-When bumping the MCP compatibility version in `AGENTS.md` / `README.md` / `CHANGELOG.md`, also:
-1. `diff skills/openehr-assistant/examples/*.adl` against the matching MCP release's `resources/examples/archetypes/*.adl`.
-2. Sync any changed files (keep the "English-only, translations stripped" convention documented in `examples/README.md`).
-3. Update the `**Synced from:**` line in `examples/README.md` to the new MCP version.
+After updating the version pointer in step 1:
 
-Do not bundle the other example kinds (`aql`, `flat`, `structured`) — their consumers (main-session skills such as `aql-query`, `composition-builder`) retrieve via MCP's `examples_search` / `examples_get` on demand, so bundling would only add drift risk without offline value.
+1. `diff` (or equivalent) `skills/openehr-assistant/examples/*.adl` against the matching MCP release’s `resources/examples/archetypes/*.adl`.
+2. Sync any changed files (keep the “English-only, translations stripped” convention documented in `skills/openehr-assistant/examples/README.md`).
+3. Update the `**Synced from:**` line in `skills/openehr-assistant/examples/README.md` to the new MCP version.
+
+Do not bundle the other example kinds (`aql`, `flat`, `structured`) — their consumers (main-session skills such as `aql-query`, `composition-builder`) retrieve via MCP’s `examples_search` / `examples_get` on demand, so bundling would only add drift risk without offline value.
 
 
 ## Testing locally
