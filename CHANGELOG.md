@@ -10,7 +10,8 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 ## [Unreleased]
 
 ### Changed
-- Offline ADL reference docs aligned with MCP copy of openEHR ADL 1.4 spec ([`docs/specs/AM/ADL1.4.md`](https://github.com/Cadasto/openehr-assistant-mcp/blob/main/docs/specs/AM/ADL1.4.md)): [`adl-syntax-cheatsheet.md`](skills/openehr-assistant/reference/adl-syntax-cheatsheet.md) section list and keywords; [`adl-syntax-reference.md`](skills/openehr-assistant/reference/adl-syntax-reference.md) intro order + **invariant** before **ontology** in the body. [`rm-type-reference.md`](skills/openehr-assistant/reference/rm-type-reference.md): clarify `DV_ORDINAL` vs `DV_SCALE` per RM data types spec.
+- [`agents/clinical-modeler.md`](agents/clinical-modeler.md): structural review checklist aligned with ADL 1.4 spec section order and ontology/`term_definitions` (not a separate `terminology` section); documented Rule 19 (INFO).
+- Offline ADL/RM reference docs aligned with MCP spec copies ([`docs/specs/AM/ADL1.4.md`](https://github.com/Cadasto/openehr-assistant-mcp/blob/main/docs/specs/AM/ADL1.4.md), RM data types): [`adl-syntax-cheatsheet.md`](skills/openehr-assistant/reference/adl-syntax-cheatsheet.md), [`adl-syntax-reference.md`](skills/openehr-assistant/reference/adl-syntax-reference.md), [`rm-type-reference.md`](skills/openehr-assistant/reference/rm-type-reference.md).
 - Cursor rule [`rules/openehr-context.mdc`](rules/openehr-context.mdc): added frontmatter `name: openehr-context`.
 
 ### Removed

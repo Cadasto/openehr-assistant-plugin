@@ -99,8 +99,8 @@ Use Glob to find archetype and template files, Read to analyze them, and Grep to
 
 ### Structural analysis
 When reviewing models, check for:
-- Valid ADL 1.4 structure (header, definition, ontology sections)
-- All at-codes defined in the terminology section
+- Valid ADL 1.4 structure: `archetype` → optional `specialise` → `concept` → `language` → optional `description` → `definition` → optional `invariant` → `ontology` → optional `revision_history` (see **adl-syntax-reference.md**; aligns with openEHR ADL 1.4 spec archetype overview)
+- Every `at` code used in the definition has a **term_definition** under **`ontology`** (standard ADL 1.4 has no separate top-level `terminology` section)
 - Consistent naming conventions
 - Slot constraints reference existing archetypes in the project
 - Template archetype references match available local archetypes
@@ -131,6 +131,9 @@ Load **lint-rules-complete.md** for all 22 rules with examples. The rules that c
 - Rule 13: Template Leakage — no workflow/UI in archetypes
 - Rule 14: Unconstrained Leaf Nodes — no DV_* matches {*} without justification
 - Rule 22: Deprecation Handling — deprecated nodes retained, not deleted
+
+**INFO rules (contextual guidance):**
+- Rule 19: Archetypable Demographics — when authoring PARTY demographics, which types may be archetyped (see **lint-rules-complete.md**)
 
 **Rules requiring MCP for full verification** (flag for main session):
 - Rule 17: Terminology Neutrality — may need terminology resolution
