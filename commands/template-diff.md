@@ -16,7 +16,7 @@ Compare two versions of an openEHR template at the semantic level. Identifies wh
 
 1. Parse **$ARGUMENTS** into `<file-a>` (old) and `<file-b>` (new).
 2. `Read` both files.
-3. `Read` the rubric: `commands/references/semantic-diff-rubric.md`.
+3. `Read` the rubric: `references/semantic-diff-rubric.md`.
 4. Load the template rules guide:
    ```
    guide_get("templates/rules")
