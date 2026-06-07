@@ -19,7 +19,9 @@ Thank you for your interest in contributing! This document explains how to propo
 
 
 ## Code of Conduct
-Please be respectful and constructive. By participating, you agree to uphold a professional and inclusive environment. If you encounter unacceptable behavior, contact the maintainers privately via the repository's security/contact channels.
+By participating, you agree to uphold the project's [Code of Conduct](CODE_OF_CONDUCT.md): be respectful, constructive, and professional. If you encounter unacceptable behavior, contact the maintainers privately via the repository's security/contact channels.
+
+> **Contributor references:** the [`docs/`](docs/) directory holds the human-facing guides this document points to — [install](docs/install.md), [testing & validation](docs/testing.md), [versioning](docs/versioning.md), and [authoring conventions](docs/authoring.md).
 
 
 ## Getting help and asking questions
@@ -41,6 +43,13 @@ claude plugin add .
 ```
 
 No build step is required — the plugin is pure markdown and JSON.
+
+Validate your changes before pushing:
+```bash
+./scripts/validate.sh      # manifests, dual-host parity, .mcp.json, frontmatter (warns & skips if Python is absent)
+claude plugin validate .   # manifest + component structure (no Python needed)
+```
+CI runs `scripts/validate.py` strictly on every push and pull request. See [docs/testing.md](docs/testing.md) for the full validation and local-triggering workflow.
 
 
 ## Plugin structure
@@ -174,10 +183,14 @@ Test skill auto-triggering by mentioning openEHR concepts in conversation withou
 - Link related issues using GitHub keywords (e.g., `Fixes #123`).
 
 PR checklist:
+- [ ] `./scripts/validate.sh` and `claude plugin validate .` pass
 - [ ] Component works when tested locally with `claude plugin add .`
-- [ ] All references updated (AGENTS.md, README.md, hooks)
+- [ ] Both manifests kept in sync when metadata changed (`.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`)
+- [ ] All references updated (AGENTS.md, README.md, hooks/session-start.sh)
 - [ ] CHANGELOG.md updated
 - [ ] No debug code or leftover comments
+
+A [pull request template](.github/PULL_REQUEST_TEMPLATE.md) prefills this checklist when you open a PR.
 
 
 ## Branching, issues, and release notes
@@ -192,6 +205,6 @@ PR checklist:
 
 
 ## Security
-Do not open public issues for security vulnerabilities. Instead, please report privately using GitHub's security advisories or contact the maintainers directly.
+Do not open public issues for security vulnerabilities. Instead, please report privately using GitHub's security advisories or contact the maintainers directly. See [SECURITY.md](SECURITY.md) for the threat model (content-integrity / supply-chain, including the bundled `.mcp.json` endpoint), reporting process, and supported versions.
 
 Thank you for contributing!

@@ -21,6 +21,7 @@ This plugin works with the [openEHR Assistant MCP Server](https://github.com/Cad
 - [Setup (MCP server)](#setup-mcp-server)
 - [Components](#components)
 - [Companion MCP Server](#companion-mcp-server)
+- [Contributing](#contributing)
 - [License](#license)
 
 ---
@@ -40,13 +41,18 @@ This plugin works with the [openEHR Assistant MCP Server](https://github.com/Cad
 
 ## Installation
 
-**Claude Code**
+**Claude Code** — from the Cadasto marketplace:
 
-```bash
-claude plugin add cadasto/openehr-assistant-plugin
+```
+/plugin marketplace add cadasto/plugin-marketplace
+/plugin install openehr-assistant@cadasto
 ```
 
+or directly from the repo: `claude plugin add cadasto/openehr-assistant-plugin`.
+
 **Cursor** — Add the plugin via Cursor’s plugin flow (e.g. from a Git URL or local path). The repo includes a Cursor manifest at [`.cursor-plugin/plugin.json`](.cursor-plugin/plugin.json); skills, commands, agents, and MCP config are shared with the Claude plugin.
+
+See [docs/install.md](docs/install.md) for marketplace, local-development, update, and Cursor install details.
 
 **Contributors:** See [CONTRIBUTING.md](CONTRIBUTING.md) for maintainer workflows, **clone vs `git archive`** (`.gitattributes` `export-ignore`), and how to bump compatibility with [openehr-assistant-mcp](https://github.com/Cadasto/openehr-assistant-mcp).
 
@@ -128,6 +134,12 @@ The [openehr-assistant-mcp](https://github.com/Cadasto/openehr-assistant-mcp) se
 Offline reference material in [`skills/openehr-assistant/reference/`](skills/openehr-assistant/reference/) includes a quick-reference (principles, rules, guide index), minimal ADL and AQL syntax cheatsheets, and an RM type reference (~30 commonly archetyped types with attributes for local lint rule 4 validation); see [AGENTS.md](AGENTS.md) (Syntax and grammar sources) for links to official specs and grammars.
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
+
+---
+
+## Contributing
+
+Contributions are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md) and the [`docs/`](docs/) references: [install](docs/install.md), [testing & validation](docs/testing.md), [versioning](docs/versioning.md), and [authoring conventions](docs/authoring.md). Before opening a PR, run `./scripts/validate.sh` and `claude plugin validate .` (CI runs the validator on every push). Please also review the [Code of Conduct](CODE_OF_CONDUCT.md) and [Security Policy](SECURITY.md).
 
 ---
 
