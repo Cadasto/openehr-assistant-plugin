@@ -4,6 +4,8 @@ description: >
   This skill should be used when the user asks to "lint an archetype", "validate an archetype",
   "check archetype compliance", "review archetype quality", or "run archetype rules". Applies
   22 normative lint rules with ERROR/WARNING/INFO severity. Supports STRICT and PERMISSIVE modes.
+  Reports violations only — it does not modify files. The `/archetype-lint` command is the quick
+  one-shot equivalent on a file path or CKM id.
 allowed-tools:
   - Read
   - Glob
@@ -36,45 +38,36 @@ If the user does not specify a mode, use PERMISSIVE.
 
 ## Step 3: Apply Lint Rules
 
-### Core Semantic Rules (ERROR)
+The **normative rule definitions live in the `archetypes/rules` guide loaded in Step 1** — that guide is the single source of truth. If this index ever disagrees with the loaded guide, the guide wins. Use the index below for rule numbering and severity; consult the guide for each rule's full definition, rationale, and worked examples before classifying a violation.
 
-1. **Single Concept Rule** — An archetype SHALL model exactly one coherent clinical or domain concept.
-2. **ENTRY Type Semantics** — OBSERVATION: observed/measured facts. EVALUATION: clinical judgement. INSTRUCTION: intended future action. ACTION: action performed. ADMIN_ENTRY: administrative fact.
-3. **Root RM Type Match** — Root C_OBJECT.rm_type_name SHALL match the declared archetype RM type.
-4. **Valid RM Attributes Only** — All attribute names SHALL exactly match the openEHR Reference Model. Use `type_specification_get` to verify when uncertain.
-5. **occurrences vs cardinality** — occurrences: object nodes only. cardinality: multi-valued attributes only.
-6. **Specialisation Integrity** — A specialised archetype SHALL NOT redefine or contradict parent semantics.
-7. **Path Stability** — Any change that alters archetype paths requires a MAJOR version increment.
-8. **Term Definition Completeness** — Every at-code used SHALL have text and description in the terminology section.
+| # | Rule | Severity | Group |
+|---|------|----------|-------|
+| 1 | Single Concept | ERROR | Core semantic |
+| 2 | ENTRY Type Semantics | ERROR | Core semantic |
+| 3 | Root RM Type Match | ERROR | Core semantic |
+| 4 | Valid RM Attributes Only | ERROR | Core semantic |
+| 5 | occurrences vs cardinality | ERROR | Core semantic |
+| 6 | Specialisation Integrity | ERROR | Core semantic |
+| 7 | Path Stability | ERROR | Core semantic |
+| 8 | Term Definition Completeness | ERROR | Core semantic |
+| 9 | Mandatory Data Justification | WARNING | Structural |
+| 10 | Arbitrary Upper Bounds | WARNING | Structural |
+| 11 | CLUSTER Semantics | WARNING | Structural |
+| 12 | Slot Discipline | WARNING | Structural |
+| 13 | Template Leakage | WARNING | Structural |
+| 14 | Unconstrained Leaf Nodes | WARNING | ADL & AOM syntax |
+| 15 | Attribute Multiplicity Compliance | ERROR | ADL & AOM syntax |
+| 16 | Ontology Integrity | ERROR | ADL & AOM syntax |
+| 17 | Terminology Neutrality | WARNING | Terminology |
+| 18 | Semantic Binding Accuracy | WARNING | Terminology |
+| 19 | Archetypable Demographics | INFO | Demographic |
+| 20 | Identity vs Role Separation | ERROR | Demographic |
+| 21 | Patch Version Discipline | ERROR | Versioning |
+| 22 | Deprecation Handling | WARNING | Versioning |
 
-### Structural Modelling Rules (WARNING)
+For rule 4, verify attribute names against the RM with `type_specification_get` when uncertain.
 
-9. **Mandatory Data Justification** — Minimum occurrences > 0 only if absence invalidates the concept.
-10. **Arbitrary Upper Bounds** — Upper bounds must be clinically justified (no magic numbers like 0..7).
-11. **CLUSTER Semantics** — CLUSTER must represent an inseparable semantic group, not a generic container.
-12. **Slot Discipline** — ARCHETYPE_SLOT should be constrained; wildcard `include all` slots are discouraged.
-13. **Template Leakage** — Workflow, UI, or document-specific constraints must not appear in archetypes.
-
-### ADL & AOM Syntax Rules (ERROR / WARNING)
-
-14. **Unconstrained Leaf Nodes** (WARNING) — DV_* matches {*} shall not be used as default without justification.
-15. **Attribute Multiplicity Compliance** (ERROR) — C_SINGLE_ATTRIBUTE: exactly one child. C_MULTIPLE_ATTRIBUTE: explicit or inherited cardinality.
-16. **Ontology Integrity** (ERROR) — ac-codes must reference valid at-codes.
-
-### Terminology Rules (WARNING)
-
-17. **Terminology Neutrality** — Archetypes are terminology-neutral; bindings are optional, not hardcoded.
-18. **Semantic Binding Accuracy** — Bindings must reflect semantic equivalence, not approximate matches.
-
-### Demographic Modelling Rules
-
-19. **Archetypable Demographics** (INFO) — PERSON, ROLE, ADDRESS, ORGANISATION, GROUP may be archetyped.
-20. **Identity vs Role Separation** (ERROR) — PERSON archetypes must not encode role-specific semantics.
-
-### Versioning Rules
-
-21. **Patch Version Discipline** (ERROR) — Patch versions SHALL NOT include semantic or structural changes.
-22. **Deprecation Handling** (WARNING) — Deprecated nodes should be retained and explicitly marked.
+> Offline fallback only: `skills/openehr-assistant/reference/lint-rules-complete.md` mirrors these definitions for the `clinical-modeler` agent (no MCP access). In the main session, always prefer the loaded `archetypes/rules` guide.
 
 ## Step 4: Generate Report
 

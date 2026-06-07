@@ -136,7 +136,7 @@ guide_get("archetypes/checklist")
 guide_get("archetypes/anti-patterns")
 ```
 
-Run through the 22 normative lint rules (see archetype-lint skill) if reviewing for publication or CKM submission.
+Run through the 22 normative lint rules — load `guide_get("archetypes/rules")` for the definitions, or suggest the user run `/archetype-lint` — if reviewing for publication or CKM submission.
 
 Verify:
 - [ ] One concept per archetype
