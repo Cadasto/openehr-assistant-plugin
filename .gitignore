@@ -18,6 +18,3 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
-
-# Input files
-input/
