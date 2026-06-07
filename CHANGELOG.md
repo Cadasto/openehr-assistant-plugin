@@ -9,6 +9,28 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-06-07
+
+Contributor tooling, CI, and community files, plus skill/command quality refinements. No change to end-user skill/command behaviour beyond the triggering and guide-deferral refinements below.
+
+### Added
+- Validation: `scripts/validate.py` and `scripts/validate.sh` (manifests, dual-host parity, bundled `.mcp.json`, skill/command/agent frontmatter) plus `.github/workflows/validate.yml` (pins Python, strict in CI).
+- Community/scaffolding: `CODE_OF_CONDUCT.md`, `SECURITY.md`, `.github/PULL_REQUEST_TEMPLATE.md`.
+- Docs: `docs/install.md`, `docs/testing.md`, `docs/versioning.md`, `docs/authoring.md` contributor references.
+- `.claude/`: `settings.json` (enables maintainer plugins incl. `openehr-assistant-dev@cadasto`) and `CLAUDE.md` delegating to `AGENTS.md`.
+- `skills/openehr-assistant/reference/README.md` indexing the offline reference corpus.
+
+### Changed
+- Skills: de-duplicated the 22 lint rules — `archetype-lint` is now a compact index deferring to `guide_get("archetypes/rules")`; `reference/lint-rules-complete.md` marked the offline twin.
+- Skills: sharpened triggering boundaries against sibling commands (`aql-query`↔`/aql-designer`, `composition-builder`↔`/format-data`, `template-authoring`↔`/template-search`+`/template-explain`); `archetype-authoring` routes pure-explain to `/archetype-explain`; `openehr-assistant` gained an anti-trigger; `ckm-scout` handoff added to `demographic-modeling`.
+- Commands: `/archetype-lint` and `/archetype-review` defer rule definitions to the loaded `archetypes/rules` guide.
+- Commands: shared `semantic-diff-rubric.md` moved from `commands/references/` to top-level `references/` (consumed by `/archetype-diff`, `/template-diff`).
+- Docs: `AGENTS.md` gained a Gotchas section and a `tools:` vs `allowed-tools` clarification; `README.md` and `CONTRIBUTING.md` link `docs/`, validation, community files, and marketplace install; `github.com/Cadasto` → `github.com/cadasto` URLs.
+- Repo: dropped the `input/` scratch convention (removed from `.gitignore`); ignore `CLAUDE.local.md`.
+
+### Fixed
+- Agents: `ckm-scout` and `spec-researcher` now use `tools:` instead of `allowed-tools:` (ignored in agent frontmatter), so their intended tool sandboxes actually apply.
+
 ## [0.6.0] - 2026-04-22
 
 ### Added
