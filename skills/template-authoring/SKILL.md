@@ -4,6 +4,8 @@ description: >
   This skill should be used when the user asks to "create a template", "design a template",
   "constrain archetypes into a template", "review a template", or "work with OET/OPT files".
   Covers creating openEHR templates, constraining archetypes, reviewing designs, and OET/OPT authoring.
+  Use the `/template-search` command to find existing CKM templates and `/template-explain` to
+  explain one; this skill is for authoring and constraining new OET designs.
 argument-hint: "<task: create|review> [template-id or use-case]"
 allowed-tools:
   - Read

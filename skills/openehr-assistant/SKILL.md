@@ -4,7 +4,9 @@ description: >
   This skill should be used when the user mentions openEHR concepts (archetypes, templates,
   AQL, ADL, CKM, RM types, compositions, OPT, terminology bindings, clinical modeling) outside
   of a specific command context. Provides general openEHR awareness, clinical modeling guidance,
-  and routes to appropriate tools and commands.
+  and routes to appropriate tools and commands. Not for focused tasks owned by a dedicated skill —
+  archetype authoring/linting, template authoring, composition building, AQL, or demographic
+  modeling — route those to the matching skill; this skill is the awareness and routing layer.
 user-invocable: false
 allowed-tools:
   - mcp__openehr-assistant__ckm_archetype_search
@@ -43,7 +45,7 @@ openEHR is a vendor-neutral open standard for electronic health records. Key con
 
 ## Quick Reference
 
-For a compact offline summary of core principles, design rules, anti-patterns, RM entry types, CGEM framework, and the full canonical guide URI index, see [reference/openehr-quick-reference.md](reference/openehr-quick-reference.md).
+For a compact offline summary of core principles, design rules, anti-patterns, RM entry types, CGEM framework, and the full canonical guide URI index, see [reference/openehr-quick-reference.md](reference/openehr-quick-reference.md). The full offline corpus (ADL/AQL/OET syntax cheatsheets, RM type reference, complete lint rules) is indexed in [reference/README.md](reference/README.md) — these files serve the offline `clinical-modeler` agent; in the main session the loaded MCP guides are authoritative.
 
 ## Guide-First Principle
 
