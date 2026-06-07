@@ -27,7 +27,7 @@ Lint an openEHR archetype against 22 normative rules. Returns PASS/FAIL with a v
    guide_get("archetypes/rules")
    guide_get("archetypes/structural-constraints")
    ```
-4. Apply all 22 lint rules from the archetype-lint skill
+4. Apply all 22 lint rules, using the loaded `archetypes/rules` guide as the normative source for each rule's definition and severity
 5. Use `type_specification_get` to verify RM attributes when uncertain (rule 4)
 6. Return the structured lint report:
    - Archetype ID, mode, overall PASS/FAIL status
