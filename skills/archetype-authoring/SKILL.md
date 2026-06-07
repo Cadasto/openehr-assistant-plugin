@@ -4,7 +4,8 @@ description: >
   This skill should be used when the user asks to "create an archetype", "edit an archetype",
   "extend an archetype", "specialize an archetype", "design an archetype", or "review an
   archetype design". Covers creating new openEHR archetypes, editing existing ones, extending
-  via specialization, and reviewing archetype designs.
+  via specialization, and reviewing archetype designs. To merely explain an existing archetype
+  (no edits), use the `/archetype-explain` command instead.
 argument-hint: "<task: create|edit|extend|specialize> [archetype-id or concept]"
 allowed-tools:
   - Read
