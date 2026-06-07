@@ -1,0 +1,18 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      # CI is strict and deterministic: Python is guaranteed here, so run the
+      # validator directly (the scripts/validate.sh graceful skip is for local use).
+      - run: python3 scripts/validate.py

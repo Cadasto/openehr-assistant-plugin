@@ -121,25 +121,29 @@ This repo supports **both Claude Code and Cursor**; shared assets (skills, comma
 - **Cursor hooks**: `hooks/cursor-hooks.json` — object `{ "hooks": { "sessionStart": [...] } }`; command runs from plugin root
 - **Shared hook script**: `hooks/session-start.sh` — detects `.openehr-project.json`, `*.adl`, `*.oet`, `*.opt` and prints context
 - **Cursor rules**: `rules/` — `.mdc` files (e.g. `openehr-context.mdc`) for Cursor-only rule guidance
-- **Plans, specs, design docs**: Create in **`input/`**, not in `docs/`. Use `input/` for implementation plans, specifications, design documents, and similar artifacts produced by or for AI assistants.
+- **Claude settings**: `.claude/settings.json` enables the maintainer plugins used while developing this repo (skill-creator, superpowers, plugin-dev, claude-md-management); `.claude/CLAUDE.md` imports this file via `@../AGENTS.md`. `.claude/settings.local.json` is gitignored (personal overrides).
+- **Validation**: `scripts/validate.sh` (graceful local wrapper — warns and skips if Python is absent) runs `scripts/validate.py`, which checks both manifests, dual-host parity, declared component paths, the bundled `.mcp.json`, and skill/command/agent frontmatter. CI pins Python and runs the validator strictly ([`.github/workflows/validate.yml`](.github/workflows/validate.yml)).
+- **Contributor docs**: `docs/` holds committed human-facing references — [install](docs/install.md), [testing](docs/testing.md), [versioning](docs/versioning.md), [authoring](docs/authoring.md); `.github/` holds issue + PR templates and the validate workflow.
 
 ## Development
 
-### Testing Locally
+### Testing & validating
 
-**Claude Code** — Install from a local path:
+No build step — pure Markdown + JSON. Validate and dogfood locally:
+
 ```bash
-claude plugin add /path/to/openehr-assistant-plugin
+./scripts/validate.sh                                 # manifests, dual-host parity, .mcp.json, frontmatter (warns & skips if Python is absent)
+claude plugin validate .                              # manifest + component structure (no Python needed)
+claude plugin add /path/to/openehr-assistant-plugin   # install locally
 ```
-Verify with: `/archetype-search blood pressure`
 
-**Cursor** — Add the plugin from a local path (e.g. via Cursor settings or “Add plugin” using the repo path). Verify with `/archetype-search blood pressure` or any command that uses MCP tools.
+Then verify a command (`/archetype-search blood pressure`) and skill auto-triggering against the configured MCP server. On Cursor, add the plugin via its plugin flow and verify the same. CI runs `scripts/validate.py` strictly on every push/PR ([`.github/workflows/validate.yml`](.github/workflows/validate.yml)); locally, `scripts/validate.sh` runs the same checks but warns and skips if Python isn't installed. Fuller guidance lives in [`docs/`](docs/): [install](docs/install.md), [testing](docs/testing.md), [versioning](docs/versioning.md), [authoring](docs/authoring.md).
 
 ### File Conventions
 - Skills go in `skills/<name>/SKILL.md`
 - Commands go in `commands/<name>.md`
 - Agents go in `agents/<name>.md`
-- **Plans, specs, and design docs** go in **`input/`** (not `docs/`)
+- Contributor reference, plans, specs, and design docs go in **`docs/`**
 - All markdown files use YAML frontmatter for metadata
 - `allowed-tools` in frontmatter pre-approves MCP tools to avoid permission prompts
 - Skills: use `auto-invocable` / `user-invocable` in frontmatter as needed; follow Guide-First (load MCP guides before acting)
