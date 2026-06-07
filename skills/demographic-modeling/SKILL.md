@@ -22,6 +22,8 @@ allowed-tools:
 
 # Demographic Modeling
 
+> The RM detail in the steps below is a working summary. The `specs/rm-demographic` guide loaded in Step 1 is authoritative — if they disagree, follow the guide (or confirm against `type_specification_get`).
+
 ## Conflict Resolution
 
 When guides conflict, apply this priority (highest first):
@@ -65,7 +67,7 @@ ckm_archetype_search("party identity")
 
 **Reuse-first principle**: If a suitable demographic archetype exists, use it. Only create new archetypes when no existing archetype covers the concept. If a close match exists, consider specialization instead.
 
-Use `ckm_archetype_get` to retrieve and review candidate archetypes in full before deciding.
+Use `ckm_archetype_get` to retrieve and review candidate archetypes in full before deciding. For a deeper reuse survey across varied phrasings (demographic concepts are easy to phrase several ways), dispatch the `ckm-scout` agent — it runs parallel searches and returns a ranked reuse/specialize/new recommendation without filling the main context with raw hits.
 
 ## Step 4: PARTY Hierarchy Design
 

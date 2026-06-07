@@ -36,7 +36,7 @@ description: >
   </example>
 model: inherit
 color: green
-allowed-tools:
+tools:
   - mcp__openehr-assistant__ckm_archetype_search
   - mcp__openehr-assistant__ckm_archetype_get
 ---

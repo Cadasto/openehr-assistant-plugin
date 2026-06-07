@@ -39,7 +39,7 @@ Output:
 
 ### Stage 2: Strict Lint Pass
 
-Apply all 22 lint rules (see archetype-lint skill). Load guides:
+Apply all 22 lint rules, using the loaded `archetypes/rules` guide as the normative source. Load guides:
 ```
 guide_get("archetypes/rules")
 guide_get("archetypes/structural-constraints")

@@ -4,6 +4,8 @@ description: >
   This skill should be used when the user asks to "write an AQL query", "explain an AQL query",
   "optimize an AQL query", "review AQL", or "query openEHR data". Covers writing, explaining,
   and optimizing AQL (Archetype Query Language) queries for openEHR clinical data repositories.
+  For a quick one-shot explain/design of a single query, the `/aql-designer` command is the
+  lighter entry point; this skill drives the multi-step authoring and optimization workflow.
 argument-hint: "<clinical question or AQL query>"
 allowed-tools:
   - Read
@@ -18,6 +20,8 @@ allowed-tools:
 ---
 
 # AQL Query Authoring
+
+> The inline syntax below is a quick crib. The `aql/syntax` guide loaded in Step 1 is authoritative — if they ever disagree, follow the guide.
 
 ## Step 1: Load Guides (MANDATORY)
 

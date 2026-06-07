@@ -4,7 +4,8 @@ description: >
   This skill should be used when the user asks to "create an archetype", "edit an archetype",
   "extend an archetype", "specialize an archetype", "design an archetype", or "review an
   archetype design". Covers creating new openEHR archetypes, editing existing ones, extending
-  via specialization, and reviewing archetype designs.
+  via specialization, and reviewing archetype designs. To merely explain an existing archetype
+  (no edits), use the `/archetype-explain` command instead.
 argument-hint: "<task: create|edit|extend|specialize> [archetype-id or concept]"
 allowed-tools:
   - Read
@@ -136,7 +137,7 @@ guide_get("archetypes/checklist")
 guide_get("archetypes/anti-patterns")
 ```
 
-Run through the 22 normative lint rules (see archetype-lint skill) if reviewing for publication or CKM submission.
+Run through the 22 normative lint rules — load `guide_get("archetypes/rules")` for the definitions, or suggest the user run `/archetype-lint` — if reviewing for publication or CKM submission.
 
 Verify:
 - [ ] One concept per archetype

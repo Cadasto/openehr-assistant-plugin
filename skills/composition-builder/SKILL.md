@@ -3,7 +3,9 @@ name: composition-builder
 description: >
   This skill should be used when the user asks to "build a composition", "create a composition",
   "validate a composition", "convert a composition", or "generate FLAT/STRUCTURED/CANONICAL format".
-  Covers building, validating, and converting openEHR compositions in all simplified formats.
+  Covers building openEHR compositions in all simplified formats and guiding their validation and
+  format conversion (against a target template; there is no automated validator/converter tool).
+  For a quick format explanation or single-payload sketch, use the `/format-data` command instead.
 argument-hint: "<template-id> [format: flat|structured|canonical]"
 allowed-tools:
   - Read
@@ -19,6 +21,8 @@ allowed-tools:
 ---
 
 # Composition Builder
+
+> Validation and format conversion here are **guided / manual** — the workflow walks through them against the target template; there is no MCP validate-or-convert tool. The loaded `simplified_formats/*` guides are authoritative over any inline summary.
 
 ## Step 1: Load Guides (MANDATORY)
 

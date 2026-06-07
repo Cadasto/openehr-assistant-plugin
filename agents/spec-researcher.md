@@ -37,7 +37,7 @@ description: >
   </example>
 model: inherit
 color: blue
-allowed-tools:
+tools:
   - mcp__openehr-assistant__guide_get
   - mcp__openehr-assistant__guide_search
   - mcp__openehr-assistant__type_specification_get

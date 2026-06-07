@@ -18,12 +18,12 @@ The **openEHR Assistant Plugin** is an AI plugin by Cadasto B.V. that provides c
 
 ## Companion MCP Server
 
-The [openehr-assistant-mcp](https://github.com/Cadasto/openehr-assistant-mcp) server provides:
+The [openehr-assistant-mcp](https://github.com/cadasto/openehr-assistant-mcp) server provides:
 - **12 MCP tools**: CKM search/retrieval, guide access, terminology resolution, type specifications, ADL idiom lookup, curated examples search/retrieval
 - **15 MCP prompts**: Guided workflows for common tasks
 - **Resources**: Archetypes, templates, AQL, terminology, type specs, a guide registry spanning six categories (`archetypes/`, `templates/`, `aql/`, `simplified_formats/`, `specs/`, `howto/`), and the `openehr://examples/{kind}/{name}` namespace for curated worked examples (AQL, FLAT, STRUCTURED, reference `.adl` archetypes)
 
-This plugin is aligned with **openehr-assistant-mcp v0.16.0**. When syncing or aligning plugin changes (skills, commands, allowed-tools, guide URIs), refer to that server’s [releases](https://github.com/Cadasto/openehr-assistant-mcp/releases) and changelog so each plugin version remains compatible with a specific MCP server version.
+This plugin is aligned with **openehr-assistant-mcp v0.16.0**. When syncing or aligning plugin changes (skills, commands, allowed-tools, guide URIs), refer to that server’s [releases](https://github.com/cadasto/openehr-assistant-mcp/releases) and changelog so each plugin version remains compatible with a specific MCP server version.
 
 MCP tool names in this plugin use the format: `mcp__openehr-assistant__<tool_name>`
 
@@ -124,6 +124,7 @@ This repo supports **both Claude Code and Cursor**; shared assets (skills, comma
 - **Claude settings**: `.claude/settings.json` enables the maintainer plugins used while developing this repo (skill-creator, superpowers, plugin-dev, claude-md-management); `.claude/CLAUDE.md` imports this file via `@../AGENTS.md`. `.claude/settings.local.json` is gitignored (personal overrides).
 - **Validation**: `scripts/validate.sh` (graceful local wrapper — warns and skips if Python is absent) runs `scripts/validate.py`, which checks both manifests, dual-host parity, declared component paths, the bundled `.mcp.json`, and skill/command/agent frontmatter. CI pins Python and runs the validator strictly ([`.github/workflows/validate.yml`](.github/workflows/validate.yml)).
 - **Contributor docs**: `docs/` holds committed human-facing references — [install](docs/install.md), [testing](docs/testing.md), [versioning](docs/versioning.md), [authoring](docs/authoring.md); `.github/` holds issue + PR templates and the validate workflow.
+- **Shared command references**: `references/` — top-level dir for reference material consumed by commands (e.g. `references/semantic-diff-rubric.md`). Kept out of `commands/` so host validators don't treat it as a command (see Gotchas).
 
 ## Development
 
@@ -145,7 +146,7 @@ Then verify a command (`/archetype-search blood pressure`) and skill auto-trigge
 - Agents go in `agents/<name>.md`
 - Contributor reference, plans, specs, and design docs go in **`docs/`**
 - All markdown files use YAML frontmatter for metadata
-- `allowed-tools` in frontmatter pre-approves MCP tools to avoid permission prompts
+- `allowed-tools` (skills/commands) pre-approves MCP tools to avoid permission prompts; **agents use `tools:`** instead — `allowed-tools:` in an agent file is ignored and the agent silently inherits all tools
 - Skills: use `auto-invocable` / `user-invocable` in frontmatter as needed; follow Guide-First (load MCP guides before acting)
 - Commands: use `argument-hint` in frontmatter and `$ARGUMENTS` in body for user input; keep instructions concise for single-interaction completion
 
@@ -169,3 +170,10 @@ When adding or renaming components, update: **AGENTS.md** (component tables), **
 
 ### Branching
 - Use feature branches and pull requests. Standard PR validation runs on every push.
+
+## Gotchas
+
+- **Agents use `tools:`, not `allowed-tools:`.** `allowed-tools:` is a skills/commands key; in an agent file it is ignored and the agent silently inherits *all* tools. Use `tools:` (a YAML list is fine; MCP ids like `mcp__openehr-assistant__<tool>` are valid entries). See `agents/clinical-modeler.md` for the correct form.
+- **Shared command references live in top-level `references/`, not under `commands/`.** Host validators (`claude plugin validate`) treat every `commands/**/*.md` as a command and warn on missing frontmatter — so a reference file there is mis-detected. Example: `references/semantic-diff-rubric.md`, consumed by `/archetype-diff` and `/template-diff`.
+- **The Cursor hook uses a workspace-relative command** (`bash hooks/session-start.sh`), *not* `${CLAUDE_PLUGIN_ROOT}` (a Claude-Code-only variable). Keep both hook configs in step; don't "fix" the Cursor one to use the variable.
+- **Lint rules have one source of truth: `guide_get("archetypes/rules")`.** The `archetype-lint` skill keeps only a compact index; `skills/openehr-assistant/reference/lint-rules-complete.md` is the offline twin for the `clinical-modeler` agent. When the guide changes, update the offline twin — don't re-inline full rule text into the skill.

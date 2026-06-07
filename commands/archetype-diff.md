@@ -16,7 +16,7 @@ Compare two versions of an openEHR archetype at the semantic level — not textu
 
 1. Parse **$ARGUMENTS** into `<file-a>` (old) and `<file-b>` (new). If the user provided only one argument, ask for the second.
 2. `Read` both files.
-3. `Read` the semantic-diff rubric: `commands/references/semantic-diff-rubric.md`. Follow its classification rules exactly.
+3. `Read` the semantic-diff rubric: `references/semantic-diff-rubric.md`. Follow its classification rules exactly.
 4. Load the rules guide for authoritative reference:
    ```
    guide_get("archetypes/rules")

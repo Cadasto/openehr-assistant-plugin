@@ -18,3 +18,5 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+# Claude Code local project memory (machine-specific)
+CLAUDE.local.md
