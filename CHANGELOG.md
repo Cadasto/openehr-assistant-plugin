@@ -9,6 +9,9 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 
 ## [Unreleased]
 
+### Changed
+- MCP compatibility: aligned with `openehr-assistant-mcp` **v0.18.0** — no plugin-facing tool changes (server-side: `enum`-constrained tool params, CKM search scoring retune, transport Host-header fix); `allowed-tools` ids and the bundled archetype corpus unchanged.
+
 ## [0.7.0] - 2026-06-07
 
 Contributor tooling, CI, and community files, plus skill/command quality refinements. No change to end-user skill/command behaviour beyond the triggering and guide-deferral refinements below.
