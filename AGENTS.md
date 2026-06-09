@@ -23,7 +23,7 @@ The [openehr-assistant-mcp](https://github.com/cadasto/openehr-assistant-mcp) se
 - **15 MCP prompts**: Guided workflows for common tasks
 - **Resources**: Archetypes, templates, AQL, terminology, type specs, a guide registry spanning six categories (`archetypes/`, `templates/`, `aql/`, `simplified_formats/`, `specs/`, `howto/`), and the `openehr://examples/{kind}/{name}` namespace for curated worked examples (AQL, FLAT, STRUCTURED, reference `.adl` archetypes)
 
-This plugin is aligned with **openehr-assistant-mcp v0.18.0**. When syncing or aligning plugin changes (skills, commands, allowed-tools, guide URIs), refer to that server’s [releases](https://github.com/cadasto/openehr-assistant-mcp/releases) and changelog so each plugin version remains compatible with a specific MCP server version.
+This plugin is aligned with **openehr-assistant-mcp v0.19.0**. When syncing or aligning plugin changes (skills, commands, allowed-tools, guide URIs), refer to that server’s [releases](https://github.com/cadasto/openehr-assistant-mcp/releases) and changelog so each plugin version remains compatible with a specific MCP server version.
 
 MCP tool names in this plugin use the format: `mcp__openehr-assistant__<tool_name>`
 
