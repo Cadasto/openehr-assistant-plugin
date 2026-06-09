@@ -40,8 +40,23 @@ Add or translate **term_definition** entries under **`ontology`** for a target l
 8. Update the **`language`** section as required: per ADL 1.4, translated locales are tracked with **`translations`** (successor to legacy `languages_available`); some CKM files only declare `original_language` under `language` — follow the target archetype’s existing pattern and **`guide_get("archetypes/language-standards")`**
 9. If working with a file, use Edit to apply the translations
 
+## Edit mechanics (ADL is tab-sensitive)
+
+Translations land in **three** locations. Insert each **at the top of its block** — anchor on the block opener plus its first child and prepend the new locale, rather than matching nested closing-delimiter runs (which is brittle in a whitespace-sensitive format):
+- `language.translations` — a `["<lang>"] = <...>` language-metadata entry.
+- `description.details` — a `["<lang>"] = <...>` purpose/use/misuse block.
+- `ontology.term_definitions` — the `["<lang>"]` term block, mirroring the source locale's `items` keys.
+
+Indent with **tabs** (not spaces) at the surrounding block's depth. Reuse community terms where they exist: if the fetched archetype (or `examples_get`) already carries the target locale, inherit its wording instead of minting new terms.
+
 ## Required Output
 
-1. **Full updated ADL** with new/updated `ontology.term_definitions` for the target language
-2. **Translation mapping summary**: at-code -> original text -> translated text
-3. **Translation warnings**: uncertain terms flagged for clinical review
+1. **Full updated ADL** with new/updated `ontology.term_definitions` (and `language.translations` / `description.details`) for the target language.
+2. **Translation mapping summary**: at-code -> original text -> translated text.
+3. **Translation warnings**: uncertain terms flagged for clinical review.
+4. **Verification block** (machine-checkable — base the "done" claim on it):
+   - **at-code parity** — source vs target locale term counts match (e.g. `en vs nl: 69 = 69`); any missing/extra at-code is an error.
+   - **delimiter balance** — every `<` opened is closed across the inserted blocks.
+   - **untouched invariants** — no change to at-codes, occurrences/cardinalities, units, value sets, or `term_bindings` (a translation edits text only).
+   - **lint** — run `/archetype-lint` on the result and surface its summary; failures block the "done" claim.
+5. **Metadata note (advisory)** — editing makes the archetype's `MD5-CAM` checksum and `revision` stale; flag them for upstream recomputation via CKM/ADL tooling rather than hand-fabricating a value. Advisory only — it never blocks producing the translation.

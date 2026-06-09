@@ -9,8 +9,19 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 
 ## [Unreleased]
 
+### Added
+- Commands `/ckm-search`, `/openehr-explain`, `/semantic-diff` — unified/merged slash commands (see Changed); `/semantic-diff` adds a sibling / cross-artefact mode with a path-compatibility table.
+- `.claude/settings.json` `permissions.allow` for the openEHR Assistant MCP server so subagents aren't silently denied CKM/guide/terminology access; documented in `docs/install.md` (Subagents & MCP permissions).
+
 ### Changed
+- **Slash-command surface reduced 20 → 11.** Merged search (`/archetype-search` + `/template-search` → `/ckm-search`), explain/lookup (`/archetype-explain` + `/template-explain` + `/type-spec` + `/adl-idiom` + `/terminology` → `/openehr-explain`), and diff (`/archetype-diff` + `/template-diff` → `/semantic-diff`). Dropped `/aql-designer`, `/format-data`, `/archetype-review` — folded into the `aql-query`, `composition-builder`, and `archetype-authoring` skills.
+- Agent `clinical-modeler`: granted **read-only** MCP lookups (terminology, type specs, guides, single CKM fetch) with offline-corpus fallback; previously local-only.
+- Commands/skills: `/archetype-impact` globs `*.t.json` + parent `.adl` slots; `/archetype-translate` gains an at-code-parity verification block + tab-sensitive edit mechanics; `/archetype-rationale` documents the openEHR-only `terminology_resolve` limit; `archetype-lint` adds the `ITEM_TREE.items {0..*}` false-positive note; `template-authoring` gains an OET-emitting path + UID note; `archetype-authoring` gains CKM-import-for-reuse + the folded review pipeline.
 - MCP compatibility: aligned with `openehr-assistant-mcp` **v0.18.0** — no plugin-facing tool changes (server-side: `enum`-constrained tool params, CKM search scoring retune, transport Host-header fix); `allowed-tools` ids and the bundled archetype corpus unchanged.
+- Docs: AGENTS.md / README gotchas for subagent MCP permissions, named MCP params, and deferred-schema preload; `MD5-CAM` demoted to an advisory note (never a blocking requirement).
+
+### Fixed
+- Agents `ckm-scout` / `spec-researcher` / `clinical-modeler`: explicit `BLOCKED: …` fail-loud with a main-session fallback when MCP access is denied (previously degraded silently).
 
 ## [0.7.0] - 2026-06-07
 

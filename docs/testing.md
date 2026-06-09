@@ -17,10 +17,12 @@ Install from your working copy (see [install.md](install.md)), then exercise the
 - **Commands** — run a representative slash command and confirm it resolves its MCP tools without permission prompts:
 
   ```
-  /archetype-search blood pressure        # CKM discovery
+  /ckm-search blood pressure               # CKM discovery (archetypes or templates)
   /guide AQL syntax                        # guide browsing
-  /type-spec DV_QUANTITY                   # type lookup
+  /openehr-explain DV_QUANTITY             # type / archetype / idiom / terminology lookup
   ```
+
+  If a command (or a dispatched subagent) reports an MCP tool "denied", that's a host permission-policy gap, not a missing server — add the `permissions.allow` snippet (see [install.md](install.md#subagents--mcp-permissions)).
 
 - **Skill auto-triggering** — mention an openEHR concept in conversation *without* a command (e.g. "help me design a blood pressure archetype") and confirm the relevant skill (`openehr-assistant`, `archetype-authoring`, …) engages and follows the Guide-First principle.
 - **Hooks** — open a workspace containing `*.adl` / `*.oet` / `*.opt` files and confirm the `SessionStart` hook prints the openEHR context line. On Claude Code, a `Write`/`Edit` to an `.adl` file should emit the `/archetype-lint` reminder (PostToolUse).

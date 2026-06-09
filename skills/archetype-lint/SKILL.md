@@ -69,6 +69,10 @@ For rule 4, verify attribute names against the RM with `type_specification_get` 
 
 > Offline fallback only: `skills/openehr-assistant/reference/lint-rules-complete.md` mirrors these definitions for the `clinical-modeler` agent (no MCP access). In the main session, always prefer the loaded `archetypes/rules` guide.
 
+### Avoid known false positives
+
+- **`ITEM_TREE.items {0..*}` is idiomatic** — the established CKM convention for container attributes (e.g. the published `ecg_result.v1`). Do **not** flag it under rule 9 / structural-constraints when at least one contained ELEMENT is mandatory; reserve a finding for genuinely empty or all-optional containers. Flagging idiomatic `items {0..*}` is noise.
+
 ## Step 4: Generate Report
 
 ### Required Output Format

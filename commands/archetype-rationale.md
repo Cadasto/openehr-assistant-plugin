@@ -24,11 +24,14 @@ Draft CKM-quality rationale prose for an archetype's description, purpose, misus
    guide_get("archetypes/principles")
    guide_get("archetypes/language-standards")
    ```
-4. For at least two terminology codes bound in the archetype, call `terminology_resolve` to ground the prose in accurate clinical meaning.
+4. Ground the prose in accurate clinical meaning for the bound terminology codes:
+   - **openEHR terminology** codes → resolve with `terminology_resolve`.
+   - **SNOMED CT / LOINC / ICD** bindings → `terminology_resolve` covers **openEHR terminology only**, so it will not resolve these. Read the bound concept's rubric from the archetype's own `term_definitions` / `term_bindings` instead, and do not fabricate an external preferred term (there is no SNOMED/LOINC resolver tool).
 5. Inspect 1–2 sibling CKM archetypes of the same RM entry type to match prose style:
    ```
    ckm_archetype_get("openEHR-EHR-OBSERVATION.blood_pressure.v2")   # example sibling
    ```
+   If a specific sibling id is unavailable or access-blocked, fall back to any published archetype of the same RM entry type — do not hard-depend on one id.
 6. Draft each requested section (or all four):
    - **description** (≤2 sentences): what clinical phenomenon is captured.
    - **purpose** (2–3 sentences): why it exists; intended record.

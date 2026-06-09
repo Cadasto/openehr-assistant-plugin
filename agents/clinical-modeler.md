@@ -2,9 +2,11 @@
 name: clinical-modeler
 description: >
   Use this agent when the user needs to read, write, review, or edit local archetype (.adl),
-  template (.oet/.opt), or composition files in the workspace. Does not have access to CKM
-  or MCP tools — use the openehr-assistant skill in the main session for CKM search, guide
-  lookup, and terminology resolution. Examples:
+  template (.oet/.opt), or composition files in the workspace. It writes only to the local
+  workspace, and can perform read-only MCP lookups (terminology resolution, RM/AM type specs,
+  guides, and fetching a published CKM archetype for reference) to ground its analysis — falling
+  back to the bundled offline reference corpus when MCP is unavailable. For broad CKM reuse
+  surveys, dispatch `ckm-scout` from the main session instead. Examples:
 
   <example>
   Context: The user has archetype files in their workspace and wants a structural review.
@@ -50,6 +52,11 @@ tools:
   - Write
   - Edit
   - Bash
+  - mcp__openehr-assistant__ckm_archetype_get
+  - mcp__openehr-assistant__guide_get
+  - mcp__openehr-assistant__guide_adl_idiom_lookup
+  - mcp__openehr-assistant__type_specification_get
+  - mcp__openehr-assistant__terminology_resolve
 ---
 
 # Clinical Modeler Agent
@@ -82,15 +89,18 @@ Load these files as needed to ground your analysis. Do not load all at once — 
 ### Load for writing new archetypes
 - **[examples/README.md](../skills/openehr-assistant/examples/README.md)** — Annotated index of 7 gold-standard CKM archetypes (OBSERVATION, EVALUATION, INSTRUCTION, ACTION, CLUSTER, COMPOSITION, ADMIN_ENTRY). Read the index first, then load the specific `.adl` file matching the RM type being authored.
 
-## Important Limitation
+## MCP lookups (read-only, best-effort)
 
-You do NOT have access to MCP tools (CKM search, guide lookup, terminology resolution, type specifications). If a task requires:
-- Searching the Clinical Knowledge Manager (CKM)
-- Loading implementation guides
-- Resolving terminology codes
-- Looking up RM/AM type specifications
+You have a **read-only** subset of MCP tools to ground your analysis while authoring/reviewing locally:
+- `terminology_resolve` — resolve openEHR terminology codes/rubrics
+- `type_specification_get` — verify RM/AM/BASE type structure and attribute names
+- `guide_get` — load implementation guides
+- `guide_adl_idiom_lookup` — fetch ADL constraint idioms
+- `ckm_archetype_get` — fetch a single published CKM archetype for reference
 
-...then it should be handled in the main session using the openehr-assistant skill, not by this agent.
+**If a lookup is blocked or unavailable** (e.g. the host has not pre-approved the MCP server — see the plugin's `.claude/settings.json`), do not stall or guess: state `BLOCKED: <tool> unavailable`, fall back to the **bundled offline reference corpus** below, and note in your output which checks need the main session.
+
+What you still cannot do (route to the main session): **CKM search** / broad reuse surveys (dispatch `ckm-scout`) and any **write** outside the local workspace.
 
 ## Working Method
 
@@ -113,7 +123,7 @@ Load **lint-rules-complete.md** for all 22 rules with examples. The rules that c
 - Rule 1: Single Concept — one coherent concept per archetype
 - Rule 2: ENTRY Type Semantics — correct ENTRY subtype for clinical statement
 - Rule 3: Root RM Type Match — root node matches declared RM type
-- Rule 4: Valid RM Attributes Only — verify against **rm-type-reference.md** (covers ~30 common types; flag exotic types for MCP)
+- Rule 4: Valid RM Attributes Only — verify against **rm-type-reference.md** (covers ~30 common types); for exotic types call `type_specification_get`, or flag for the main session if blocked
 - Rule 5: occurrences vs cardinality — correct usage on objects vs containers
 - Rule 6: Specialisation Integrity — child does not contradict parent
 - Rule 7: Path Stability — path changes require major version
@@ -135,9 +145,9 @@ Load **lint-rules-complete.md** for all 22 rules with examples. The rules that c
 **INFO rules (contextual guidance):**
 - Rule 19: Archetypable Demographics — when authoring PARTY demographics, which types may be archetyped (see **lint-rules-complete.md**)
 
-**Rules requiring MCP for full verification** (flag for main session):
-- Rule 17: Terminology Neutrality — may need terminology resolution
-- Rule 18: Semantic Binding Accuracy — needs terminology verification
+**Rules needing terminology verification** (use `terminology_resolve`; if blocked, flag for the main session):
+- Rule 17: Terminology Neutrality — bindings optional, not hardcoded
+- Rule 18: Semantic Binding Accuracy — verify the bound code is a semantic match
 
 Report findings with severity matching the normative rules.
 
