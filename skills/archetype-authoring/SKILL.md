@@ -146,7 +146,7 @@ When extending via specialization:
 
 ## Step 7: Review & Remediate
 
-The full review pipeline (this absorbs the former `/archetype-review` command). Run it when reviewing an archetype for quality, publication, or CKM submission. For a quick one-shot lint with no remediation, the `/archetype-lint` command is the lighter entry point.
+The full review pipeline (this absorbs the former `/archetype-review` command). Run it when reviewing an archetype for quality, publication, or CKM submission. For a quick lint with no remediation, the `archetype-lint` skill (`/archetype-lint`) is the lighter entry point.
 
 ### 7a. Intent & provenance
 - State the concept, the candidate ENTRY type, scope boundaries, and a **must-not-change list** (paths, at-codes, semantic anchors).
@@ -154,7 +154,7 @@ The full review pipeline (this absorbs the former `/archetype-review` command). 
 - If the examples corpus holds the same archetype id, `examples_get` it and compare `uid`/revision to spot drift from the gold-standard.
 
 ### 7b. Lint
-Apply the 22 normative lint rules — load `guide_get("archetypes/rules")` for the definitions (the `/archetype-lint` command runs this standalone). Also load:
+Apply the 22 normative lint rules — load `guide_get("archetypes/rules")` for the definitions (the `archetype-lint` skill runs this standalone). Also load:
 
 ```
 guide_get("archetypes/checklist")

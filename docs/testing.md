@@ -19,14 +19,14 @@ Install from your working copy (see [install.md](install.md)), then exercise the
   ```
   /ckm-search blood pressure               # CKM discovery (archetypes or templates)
   /openehr-explain DV_QUANTITY             # type / archetype / RM-concept / idiom / terminology lookup
-  /archetype-lint path/to/archetype.adl    # 22-rule validation
+  /semantic-diff old.adl new.adl           # version-bump / sibling diff
   ```
 
   Guide browsing has no command — ask in natural language ("show me the AQL syntax guide") and the auto-invoked `openehr-assistant` skill loads it via `guide_search` / `guide_get`.
 
   If a command (or a dispatched subagent) reports an MCP tool "denied", that's a host permission-policy gap, not a missing server — add the `permissions.allow` snippet (see [install.md](install.md#subagents--mcp-permissions)).
 
-- **Skill auto-triggering** — mention an openEHR concept in conversation *without* a command (e.g. "help me design a blood pressure archetype") and confirm the relevant skill (`openehr-assistant`, `archetype-authoring`, …) engages and follows the Guide-First principle.
+- **Skill auto-triggering** — mention an openEHR concept in conversation *without* a command (e.g. "help me design a blood pressure archetype", or "lint this archetype" → `archetype-lint`) and confirm the relevant skill (`openehr-assistant`, `archetype-authoring`, `archetype-lint`, …) engages and follows the Guide-First principle. Skills are also `/`-invocable (e.g. `/archetype-lint`).
 - **Hooks** — open a workspace containing `*.adl` / `*.oet` / `*.opt` files and confirm the `SessionStart` hook prints the openEHR context line. On Claude Code, a `Write`/`Edit` to an `.adl` file should emit the `/archetype-lint` reminder (PostToolUse).
 
 After editing content, reinstall (or restart the session) to pick up changes.

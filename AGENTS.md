@@ -75,15 +75,14 @@ For spec overview questions ("what does the EHR IM define?", "summarise ADL2"), 
 | `aql-authoring` | Write, explain, optimize AQL queries |
 | `demographic-modeling` | Design demographic models (PARTY hierarchy, roles, relationships, identity patterns) |
 
-### Commands (8)
-A deliberately small slash surface — multi-step workflows live in the **skills** (which auto-trigger); commands are explicit one-shots. Former commands were merged (search/explain/lookups/diffs) or folded into skills (`/aql-designer`→`aql-authoring`, `/format-data`→`composition-builder`, `/archetype-review` + `/archetype-rationale`→`archetype-authoring`, `/rm-structure`→`/openehr-explain`, `/guide`→`openehr-assistant` skill).
+### Commands (7)
+A deliberately small slash surface — multi-step workflows live in the **skills** (which auto-trigger and are also `/`-invocable); commands are explicit one-shots. Former commands were merged (search/explain/lookups/diffs) or folded into skills (`/aql-designer`→`aql-authoring`, `/format-data`→`composition-builder`, `/archetype-review` + `/archetype-rationale`→`archetype-authoring`, `/rm-structure`→`/openehr-explain`, `/guide` + `/archetype-lint`→ the `openehr-assistant` and `archetype-lint` skills). Note: `/archetype-lint` still works — it resolves to the user-invocable `archetype-lint` skill.
 
 | Command | Purpose |
 |---------|---------|
 | `/ckm-search` | Find CKM **archetypes or templates** (`[archetype\|template] <query>`) — merges `/archetype-search` + `/template-search` |
 | `/openehr-explain` | Explain / look up **any** openEHR thing — archetype, template, RM/AM type, **RM structural concept**, ADL idiom, or terminology code (auto-detects) — merges `/archetype-explain`, `/template-explain`, `/type-spec`, `/rm-structure`, `/adl-idiom`, `/terminology` |
 | `/semantic-diff` | Semantic diff of two artefacts — archetype or template, version-bump **or** sibling/cross-artefact mode with a path-compatibility table — merges `/archetype-diff` + `/template-diff` |
-| `/archetype-lint` | Lint archetype against 22 normative rules |
 | `/archetype-fix-syntax` | Fix ADL syntax |
 | `/archetype-translate` | Add/translate archetype language (with at-code-parity verification) |
 | `/template-from-form` | Map a clinical form to a template sketch (archetypes + narrowing) |
