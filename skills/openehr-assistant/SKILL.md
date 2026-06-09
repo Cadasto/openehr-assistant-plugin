@@ -145,7 +145,7 @@ When users need deeper task-specific workflows, suggest the appropriate skill or
 - **Browsing / finding an implementation guide** -> handle it here: `guide_search` to find it, `guide_get` to load it, then summarise (the guides are an agent-facing knowledge layer; no separate command needed)
 - **Comparing two artefacts** (version bump or sibling diff) -> `/semantic-diff`
 - **Fixing syntax** -> `/archetype-fix-syntax`
-- **Translations** -> `/archetype-translate`
+- **Translating an archetype** (add a locale) -> archetype-authoring skill
 - **Demographic modeling** -> demographic-modeling skill
 - **Platform / REST service integration** -> consult `guide_get("specs/sm-openehr_platform")` and `guide_get("specs/its-rest-api")`
 - **Deep spec research** (precise attribute/function/invariant questions; cross-document reconciliation) -> dispatch the `spec-researcher` agent

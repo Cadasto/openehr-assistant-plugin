@@ -79,7 +79,7 @@ Environment variables (e.g. `CKM_API_BASE_URL`) and Docker/stdio details are doc
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
-| `archetype-authoring` | Creating/editing/reviewing archetypes | Authoring, review & remediate pipeline, rationale prose, CKM-import — guide-first |
+| `archetype-authoring` | Creating/editing/reviewing/translating archetypes | Authoring, review & remediate, rationale prose, translation, CKM-import — guide-first |
 | `archetype-lint` | Reviewing/validating archetypes | 22 normative lint rules with STRICT/PERMISSIVE modes |
 | `template-authoring` | Creating/reviewing templates | Template design with CGEM framework and narrowing principle |
 | `composition-builder` | Building compositions | FLAT/STRUCTURED/CANONICAL format generation |
@@ -97,11 +97,10 @@ Multi-step workflows (authoring, review, AQL, compositions) are driven by the **
 | `/openehr-explain <thing>` | Explain or look up any openEHR thing — archetype, template, RM/AM type, RM structural concept, ADL idiom, or terminology code (auto-detects) |
 | `/semantic-diff <file-a> <file-b>` | Semantic diff of two artefacts (archetype or template); version-bump verdict or sibling/cross-artefact compatibility report |
 | `/archetype-fix-syntax <file>` | Fix ADL syntax errors preserving semantics |
-| `/archetype-translate <file> <lang>` | Add/translate archetype language entries (with at-code-parity verification) |
 | `/template-from-form <form text or path>` | Map a clinical form to a template sketch (archetypes + narrowing) |
 | `/archetype-impact <archetype-id>` | Scan workspace for references to an archetype (templates incl. `.t.json`, parent `.adl` slots, AQL) |
 
-> Creating/editing/reviewing archetypes (incl. **rationale prose**), authoring templates, building compositions, writing AQL, and **browsing guides** are handled by the matching **skill** (no command needed) — just describe the task.
+> Creating/editing/reviewing archetypes (incl. **rationale prose** and **translation**), linting, authoring templates, building compositions, writing AQL, and **browsing guides** are handled by the matching **skill** (no command needed) — just describe the task.
 
 ### Agents
 
