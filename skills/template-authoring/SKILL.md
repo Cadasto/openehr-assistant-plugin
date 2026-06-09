@@ -4,8 +4,8 @@ description: >
   This skill should be used when the user asks to "create a template", "design a template",
   "constrain archetypes into a template", "review a template", or "work with OET/OPT files".
   Covers creating openEHR templates, constraining archetypes, reviewing designs, and OET/OPT authoring.
-  Use the `/template-search` command to find existing CKM templates and `/template-explain` to
-  explain one; this skill is for authoring and constraining new OET designs.
+  Use `/ckm-search` to find existing CKM templates and `/openehr-explain` to explain one; this
+  skill is for authoring and constraining new OET designs.
 argument-hint: "<task: create|review> [template-id or use-case]"
 allowed-tools:
   - Read
@@ -119,6 +119,17 @@ guide_get("templates/oet-syntax")
 guide_get("templates/oet-idioms-cheatsheet")
 ```
 
+## Step 8b: Emit the OET
+
+Produce a real, slot-correct OET — not just a design sketch. (`/template-from-form` produces the sketch; this skill turns a confirmed design into the file.) Following `templates/oet-syntax`:
+
+1. Root `<template>` with a root **COMPOSITION** archetype reference and a fresh `<id>` (see UID note below).
+2. A `<Content>` entry per included archetype, nested to mirror the COMPOSITION → SECTION → ENTRY → CLUSTER structure.
+3. `<Rule path="…">` elements for each narrowing constraint (`min`/`max`, `limitToList`, unit hardening, `hide_on_form`, label overrides) — respecting the narrowing principle (Step 5).
+4. A trailing `<Context>` if the design needs composition context (e.g. `/context/setting` fixed to a code).
+
+There is **no automated OET/OPT validator** available, so validate manually against the loaded `templates/oet-syntax` guide and the Step 9 checklist; state any constraint you could not confirm rather than asserting validity.
+
 ## Step 9: Quality Review
 
 Run through the quality checklist:
@@ -141,3 +152,7 @@ Verify:
 ## Output
 
 Generate valid OET files. Use the Write tool to create `.oet` files in the appropriate project location.
+
+### Identifiers and checksums
+- A new template needs a fresh `uid`. Generate one portably: `uuidgen`, else `cat /proc/sys/kernel/random/uuid`, else `python3 -c 'import uuid; print(uuid.uuid4())'`.
+- Do not hand-write build checksums (`MD5-CAM-*`, `build_uid`) — they are tool-computed; a missing/stale checksum is advisory and never blocks authoring the OET.

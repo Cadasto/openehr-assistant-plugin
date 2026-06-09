@@ -69,6 +69,8 @@ For **server installation, transports (streamable-http vs stdio), and client-spe
 
 Environment variables (e.g. `CKM_API_BASE_URL`) and Docker/stdio details are documented in the [MCP server README](https://github.com/cadasto/openehr-assistant-mcp).
 
+> **One server, not two.** This plugin bundles its own `.mcp.json`, so it provides the `openehr-assistant` MCP server itself — prefer that. If you *also* added an `openehr-assistant` connector at claude.ai, the same tools appear twice (under a `claude_ai` namespace and the plugin's); that duplicate is optional. If a subagent reports CKM/guide tools "denied", it's a permission-policy gap, not a missing server — see the `permissions.allow` snippet in [`.claude/settings.json`](.claude/settings.json) and [docs/install.md](docs/install.md).
+
 ---
 
 ## Components
@@ -87,34 +89,29 @@ Environment variables (e.g. `CKM_API_BASE_URL`) and Docker/stdio details are doc
 
 ### Commands
 
+Multi-step workflows (authoring, review, AQL, compositions) are driven by the **skills** above, which auto-trigger from natural language. Commands are a small set of explicit one-shots:
+
 | Command | Description |
 |---------|-------------|
-| `/archetype-search <query>` | Find archetypes in CKM |
-| `/archetype-explain <id>` | Explain archetype semantics and structure |
+| `/ckm-search [archetype\|template] <query>` | Find archetypes or templates in CKM |
+| `/openehr-explain <thing>` | Explain or look up any openEHR thing — archetype, template, RM/AM type, ADL idiom, or terminology code (auto-detects) |
+| `/semantic-diff <file-a> <file-b>` | Semantic diff of two artefacts (archetype or template); version-bump verdict or sibling/cross-artefact compatibility report |
 | `/archetype-lint <file or id> [strict]` | Lint archetype against 22 normative rules |
-| `/archetype-review <file or id> [strict]` | Multi-stage review pipeline (intent, lint, fix, re-lint, review packet) |
-| `/template-search <query>` | Find templates in CKM |
-| `/template-explain <id>` | Explain template semantics and structure |
-| `/aql-designer <question or query>` | Explain, design, or review AQL queries |
-| `/format-data <template or question>` | Explain or design openEHR data instances (FLAT/STRUCTURED/CANONICAL) based on a template |
-| `/rm-structure <domain> <concept>` | Explain RM structural concepts in a given domain (`ehr` or `demographic`) — composition categories, ISM states, time, versioning, PARTY hierarchy, identities, privacy |
+| `/rm-structure <domain> <concept>` | Explain RM structural concepts in a given domain (`ehr` or `demographic`) |
 | `/guide <topic>` | Browse openEHR implementation guides |
-| `/terminology <code or term>` | Resolve terminology IDs and rubrics |
-| `/type-spec <type name>` | Look up RM/AM/BASE type specifications |
-| `/adl-idiom <pattern>` | Quick ADL constraint pattern lookup |
 | `/archetype-fix-syntax <file>` | Fix ADL syntax errors preserving semantics |
-| `/archetype-translate <file> <lang>` | Add/translate archetype language entries |
+| `/archetype-translate <file> <lang>` | Add/translate archetype language entries (with at-code-parity verification) |
 | `/archetype-rationale <file or id> [--section]` | Generate CKM-quality rationale prose (description, purpose, misuse, use) |
 | `/template-from-form <form text or path>` | Map a clinical form to a template sketch (archetypes + narrowing) |
-| `/archetype-impact <archetype-id>` | Scan workspace for all references to an archetype (templates, AQL) |
-| `/archetype-diff <file-a> <file-b>` | Semantic diff between two archetypes; version-bump classification |
-| `/template-diff <file-a> <file-b>` | Semantic diff between two templates; version-bump classification |
+| `/archetype-impact <archetype-id>` | Scan workspace for references to an archetype (templates incl. `.t.json`, parent `.adl` slots, AQL) |
+
+> Creating/editing archetypes, reviewing & remediating them, authoring templates, building compositions, and writing AQL are handled by the matching **skill** (no command needed) — just describe the task.
 
 ### Agents
 
 | Agent | Description |
 |-------|-------------|
-| `clinical-modeler` | Local clinical model file analyst for reading, writing, reviewing, and editing archetype/template files in the workspace |
+| `clinical-modeler` | Local clinical-model file analyst (read/write/review/edit `.adl`/`.oet`/`.opt`). Writes locally; has read-only MCP lookups (terminology, type specs, guides, single CKM fetch) with offline fallback |
 | `ckm-scout` | CKM reuse-search specialist — parallel searches, ranked recommendation |
 | `spec-researcher` | Spec research specialist using llms.txt/.md twin methodology |
 

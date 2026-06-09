@@ -68,41 +68,34 @@ For spec overview questions ("what does the EHR IM define?", "summarise ADL2"), 
 | Skill | Purpose |
 |-------|---------|
 | `openehr-assistant` | Auto-invoked openEHR awareness, clinical modeling (template design, archetype selection, constraint specification, terminology binding, model review), and tool routing |
-| `archetype-authoring` | Create, edit, extend, specialize archetypes |
+| `archetype-authoring` | Create, edit, extend, specialize archetypes; CKM-import for reuse; full **review & remediate** pipeline (intent → lint → fix → re-lint → packet; absorbs the former `/archetype-review`) |
 | `archetype-lint` | Auto-invoked archetype validation with 22 normative lint rules (STRICT/PERMISSIVE) |
 | `template-authoring` | Create and constrain templates (OET/OPT) |
 | `composition-builder` | Build compositions (FLAT/STRUCTURED/CANONICAL) |
 | `aql-query` | Write, explain, optimize AQL queries |
 | `demographic-modeling` | Design demographic models (PARTY hierarchy, roles, relationships, identity patterns) |
 
-### Commands (20)
+### Commands (11)
+A deliberately small slash surface — multi-step workflows live in the **skills** (which auto-trigger); commands are explicit one-shots. Several former commands were merged (search/explain/lookups/diffs) or folded into skills (`/aql-designer`→`aql-query`, `/format-data`→`composition-builder`, `/archetype-review`→`archetype-authoring`).
+
 | Command | Purpose |
 |---------|---------|
-| `/archetype-search` | Find CKM archetypes |
-| `/archetype-explain` | Explain archetype semantics |
+| `/ckm-search` | Find CKM **archetypes or templates** (`[archetype\|template] <query>`) — merges `/archetype-search` + `/template-search` |
+| `/openehr-explain` | Explain / look up **any** openEHR thing — archetype, template, RM/AM type, ADL idiom, or terminology code (auto-detects) — merges `/archetype-explain`, `/template-explain`, `/type-spec`, `/adl-idiom`, `/terminology` |
+| `/semantic-diff` | Semantic diff of two artefacts — archetype or template, version-bump **or** sibling/cross-artefact mode with a path-compatibility table — merges `/archetype-diff` + `/template-diff` |
 | `/archetype-lint` | Lint archetype against 22 normative rules |
-| `/archetype-review` | Multi-stage archetype review pipeline (intent, lint, fix, re-lint, review packet) |
-| `/template-search` | Find CKM templates |
-| `/template-explain` | Explain template semantics |
-| `/aql-designer` | Explain/design/review AQL |
-| `/format-data` | Explain or design openEHR data instances (FLAT/STRUCTURED/CANONICAL) based on a template |
-| `/rm-structure` | Explain RM structural concepts in a given domain (ehr or demographic) — composition categories, ISM states, time, versioning, PARTY hierarchy, identities, privacy |
-| `/guide` | Browse openEHR guides |
-| `/terminology` | Resolve terminology IDs |
-| `/type-spec` | Look up RM/AM types |
-| `/adl-idiom` | Quick ADL patterns |
+| `/rm-structure` | Explain RM structural concepts in a domain (ehr or demographic) — composition categories, ISM states, time, versioning, PARTY hierarchy, identities, privacy |
+| `/guide` | Browse openEHR implementation guides |
 | `/archetype-fix-syntax` | Fix ADL syntax |
-| `/archetype-translate` | Translate archetype language |
-| `/archetype-rationale` | Generate CKM-quality rationale prose (description, purpose, misuse, use) for an archetype |
-| `/template-from-form` | Map a clinical form to a template sketch — archetypes to aggregate and per-archetype narrowing notes |
-| `/archetype-impact` | Scan workspace for references to a given archetype across templates and AQL files |
-| `/archetype-diff` | Semantic diff between two archetype versions; classifies the version bump (patch / minor / major) per rule G1 |
-| `/template-diff` | Semantic diff between two template versions; classifies the version bump |
+| `/archetype-translate` | Add/translate archetype language (with at-code-parity verification) |
+| `/archetype-rationale` | Generate CKM-quality rationale prose (description, purpose, misuse, use) |
+| `/template-from-form` | Map a clinical form to a template sketch (archetypes + narrowing) |
+| `/archetype-impact` | Scan workspace for references to an archetype across templates (`.oet`/`.opt`/`.t.json`), parent `.adl` slots, and AQL |
 
 ### Agents (3)
 | Agent | Purpose |
 |-------|---------|
-| `clinical-modeler` | Local clinical model file analyst for reading, writing, reviewing, and editing archetype/template files in the workspace. Includes local RM attribute validation via `rm-type-reference.md` (no MCP tool access) |
+| `clinical-modeler` | Local clinical model file analyst for reading, writing, reviewing, and editing archetype/template files. Writes only to the workspace; has **read-only** MCP lookups (terminology, type specs, guides, single CKM archetype fetch) with offline-corpus fallback when blocked |
 | `ckm-scout` | Context-isolated CKM reuse-search specialist. Runs parallel searches with varied phrasings and returns ranked reuse/specialize/new recommendations. Dispatched by `archetype-authoring` skill or directly by the user |
 | `spec-researcher` | Context-isolated openEHR spec research using the `howto/spec-lookup` methodology (llms.txt, `.md` twin, BMM, HTML fallthrough). Tracks the `development` branch |
 
@@ -138,7 +131,7 @@ claude plugin validate .                              # manifest + component str
 claude plugin add /path/to/openehr-assistant-plugin   # install locally
 ```
 
-Then verify a command (`/archetype-search blood pressure`) and skill auto-triggering against the configured MCP server. On Cursor, add the plugin via its plugin flow and verify the same. CI runs `scripts/validate.py` strictly on every push/PR ([`.github/workflows/validate.yml`](.github/workflows/validate.yml)); locally, `scripts/validate.sh` runs the same checks but warns and skips if Python isn't installed. Fuller guidance lives in [`docs/`](docs/): [install](docs/install.md), [testing](docs/testing.md), [versioning](docs/versioning.md), [authoring](docs/authoring.md).
+Then verify a command (`/ckm-search blood pressure`) and skill auto-triggering against the configured MCP server. On Cursor, add the plugin via its plugin flow and verify the same. CI runs `scripts/validate.py` strictly on every push/PR ([`.github/workflows/validate.yml`](.github/workflows/validate.yml)); locally, `scripts/validate.sh` runs the same checks but warns and skips if Python isn't installed. Fuller guidance lives in [`docs/`](docs/): [install](docs/install.md), [testing](docs/testing.md), [versioning](docs/versioning.md), [authoring](docs/authoring.md).
 
 ### File Conventions
 - Skills go in `skills/<name>/SKILL.md`
@@ -174,6 +167,9 @@ When adding or renaming components, update: **AGENTS.md** (component tables), **
 ## Gotchas
 
 - **Agents use `tools:`, not `allowed-tools:`.** `allowed-tools:` is a skills/commands key; in an agent file it is ignored and the agent silently inherits *all* tools. Use `tools:` (a YAML list is fine; MCP ids like `mcp__openehr-assistant__<tool>` are valid entries). See `agents/clinical-modeler.md` for the correct form.
-- **Shared command references live in top-level `references/`, not under `commands/`.** Host validators (`claude plugin validate`) treat every `commands/**/*.md` as a command and warn on missing frontmatter — so a reference file there is mis-detected. Example: `references/semantic-diff-rubric.md`, consumed by `/archetype-diff` and `/template-diff`.
+- **Shared command references live in top-level `references/`, not under `commands/`.** Host validators (`claude plugin validate`) treat every `commands/**/*.md` as a command and warn on missing frontmatter — so a reference file there is mis-detected. Example: `references/semantic-diff-rubric.md`, consumed by `/semantic-diff`.
+- **Subagents need the MCP server pre-approved or they silently lose CKM/guide access.** Agent frontmatter `tools:` grants the *capability*, but the host's permission policy must still allow the server. The repo's `.claude/settings.json` `permissions.allow` lists the `openehr-assistant` server (both the bundled `mcp__plugin_openehr-assistant_openehr-assistant` and `mcp__openehr-assistant` namespaces); users who hit "CKM denied in a subagent" should add the same to their project settings. `ckm-scout` / `spec-researcher` / `clinical-modeler` fail loud with `BLOCKED: …` and route the lookup back to the main session when this isn't in place.
+- **MCP tool parameters are named, not positional.** Skill/command examples use the readable `tool("value")` shorthand, but the real calls take the server's JSON params — e.g. `ckm_archetype_search` → `keyword`, `*_get` → `identifier`, `type_specification_get` → `name`. When unsure, the tool's loaded schema is authoritative; don't guess `{ query }`.
+- **Deferred MCP tool schemas load on first use.** In review/diff flows that call several MCP tools, reference the tools early so their schemas resolve before the first call (avoids first-call round-trips). This is partly a host concern.
 - **The Cursor hook uses a workspace-relative command** (`bash hooks/session-start.sh`), *not* `${CLAUDE_PLUGIN_ROOT}` (a Claude-Code-only variable). Keep both hook configs in step; don't "fix" the Cursor one to use the variable.
 - **Lint rules have one source of truth: `guide_get("archetypes/rules")`.** The `archetype-lint` skill keeps only a compact index; `skills/openehr-assistant/reference/lint-rules-complete.md` is the offline twin for the `clinical-modeler` agent. When the guide changes, update the offline twin — don't re-inline full rule text into the skill.

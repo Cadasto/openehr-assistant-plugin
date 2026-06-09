@@ -5,7 +5,7 @@ description: >
   "validate a composition", "convert a composition", or "generate FLAT/STRUCTURED/CANONICAL format".
   Covers building openEHR compositions in all simplified formats and guiding their validation and
   format conversion (against a target template; there is no automated validator/converter tool).
-  For a quick format explanation or single-payload sketch, use the `/format-data` command instead.
+  Also handles quick format explanations and single-payload sketches directly.
 argument-hint: "<template-id> [format: flat|structured|canonical]"
 allowed-tools:
   - Read

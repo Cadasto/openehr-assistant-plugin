@@ -140,8 +140,10 @@ When users need deeper task-specific workflows, suggest the appropriate skill or
 - **Creating templates** -> template-authoring skill
 - **Building compositions** -> composition-builder skill
 - **Writing AQL queries** -> aql-query skill
-- **Quick lookups** -> `/archetype-search`, `/template-search`, `/guide`, `/terminology`, `/type-spec`
-- **ADL patterns** -> `/adl-idiom`
+- **Searching CKM** (archetypes or templates) -> `/ckm-search`
+- **Explaining or looking up** an archetype, template, RM/AM type, ADL idiom, or terminology code -> `/openehr-explain`
+- **Browsing implementation guides** -> `/guide`
+- **Comparing two artefacts** (version bump or sibling diff) -> `/semantic-diff`
 - **Fixing syntax** -> `/archetype-fix-syntax`
 - **Translations** -> `/archetype-translate`
 - **Demographic modeling** -> demographic-modeling skill

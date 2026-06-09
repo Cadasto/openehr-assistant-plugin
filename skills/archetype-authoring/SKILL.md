@@ -2,10 +2,11 @@
 name: archetype-authoring
 description: >
   This skill should be used when the user asks to "create an archetype", "edit an archetype",
-  "extend an archetype", "specialize an archetype", "design an archetype", or "review an
-  archetype design". Covers creating new openEHR archetypes, editing existing ones, extending
-  via specialization, and reviewing archetype designs. To merely explain an existing archetype
-  (no edits), use the `/archetype-explain` command instead.
+  "extend an archetype", "specialize an archetype", "design an archetype", or "review / remediate
+  an archetype" (including the full intent -> lint -> fix -> re-lint review pipeline). Covers
+  creating, editing, specializing, reviewing, and remediating openEHR archetypes, and importing a
+  CKM archetype into the workspace for reuse. To merely explain an existing archetype with no
+  edits, use the `/openehr-explain` command instead.
 argument-hint: "<task: create|edit|extend|specialize> [archetype-id or concept]"
 allowed-tools:
   - Read
@@ -66,6 +67,16 @@ ckm_archetype_search("<concept>")
 
 For a small set of well-curated CKM archetypes — blood pressure, medication order, problem/diagnosis, encounter, procedure, anatomical location (CLUSTER), translation requirements (ADMIN_ENTRY) — try `examples_search(kind="archetypes")` when authoring or reviewing an archetype of the same type. These are native `.adl` files exposed as `openehr://examples/archetypes/{name}` and serve as concrete prior-art references for RM-type intent, terminology binding patterns, and structural idioms. Skip this step when the concept is outside the curated set.
 
+### Import a CKM archetype for reuse
+
+When reuse means pulling a published archetype into the workspace (not just citing it), make it land as a wired-in file rather than a copy-paste note:
+
+1. Fetch the native ADL with `ckm_archetype_get("<id>")`.
+2. Write it into the project (e.g. a `local/` directory) under its canonical `openEHR-EHR-<TYPE>.<concept>.v<N>.adl` filename.
+3. If it fills a slot in a target archetype/template, add the constrained slot reference (`allow_archetype … include`) so the reuse is actually wired in.
+
+A reused file keeps its published `uid`/checksums; do not alter them.
+
 ## Step 3: Concept Design
 
 ### One Concept Per Archetype
@@ -113,6 +124,10 @@ Use `guide_adl_idiom_lookup` for specific ADL constraint patterns:
 - Use explicit slot constraints (avoid open wildcards like `include all`)
 - Design for international use — avoid locale-specific assumptions
 
+### Identifiers and checksums
+- A new archetype needs a fresh `uid`. Generate one portably: `uuidgen`, else `cat /proc/sys/kernel/random/uuid`, else `python3 -c 'import uuid; print(uuid.uuid4())'`.
+- **Do not hand-write build checksums** (`MD5-CAM-*`, `build_uid`) — they are tool-computed by CKM/ADL tooling. If you edit a published archetype, its checksum simply becomes stale: note that for upstream recomputation rather than inventing a value. This is advisory, not a blocker — a missing/stale checksum never stops local authoring.
+
 ## Step 5: Editing Existing Archetypes
 
 When modifying existing archetypes:
@@ -128,18 +143,33 @@ When extending via specialization:
 - Preserve parent meaning — specialization narrows, never contradicts
 - Maintain transparent lineage in the archetype identifier
 
-## Step 7: Quality Review
+## Step 7: Review & Remediate
 
-Before finalizing, run through the quality checklist and anti-patterns:
+The full review pipeline (this absorbs the former `/archetype-review` command). Run it when reviewing an archetype for quality, publication, or CKM submission. For a quick one-shot lint with no remediation, the `/archetype-lint` command is the lighter entry point.
+
+### 7a. Intent & provenance
+- State the concept, the candidate ENTRY type, scope boundaries, and a **must-not-change list** (paths, at-codes, semantic anchors).
+- **Provenance check (advisory):** decide whether the file is a mirror of a published CKM archetype (matching id/revision). If so, note that editing it locally diverges from canonical, and its `MD5-CAM` checksum will no longer match — prefer contributing the change upstream in CKM. Surface this as a caveat; it does not block local work.
+- If the examples corpus holds the same archetype id, `examples_get` it and compare `uid`/revision to spot drift from the gold-standard.
+
+### 7b. Lint
+Apply the 22 normative lint rules — load `guide_get("archetypes/rules")` for the definitions (the `/archetype-lint` command runs this standalone). Also load:
 
 ```
 guide_get("archetypes/checklist")
 guide_get("archetypes/anti-patterns")
 ```
 
-Run through the 22 normative lint rules — load `guide_get("archetypes/rules")` for the definitions, or suggest the user run `/archetype-lint` — if reviewing for publication or CKM submission.
+Use `type_specification_get` to verify RM attribute names (rule 4). Output PASS/FAIL plus a violations table (severity, rule, explanation, suggested fix).
 
-Verify:
+### 7c. Remediate
+- **On FAIL (ERRORs):** produce a minimal-diff fix plan mapped to rule violations — for each fix, note whether it changes paths or semantics and the version-bump implication. Present the plan and wait for approval; then patch and re-lint (max ~3 iterations).
+- **On PASS with WARNING/INFO:** do not stop at "nothing to improve." Produce an advisory-remediation block — issue → suggested improvement → which fixes touch paths/semantics/checksums — without invoking the ERROR-only fix machinery. "Spot issues and suggest improvements" is a valid request even when the archetype passes.
+
+### 7d. Review packet (optional)
+For a CKM-style review, generate Purpose/Use/Misuse prose suggestions, rationale for key modelling decisions, justifications for any unresolved warnings, and questions for clinicians.
+
+Final checklist:
 - [ ] One concept per archetype
 - [ ] Correct RM type selected
 - [ ] Valid ADL 1.4 syntax
