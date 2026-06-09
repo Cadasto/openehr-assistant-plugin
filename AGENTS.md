@@ -80,8 +80,8 @@ A deliberately small slash surface — multi-step workflows live in the **skills
 
 | Command | Purpose |
 |---------|---------|
-| `/ckm-search` | Find CKM **archetypes or templates** (`[archetype\|template] <query>`) — merges `/archetype-search` + `/template-search` |
-| `/openehr-explain` | Explain / look up **any** openEHR thing — archetype, template, RM/AM type, **RM structural concept**, ADL idiom, or terminology code (auto-detects) — merges `/archetype-explain`, `/template-explain`, `/type-spec`, `/rm-structure`, `/adl-idiom`, `/terminology` |
+| `/ckm-search` | Find CKM **archetypes or templates** (`[archetype\|template] <query>`; optional `rmClass` filter) — merges `/archetype-search` + `/template-search` |
+| `/openehr-explain` | Explain / look up **any** openEHR thing — archetype, template, RM/AM type, **RM structural concept**, ADL idiom, **AQL query/keyword**, or terminology code (auto-detects) — merges `/archetype-explain`, `/template-explain`, `/type-spec`, `/rm-structure`, `/adl-idiom`, `/terminology` |
 | `/semantic-diff` | Semantic diff of two artefacts — archetype or template, version-bump **or** sibling/cross-artefact mode with a path-compatibility table — merges `/archetype-diff` + `/template-diff` |
 | `/archetype-fix-syntax` | Fix ADL syntax |
 | `/template-from-form` | Map a clinical form to a template sketch (archetypes + narrowing) |

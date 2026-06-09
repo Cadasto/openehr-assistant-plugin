@@ -65,7 +65,7 @@ Do this even if the user already gave one phrase. Variation reduces recall loss 
 
 ### 2. Parallel CKM searches
 
-Issue all three `ckm_archetype_search` calls in a **single tool-use block** so they execute in parallel — do not serialize them. Collect up to 10 results each.
+Issue all three `ckm_archetype_search` calls in a **single tool-use block** so they execute in parallel — do not serialize them. Collect up to 10 results each. When the target RM class is known (e.g. surveying OBSERVATION siblings), pass the optional **`rmClass`** filter to scope each search to true structural siblings instead of paging through unrelated classes.
 
 Example (all three tool calls in the same assistant message):
 ```

@@ -111,9 +111,10 @@ Use the CGEM framework to guide how clinical data splits across templates:
 |--------|---------|
 | **OET** | Authoring format — human-editable XML for template design |
 | **OPT** | Operational Template — flattened XML for runtime deployment |
-| **Web Template** | JSON representation for modern UI development |
+| **ADL-Designer `.t.json`** | ADL-Designer's differential template JSON (tool-generated) |
+| **Web Template** | Flattened JSON representation for modern UI development |
 
-Reference syntax guides:
+For when each format is hand-authorable vs tool-generated and what checksums each carries, load `guide_get("templates/serialization-formats")`. Reference syntax guides:
 ```
 guide_get("templates/oet-syntax")
 guide_get("templates/oet-idioms-cheatsheet")

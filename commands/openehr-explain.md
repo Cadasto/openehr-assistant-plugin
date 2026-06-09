@@ -1,7 +1,7 @@
 ---
 name: openehr-explain
-description: One-stop router that explains or looks up any openEHR thing — auto-detects an archetype, a template, an RM/AM/BASE type, an RM structural concept, an ADL idiom, or a terminology code (replaces /archetype-explain, /template-explain, /type-spec, /rm-structure, /adl-idiom, /terminology)
-argument-hint: "<archetype|template id-or-file | RM/AM type | RM structural concept | ADL idiom | terminology code>"
+description: One-stop router that explains or looks up any openEHR thing — auto-detects an archetype, a template, an RM/AM/BASE type, an RM structural concept, an ADL idiom, an AQL query or keyword, or a terminology code (replaces /archetype-explain, /template-explain, /type-spec, /rm-structure, /adl-idiom, /terminology)
+argument-hint: "<archetype|template id-or-file | RM/AM type | RM structural concept | ADL idiom | AQL query/keyword | terminology code>"
 allowed-tools:
   - mcp__openehr-assistant__ckm_archetype_get
   - mcp__openehr-assistant__ckm_template_get
@@ -37,6 +37,10 @@ Pick exactly one kind using these heuristics (first match wins):
   (`ehr` / `demographic`). Distinguish from a bare class token (that's an RM/AM type).
 - **ADL idiom / pattern** — phrasing about *how to constrain*: "coded text constraint",
   "ordinal scale", "quantity range", "slot", "how do I constrain …", "what's the ADL for …".
+- **AQL query / keyword** — an AQL statement (contains `SELECT` / `FROM` / `CONTAINS` / `WHERE`),
+  or a question about AQL syntax — a clause/operator/function ("what does `CONTAINS` do", "AQL for
+  latest-per-EHR"). Explanation only; to *write / optimize / review* a query, that is the
+  `aql-authoring` skill, not this command.
 - **Terminology** — an openEHR terminology code/term, a `local::`/`at####` code, a known
   terminology id (e.g. `openehr`, SNOMED-CT, LOINC) code, or the URI `openehr://terminology`.
 
@@ -106,3 +110,9 @@ could be a type or a terminology rubric), ask **one** brief clarifying question,
 4. Output: definition & purpose; key components/states (tables/trees where apt); relation to other RM structures (and the other domain where relevant); practical implications for modelling, querying, or deployment.
    - Concept areas — **ehr**: ehr-parts, composition-categories, entry-types, ISM states, time, versioning, cross-cutting (`LOCATABLE`/`PARTY_PROXY`). **demographic**: party-hierarchy, roles, identities (`PARTY_IDENTITY` vs `PARTY.details`), relationships, privacy, versioning, archetyping.
    - For broader `specs/` sub-domains (Common, Data Structures, Data Types, Integration, EHR Extract), point the user to `guide_get("specs/<component>-<doc>")`.
+
+### G. AQL query / keyword  (`guide_get("aql/syntax")` + `ckm_archetype_get`)
+1. Load context: `guide_get("aql/syntax")` (and `guide_get("aql/principles")` for concepts).
+2. **Given a full query** — explain its structure and what it returns: `SELECT` projection, `FROM`/`CONTAINS` containment, `WHERE` predicates, `ORDER BY`/`LIMIT`. Resolve referenced archetype paths with `ckm_archetype_get` where it aids the explanation; verify path endpoints against the deployed template, not display labels.
+3. **Given a keyword / operator / function** — explain its meaning, syntax, and a minimal example from the guide.
+4. **Read-only.** Do NOT optimize or rewrite. To author, optimize, or review a query, hand off to the `aql-authoring` skill.

@@ -93,8 +93,8 @@ Multi-step workflows (authoring, review, AQL, compositions) are driven by the **
 
 | Command | Description |
 |---------|-------------|
-| `/ckm-search [archetype\|template] <query>` | Find archetypes or templates in CKM |
-| `/openehr-explain <thing>` | Explain or look up any openEHR thing — archetype, template, RM/AM type, RM structural concept, ADL idiom, or terminology code (auto-detects) |
+| `/ckm-search [archetype\|template] <query>` | Find archetypes or templates in CKM (optional `rmClass` filter) |
+| `/openehr-explain <thing>` | Explain or look up any openEHR thing — archetype, template, RM/AM type, RM structural concept, ADL idiom, AQL query/keyword, or terminology code (auto-detects) |
 | `/semantic-diff <file-a> <file-b>` | Semantic diff of two artefacts (archetype or template); version-bump verdict or sibling/cross-artefact compatibility report |
 | `/archetype-fix-syntax <file>` | Fix ADL syntax errors preserving semantics |
 | `/template-from-form <form text or path>` | Map a clinical form to a template sketch (archetypes + narrowing) |

@@ -1,7 +1,7 @@
 ---
 name: ckm-search
 description: Search the openEHR Clinical Knowledge Manager (CKM) for archetypes or templates
-argument-hint: "[archetype|template] <search query>"
+argument-hint: "[archetype|template] <search query> [rm:<RM_CLASS>]"
 allowed-tools:
   - mcp__openehr-assistant__ckm_archetype_search
   - mcp__openehr-assistant__ckm_archetype_get
@@ -22,7 +22,7 @@ Search the openEHR Clinical Knowledge Manager for reusable archetypes or templat
    - If the query is ambiguous, ask 1-2 clarifying questions before searching.
    - Never invent CIDs, archetype IDs, or template metadata.
 2. Search:
-   - **Archetypes** → `ckm_archetype_search`. If recall is low, retry with broader or alternative phrasings (synonyms, drop qualifiers) — CKM matches against all search words.
+   - **Archetypes** → `ckm_archetype_search`. To scope to a structural class, pass the optional **`rmClass`** filter (e.g. `COMPOSITION`, `OBSERVATION`, `CLUSTER`) — surface it when the user wants only siblings of one RM type, or parses `rm:<RM_CLASS>` from `$ARGUMENTS`. If recall is low, retry with broader or alternative phrasings (synonyms, drop qualifiers) — CKM matches against all search words.
    - **Templates** → `ckm_template_search`.
 3. Present up to 15 candidates as a table:
    - Archetypes: CID, Archetype ID, RM Type, Version, Status — highlight published vs draft.

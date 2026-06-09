@@ -141,7 +141,7 @@ When users need deeper task-specific workflows, suggest the appropriate skill or
 - **Building compositions** -> composition-builder skill
 - **Writing AQL queries** -> aql-authoring skill
 - **Searching CKM** (archetypes or templates) -> `/ckm-search`
-- **Explaining or looking up** an archetype, template, RM/AM type, RM structural concept, ADL idiom, or terminology code -> `/openehr-explain`
+- **Explaining or looking up** an archetype, template, RM/AM type, RM structural concept, ADL idiom, AQL query/keyword, or terminology code -> `/openehr-explain`
 - **Browsing / finding an implementation guide** -> handle it here: `guide_search` to find it, `guide_get` to load it, then summarise (the guides are an agent-facing knowledge layer; no separate command needed)
 - **Comparing two artefacts** (version bump or sibling diff) -> `/semantic-diff`
 - **Fixing syntax** -> `/archetype-fix-syntax`

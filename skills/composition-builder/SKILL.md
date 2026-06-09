@@ -118,7 +118,8 @@ Use `type_specification_get` for detailed type structure when needed.
 | DV_CODED_TEXT | Coded values | `value`, `defining_code` (terminology_id + code_string) |
 | DV_QUANTITY | Measurements | `magnitude`, `units`, optionally `precision` |
 | DV_DATE_TIME | Timestamps | ISO 8601 value |
-| DV_ORDINAL | Ordered scales | `value` (integer), `symbol` (DV_CODED_TEXT) |
+| DV_ORDINAL | Ordered scales (integer steps) | `value` (integer), `symbol` (DV_CODED_TEXT) |
+| DV_SCALE | Rating scales with non-integer steps (RM ≥ 1.1.0) | `value` (real), `symbol` (DV_CODED_TEXT) |
 | DV_BOOLEAN | True/false | `value` |
 | DV_COUNT | Counts | `magnitude` |
 | DV_PROPORTION | Ratios/percentages | `numerator`, `denominator`, `type` |

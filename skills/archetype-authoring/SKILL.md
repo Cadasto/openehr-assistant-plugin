@@ -108,7 +108,7 @@ Examples:
 Use `guide_adl_idiom_lookup` for specific ADL constraint patterns:
 - Coded text constraints
 - Quantity ranges with units
-- Ordinal scales
+- Ordinal / rating scales — `DV_ORDINAL` for integer-only steps; **`DV_SCALE`** (RM ≥ 1.1.0) for non-integer steps (e.g. Borg CR10 0.5). See the `DV_SCALE` vs `DV_ORDINAL` idiom.
 - Date/time constraints
 - Slot definitions
 
@@ -142,66 +142,16 @@ When extending via specialization:
 - Preserve parent meaning — specialization narrows, never contradicts
 - Maintain transparent lineage in the archetype identifier
 
-## Step 7: Review & Remediate
+## Step 7: Review, remediate & write rationale
 
-The full review pipeline (this absorbs the former `/archetype-review` command). Run it when reviewing an archetype for quality, publication, or CKM submission. For a quick lint with no remediation, the `archetype-lint` skill (`/archetype-lint`) is the lighter entry point.
+When reviewing an archetype for quality, publication, or CKM submission, run the full pipeline. Stages at a glance: **intent & provenance → lint → remediate → review packet**, then optional **rationale prose**. Quick provenance note (advisory): if the file mirrors a published CKM archetype, editing it locally diverges from canonical and stales its `MD5-CAM` checksum — prefer contributing upstream; never a blocker. For a quick lint with no remediation, use the `archetype-lint` skill (`/archetype-lint`).
 
-### 7a. Intent & provenance
-- State the concept, the candidate ENTRY type, scope boundaries, and a **must-not-change list** (paths, at-codes, semantic anchors).
-- **Provenance check (advisory):** decide whether the file is a mirror of a published CKM archetype (matching id/revision). If so, note that editing it locally diverges from canonical, and its `MD5-CAM` checksum will no longer match — prefer contributing the change upstream in CKM. Surface this as a caveat; it does not block local work.
-- If the examples corpus holds the same archetype id, `examples_get` it and compare `uid`/revision to spot drift from the gold-standard.
-
-### 7b. Lint
-Apply the 22 normative lint rules — load `guide_get("archetypes/rules")` for the definitions (the `archetype-lint` skill runs this standalone). Also load:
-
-```
-guide_get("archetypes/checklist")
-guide_get("archetypes/anti-patterns")
-```
-
-Use `type_specification_get` to verify RM attribute names (rule 4). Output PASS/FAIL plus a violations table (severity, rule, explanation, suggested fix).
-
-### 7c. Remediate
-- **On FAIL (ERRORs):** produce a minimal-diff fix plan mapped to rule violations — for each fix, note whether it changes paths or semantics and the version-bump implication. Present the plan and wait for approval; then patch and re-lint (max ~3 iterations).
-- **On PASS with WARNING/INFO:** do not stop at "nothing to improve." Produce an advisory-remediation block — issue → suggested improvement → which fixes touch paths/semantics/checksums — without invoking the ERROR-only fix machinery. "Spot issues and suggest improvements" is a valid request even when the archetype passes.
-
-### 7d. Review packet (optional)
-For a CKM-style review, generate justifications for any unresolved warnings and questions for clinicians, alongside the rationale prose below.
-
-### 7e. Rationale prose (description / purpose / misuse / use)
-Draft CKM-quality rationale prose when the structure is stable but the prose is thin or missing (used late, pre-CKM-submission). Works on a workspace `.adl` or a CKM id (`ckm_archetype_get`).
-
-1. Load `guide_get("archetypes/principles")` and `guide_get("archetypes/language-standards")` for vocabulary.
-2. Ground the prose in the bound terminology: resolve **openEHR** codes with `terminology_resolve`; for **SNOMED CT / LOINC / ICD** bindings (which `terminology_resolve` does *not* cover — openEHR terminology only) read the rubric from the archetype's own `term_definitions` / `term_bindings` and do not fabricate an external preferred term.
-3. Match prose style to 1–2 published siblings of the same RM entry type (`ckm_archetype_get`); if a specific sibling id is blocked, fall back to any published archetype of that type.
-4. Draft each section: **description** (≤2 sentences — what is captured), **purpose** (2–3 sentences — why it exists), **misuse** (what it should NOT be used for, redirecting to siblings), **use** (concrete recording scenarios).
-
-These fields live under `description.details["<lang>"]` in ADL 1.4 (`misuse`/`use` are single newline-joined string values, not bullet arrays) — present a readable sketch but tell the user how it maps into ADL. Use consistent openEHR vocabulary ("record" not "capture", "clinical statement" not "entry"); keep British English; never invent clinical facts — leave a flagged `TODO: clinical input needed — <question>` where a section can't be grounded.
-
-Final checklist:
-- [ ] One concept per archetype
-- [ ] Correct RM type selected
-- [ ] Valid ADL 1.4 syntax
-- [ ] All at-codes defined in terminology section
-- [ ] Terminology bindings use semantic equivalence
-- [ ] Slot constraints are explicit
-- [ ] No anti-patterns present
-- [ ] Formatting follows conventions
+- Full pipeline (lint → fix-plan → patch → re-lint → review packet + checklist): **load [`references/review-remediate.md`](references/review-remediate.md)**.
+- Drafting description / purpose / misuse / use prose: **load [`references/rationale-prose.md`](references/rationale-prose.md)**.
 
 ## Step 8: Translate / add a locale
 
-Add or translate per-language text in an archetype's `ontology.term_definitions` for a target language (ISO 639-1, e.g. `nl`, `de`, `fr`). In ADL 1.4 translations live in the ontology block, not a separate top-level `terminology` section.
-
-1. Load `guide_get("archetypes/language-standards")` and any per-language guide (e.g. `guide_get("archetypes/language-standards-nl")`).
-2. Locate the source-language `term_definitions` (e.g. `["en"]`); `term_bindings` are language-independent and stay unchanged.
-3. Translate each at-code's `text` and `description` into clinically natural target-language wording — preserve clinical precision, flag uncertain terms for review, and reuse community terms where they already exist (via `ckm_archetype_get` / `examples_get`) rather than minting new ones.
-4. Insert the new locale **at the top of its block** (anchor on the block opener + its first child; ADL is **tab**-indented, not spaces) in three places: `language.translations`, `description.details`, and `ontology.term_definitions`.
-5. Verify (machine-checkable — base the "done" claim on it):
-   - **at-code parity** — source vs target term counts match (e.g. `en vs nl: 69 = 69`);
-   - **delimiter balance** — every `<` opened is closed across the inserted blocks;
-   - **untouched invariants** — no change to at-codes, occurrences/cardinalities, units, value sets, or `term_bindings` (a translation edits text only);
-   - **lint** — run the Step 7b lint pass and surface its summary; failures block "done".
-6. Advisory: editing makes `MD5-CAM`/`revision` stale — flag for upstream recomputation, never hand-fabricate. This never blocks producing the translation.
+To add or translate per-language text (`ontology.term_definitions`) for a target language, **load [`references/translation.md`](references/translation.md)** — it covers the three tab-sensitive insertion points and the at-code-parity verification gate. (Translations live in the ontology block in ADL 1.4, not a top-level `terminology` section.)
 
 ## Output
 
