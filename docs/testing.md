@@ -18,9 +18,11 @@ Install from your working copy (see [install.md](install.md)), then exercise the
 
   ```
   /ckm-search blood pressure               # CKM discovery (archetypes or templates)
-  /guide AQL syntax                        # guide browsing
-  /openehr-explain DV_QUANTITY             # type / archetype / idiom / terminology lookup
+  /openehr-explain DV_QUANTITY             # type / archetype / RM-concept / idiom / terminology lookup
+  /archetype-lint path/to/archetype.adl    # 22-rule validation
   ```
+
+  Guide browsing has no command — ask in natural language ("show me the AQL syntax guide") and the auto-invoked `openehr-assistant` skill loads it via `guide_search` / `guide_get`.
 
   If a command (or a dispatched subagent) reports an MCP tool "denied", that's a host permission-policy gap, not a missing server — add the `permissions.allow` snippet (see [install.md](install.md#subagents--mcp-permissions)).
 

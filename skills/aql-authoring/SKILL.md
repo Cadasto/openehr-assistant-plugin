@@ -1,5 +1,5 @@
 ---
-name: aql-query
+name: aql-authoring
 description: >
   This skill should be used when the user asks to "write an AQL query", "explain an AQL query",
   "optimize an AQL query", "review AQL", or "query openEHR data". Covers writing, explaining,

@@ -35,6 +35,6 @@ if [ ${#found[@]} -gt 0 ]; then
     echo "  - ${item}"
   done
   echo ""
-  echo "Commands: /ckm-search, /openehr-explain, /semantic-diff, /archetype-lint, /archetype-fix-syntax, /archetype-translate, /archetype-rationale, /archetype-impact, /template-from-form, /rm-structure, /guide"
-  echo "Skills (auto, or describe the task): archetype-authoring (incl. review), template-authoring, composition-builder, aql-query, demographic-modeling"
+  echo "Commands: /ckm-search, /openehr-explain, /semantic-diff, /archetype-lint, /archetype-fix-syntax, /archetype-translate, /archetype-impact, /template-from-form"
+  echo "Skills (auto, or describe the task): archetype-authoring (incl. review + rationale), template-authoring, composition-builder, aql-authoring, demographic-modeling, openehr-assistant (guides)"
 fi

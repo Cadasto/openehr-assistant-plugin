@@ -1,7 +1,7 @@
 ---
 name: openehr-explain
-description: One-stop router that explains or looks up any openEHR thing — auto-detects an archetype, a template, an RM/AM/BASE type, an ADL idiom, or a terminology code (replaces /archetype-explain, /template-explain, /type-spec, /adl-idiom, /terminology)
-argument-hint: "<archetype|template id-or-file | RM/AM type | ADL idiom | terminology code>"
+description: One-stop router that explains or looks up any openEHR thing — auto-detects an archetype, a template, an RM/AM/BASE type, an RM structural concept, an ADL idiom, or a terminology code (replaces /archetype-explain, /template-explain, /type-spec, /rm-structure, /adl-idiom, /terminology)
+argument-hint: "<archetype|template id-or-file | RM/AM type | RM structural concept | ADL idiom | terminology code>"
 allowed-tools:
   - mcp__openehr-assistant__ckm_archetype_get
   - mcp__openehr-assistant__ckm_template_get
@@ -31,6 +31,10 @@ Pick exactly one kind using these heuristics (first match wins):
 - **RM/AM/BASE type** — a single ALL-CAPS token in the openEHR type style: `DV_QUANTITY`,
   `COMPOSITION`, `OBSERVATION`, `ELEMENT`, `C_ATTRIBUTE`. Underscores and a leading `DV_`/`C_`
   are strong signals; no version, no path.
+- **RM structural concept** — how the model is *structured* rather than one class: e.g.
+  "composition categories", "ISM states", "versioning", "PARTY hierarchy", "identities vs
+  identifiers", "privacy / EHR–demographic separation"; often prefixed with a domain
+  (`ehr` / `demographic`). Distinguish from a bare class token (that's an RM/AM type).
 - **ADL idiom / pattern** — phrasing about *how to constrain*: "coded text constraint",
   "ordinal scale", "quantity range", "slot", "how do I constrain …", "what's the ADL for …".
 - **Terminology** — an openEHR terminology code/term, a `local::`/`at####` code, a known
@@ -94,3 +98,11 @@ could be a type or a terminology rubric), ask **one** brief clarifying question,
    - Terminology ID (e.g. `openehr`, SNOMED-CT, LOINC)
    - Related codes or value sets
    - Whether it is a group or codeset, its purpose in openEHR, and clinical usage context
+
+### F. RM structural concept  (`guide_get("specs/rm-ehr" | "specs/rm-demographic")` + `type_specification_get`)
+1. Determine the domain — `ehr` or `demographic`. If not given, infer from the concept (e.g. "composition" → ehr, "party" → demographic) and state the inference up front.
+2. Load the RM digest: `guide_get("specs/rm-ehr")` or `guide_get("specs/rm-demographic")`.
+3. Use `type_specification_get` for class-level detail (attributes, functions, invariants) when the user needs it.
+4. Output: definition & purpose; key components/states (tables/trees where apt); relation to other RM structures (and the other domain where relevant); practical implications for modelling, querying, or deployment.
+   - Concept areas — **ehr**: ehr-parts, composition-categories, entry-types, ISM states, time, versioning, cross-cutting (`LOCATABLE`/`PARTY_PROXY`). **demographic**: party-hierarchy, roles, identities (`PARTY_IDENTITY` vs `PARTY.details`), relationships, privacy, versioning, archetyping.
+   - For broader `specs/` sub-domains (Common, Data Structures, Data Types, Integration, EHR Extract), point the user to `guide_get("specs/<component>-<doc>")`.

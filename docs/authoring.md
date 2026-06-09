@@ -5,7 +5,7 @@ The detailed companion to [AGENTS.md](../AGENTS.md) and [CONTRIBUTING.md](../CON
 ## Naming
 
 - **Plugin name**: `openehr-assistant` — Claude Code plugin names live in a flat global namespace, so the descriptive name disambiguates it from the maintainer `openehr-assistant-dev` plugin.
-- **Skill / command / agent names**: terse activity nouns (e.g. `archetype-authoring`, `aql-query`, `clinical-modeler`). Skills are namespaced as `<plugin>:<skill>` (`openehr-assistant:archetype-authoring`), so don't repeat the plugin's words in a component name. A component's frontmatter `name` **must** equal its directory (skills) or filename stem (commands/agents) — `scripts/validate.py` enforces this.
+- **Skill / command / agent names**: terse activity nouns (e.g. `archetype-authoring`, `aql-authoring`, `clinical-modeler`). Skills are namespaced as `<plugin>:<skill>` (`openehr-assistant:archetype-authoring`), so don't repeat the plugin's words in a component name. A component's frontmatter `name` **must** equal its directory (skills) or filename stem (commands/agents) — `scripts/validate.py` enforces this.
 
 ## Layout
 

@@ -2,9 +2,10 @@
 name: archetype-authoring
 description: >
   This skill should be used when the user asks to "create an archetype", "edit an archetype",
-  "extend an archetype", "specialize an archetype", "design an archetype", or "review / remediate
-  an archetype" (including the full intent -> lint -> fix -> re-lint review pipeline). Covers
-  creating, editing, specializing, reviewing, and remediating openEHR archetypes, and importing a
+  "extend an archetype", "specialize an archetype", "design an archetype", "review / remediate
+  an archetype" (the full intent -> lint -> fix -> re-lint pipeline), or "write the rationale
+  (description / purpose / misuse / use)" for one. Covers creating, editing, specializing,
+  reviewing, remediating, and writing rationale prose for openEHR archetypes, and importing a
   CKM archetype into the workspace for reuse. To merely explain an existing archetype with no
   edits, use the `/openehr-explain` command instead.
 argument-hint: "<task: create|edit|extend|specialize> [archetype-id or concept]"
@@ -167,7 +168,17 @@ Use `type_specification_get` to verify RM attribute names (rule 4). Output PASS/
 - **On PASS with WARNING/INFO:** do not stop at "nothing to improve." Produce an advisory-remediation block — issue → suggested improvement → which fixes touch paths/semantics/checksums — without invoking the ERROR-only fix machinery. "Spot issues and suggest improvements" is a valid request even when the archetype passes.
 
 ### 7d. Review packet (optional)
-For a CKM-style review, generate Purpose/Use/Misuse prose suggestions, rationale for key modelling decisions, justifications for any unresolved warnings, and questions for clinicians.
+For a CKM-style review, generate justifications for any unresolved warnings and questions for clinicians, alongside the rationale prose below.
+
+### 7e. Rationale prose (description / purpose / misuse / use)
+Draft CKM-quality rationale prose when the structure is stable but the prose is thin or missing (used late, pre-CKM-submission). Works on a workspace `.adl` or a CKM id (`ckm_archetype_get`).
+
+1. Load `guide_get("archetypes/principles")` and `guide_get("archetypes/language-standards")` for vocabulary.
+2. Ground the prose in the bound terminology: resolve **openEHR** codes with `terminology_resolve`; for **SNOMED CT / LOINC / ICD** bindings (which `terminology_resolve` does *not* cover — openEHR terminology only) read the rubric from the archetype's own `term_definitions` / `term_bindings` and do not fabricate an external preferred term.
+3. Match prose style to 1–2 published siblings of the same RM entry type (`ckm_archetype_get`); if a specific sibling id is blocked, fall back to any published archetype of that type.
+4. Draft each section: **description** (≤2 sentences — what is captured), **purpose** (2–3 sentences — why it exists), **misuse** (what it should NOT be used for, redirecting to siblings), **use** (concrete recording scenarios).
+
+These fields live under `description.details["<lang>"]` in ADL 1.4 (`misuse`/`use` are single newline-joined string values, not bullet arrays) — present a readable sketch but tell the user how it maps into ADL. Use consistent openEHR vocabulary ("record" not "capture", "clinical statement" not "entry"); keep British English; never invent clinical facts — leave a flagged `TODO: clinical input needed — <question>` where a section can't be grounded.
 
 Final checklist:
 - [ ] One concept per archetype

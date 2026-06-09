@@ -11,4 +11,4 @@ When the workspace involves openEHR (archetypes, templates, AQL, ADL, CKM, compo
 
 1. **Guide-first**: Load relevant implementation guides from the openEHR Assistant MCP server (`guide_search` / `guide_get`) before creating or editing archetypes, templates, AQL, or composition formats.
 2. **MCP tools**: Use `mcp__openehr-assistant__*` tools for CKM search, guide access, terminology, type specs, ADL idioms, and curated examples as needed.
-3. **Slash commands**: Prefer openEHR Assistant commands when they fit the task (e.g. `/ckm-search`, `/openehr-explain`, `/guide`, `/archetype-lint`); they encode guide-first workflows.
+3. **Slash commands**: Prefer openEHR Assistant commands when they fit the task (e.g. `/ckm-search`, `/openehr-explain`, `/semantic-diff`, `/archetype-lint`); they encode guide-first workflows.

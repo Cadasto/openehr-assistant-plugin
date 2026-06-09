@@ -67,28 +67,25 @@ For spec overview questions ("what does the EHR IM define?", "summarise ADL2"), 
 ### Skills (7)
 | Skill | Purpose |
 |-------|---------|
-| `openehr-assistant` | Auto-invoked openEHR awareness, clinical modeling (template design, archetype selection, constraint specification, terminology binding, model review), and tool routing |
-| `archetype-authoring` | Create, edit, extend, specialize archetypes; CKM-import for reuse; full **review & remediate** pipeline (intent → lint → fix → re-lint → packet; absorbs the former `/archetype-review`) |
+| `openehr-assistant` | Auto-invoked openEHR awareness, clinical modeling, **guide browsing** (`guide_search`/`guide_get`), and tool routing |
+| `archetype-authoring` | Create, edit, extend, specialize archetypes; CKM-import for reuse; **review & remediate** pipeline (absorbs `/archetype-review`); **rationale prose** (description/purpose/misuse/use; absorbs `/archetype-rationale`) |
 | `archetype-lint` | Auto-invoked archetype validation with 22 normative lint rules (STRICT/PERMISSIVE) |
 | `template-authoring` | Create and constrain templates (OET/OPT) |
 | `composition-builder` | Build compositions (FLAT/STRUCTURED/CANONICAL) |
-| `aql-query` | Write, explain, optimize AQL queries |
+| `aql-authoring` | Write, explain, optimize AQL queries |
 | `demographic-modeling` | Design demographic models (PARTY hierarchy, roles, relationships, identity patterns) |
 
-### Commands (11)
-A deliberately small slash surface — multi-step workflows live in the **skills** (which auto-trigger); commands are explicit one-shots. Several former commands were merged (search/explain/lookups/diffs) or folded into skills (`/aql-designer`→`aql-query`, `/format-data`→`composition-builder`, `/archetype-review`→`archetype-authoring`).
+### Commands (8)
+A deliberately small slash surface — multi-step workflows live in the **skills** (which auto-trigger); commands are explicit one-shots. Former commands were merged (search/explain/lookups/diffs) or folded into skills (`/aql-designer`→`aql-authoring`, `/format-data`→`composition-builder`, `/archetype-review` + `/archetype-rationale`→`archetype-authoring`, `/rm-structure`→`/openehr-explain`, `/guide`→`openehr-assistant` skill).
 
 | Command | Purpose |
 |---------|---------|
 | `/ckm-search` | Find CKM **archetypes or templates** (`[archetype\|template] <query>`) — merges `/archetype-search` + `/template-search` |
-| `/openehr-explain` | Explain / look up **any** openEHR thing — archetype, template, RM/AM type, ADL idiom, or terminology code (auto-detects) — merges `/archetype-explain`, `/template-explain`, `/type-spec`, `/adl-idiom`, `/terminology` |
+| `/openehr-explain` | Explain / look up **any** openEHR thing — archetype, template, RM/AM type, **RM structural concept**, ADL idiom, or terminology code (auto-detects) — merges `/archetype-explain`, `/template-explain`, `/type-spec`, `/rm-structure`, `/adl-idiom`, `/terminology` |
 | `/semantic-diff` | Semantic diff of two artefacts — archetype or template, version-bump **or** sibling/cross-artefact mode with a path-compatibility table — merges `/archetype-diff` + `/template-diff` |
 | `/archetype-lint` | Lint archetype against 22 normative rules |
-| `/rm-structure` | Explain RM structural concepts in a domain (ehr or demographic) — composition categories, ISM states, time, versioning, PARTY hierarchy, identities, privacy |
-| `/guide` | Browse openEHR implementation guides |
 | `/archetype-fix-syntax` | Fix ADL syntax |
 | `/archetype-translate` | Add/translate archetype language (with at-code-parity verification) |
-| `/archetype-rationale` | Generate CKM-quality rationale prose (description, purpose, misuse, use) |
 | `/template-from-form` | Map a clinical form to a template sketch (archetypes + narrowing) |
 | `/archetype-impact` | Scan workspace for references to an archetype across templates (`.oet`/`.opt`/`.t.json`), parent `.adl` slots, and AQL |
 

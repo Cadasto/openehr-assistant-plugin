@@ -139,15 +139,14 @@ When users need deeper task-specific workflows, suggest the appropriate skill or
 - **Creating/editing archetypes** -> archetype-authoring skill
 - **Creating templates** -> template-authoring skill
 - **Building compositions** -> composition-builder skill
-- **Writing AQL queries** -> aql-query skill
+- **Writing AQL queries** -> aql-authoring skill
 - **Searching CKM** (archetypes or templates) -> `/ckm-search`
-- **Explaining or looking up** an archetype, template, RM/AM type, ADL idiom, or terminology code -> `/openehr-explain`
-- **Browsing implementation guides** -> `/guide`
+- **Explaining or looking up** an archetype, template, RM/AM type, RM structural concept, ADL idiom, or terminology code -> `/openehr-explain`
+- **Browsing / finding an implementation guide** -> handle it here: `guide_search` to find it, `guide_get` to load it, then summarise (the guides are an agent-facing knowledge layer; no separate command needed)
 - **Comparing two artefacts** (version bump or sibling diff) -> `/semantic-diff`
 - **Fixing syntax** -> `/archetype-fix-syntax`
 - **Translations** -> `/archetype-translate`
 - **Demographic modeling** -> demographic-modeling skill
 - **Platform / REST service integration** -> consult `guide_get("specs/sm-openehr_platform")` and `guide_get("specs/its-rest-api")`
-- **RM structure lookups** (EHR or demographic domain) -> `/rm-structure`
 - **Deep spec research** (precise attribute/function/invariant questions; cross-document reconciliation) -> dispatch the `spec-researcher` agent
 - **Curated worked examples** (AQL queries, FLAT/STRUCTURED payloads, reference archetypes) -> `examples_search` / `examples_get` MCP tools; resources at `openehr://examples/{kind}/{name}`
