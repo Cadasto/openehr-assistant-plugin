@@ -9,6 +9,10 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-06-09
+
+Surface consolidation and quality pass: the slash-command surface drops from **20 to 6** (multi-step workflows now live in the skills, which auto-trigger), agent MCP-access is fixed, authoring skills gain improvements distilled from real modelling sessions, and the plugin is aligned with `openehr-assistant-mcp` **v0.19.0**. Removing/renaming commands and a skill is technically breaking; kept in the 0.x line.
+
 ### Added
 - Commands `/ckm-search`, `/openehr-explain`, `/semantic-diff` — unified/merged slash commands (see Changed); `/semantic-diff` adds a sibling / cross-artefact mode with a path-compatibility table.
 - `.claude/settings.json` `permissions.allow` for the openEHR Assistant MCP server so subagents aren't silently denied CKM/guide/terminology access; documented in `docs/install.md` (Subagents & MCP permissions).
