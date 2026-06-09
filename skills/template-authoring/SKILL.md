@@ -154,5 +154,5 @@ Verify:
 Generate valid OET files. Use the Write tool to create `.oet` files in the appropriate project location.
 
 ### Identifiers and checksums
-- A new template needs a fresh `uid`. Generate one portably: `uuidgen`, else `cat /proc/sys/kernel/random/uuid`, else `python3 -c 'import uuid; print(uuid.uuid4())'`.
+- A new template needs a fresh `uid` — mint a random UUID (v4). If a shell is available, `uuidgen` (or `python3 -c 'import uuid; print(uuid.uuid4())'`) works; otherwise generate the UUID directly (this skill has no `Bash` tool, so don't assume shell access).
 - Do not hand-write build checksums (`MD5-CAM-*`, `build_uid`) — they are tool-computed; a missing/stale checksum is advisory and never blocks authoring the OET.

@@ -156,7 +156,7 @@ After updating the version pointer in step 1:
 2. Sync any changed files (keep the “English-only, translations stripped” convention documented in `skills/openehr-assistant/examples/README.md`).
 3. Update the `**Synced from:**` line in `skills/openehr-assistant/examples/README.md` to the new MCP version.
 
-Do not bundle the other example kinds (`aql`, `flat`, `structured`) — their consumers (main-session skills such as `aql-query`, `composition-builder`) retrieve via MCP’s `examples_search` / `examples_get` on demand, so bundling would only add drift risk without offline value.
+Do not bundle the other example kinds (`aql`, `flat`, `structured`) — their consumers (main-session skills such as `aql-authoring`, `composition-builder`) retrieve via MCP’s `examples_search` / `examples_get` on demand, so bundling would only add drift risk without offline value.
 
 
 ## Testing locally

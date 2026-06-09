@@ -1,15 +1,12 @@
 ---
 name: archetype-authoring
 description: >
-  This skill should be used when the user asks to "create an archetype", "edit an archetype",
-  "extend an archetype", "specialize an archetype", "design an archetype", "review / remediate
-  an archetype" (the full intent -> lint -> fix -> re-lint pipeline), "write the rationale
-  (description / purpose / misuse / use)" for one, or "translate / localise an archetype (add a
-  language)". Covers creating, editing, specializing, reviewing, remediating, writing rationale
-  prose for, and translating openEHR archetypes, plus importing a CKM archetype into the
-  workspace for reuse. To merely explain an existing archetype with no edits, use the
-  `/openehr-explain` command instead.
-argument-hint: "<task: create|edit|extend|specialize> [archetype-id or concept]"
+  This skill should be used when the user asks to "create", "edit", "specialize",
+  "review / remediate", "write the rationale for", or "translate / localise" an openEHR
+  archetype, or to import a CKM archetype into the workspace for reuse. It covers the full
+  author → review (lint → fix → re-lint) → rationale → translate lifecycle. To merely explain
+  an existing archetype with no edits, use `/openehr-explain` instead.
+argument-hint: "<task: create|edit|specialize|review|rationale|translate|import> [archetype-id or concept]"
 allowed-tools:
   - Read
   - Glob
@@ -82,7 +79,7 @@ A reused file keeps its published `uid`/checksums; do not alter them.
 ## Step 3: Concept Design
 
 ### One Concept Per Archetype
-Each archetype represents exactly one clinical concept. If you find yourself modeling multiple independent ideas, split into separate archetypes connected via slots.
+Each archetype represents exactly one clinical concept. When multiple independent ideas appear, split into separate archetypes connected via slots.
 
 ### RM Entry Type Selection
 Choose the correct Reference Model entry type:
@@ -127,7 +124,7 @@ Use `guide_adl_idiom_lookup` for specific ADL constraint patterns:
 - Design for international use — avoid locale-specific assumptions
 
 ### Identifiers and checksums
-- A new archetype needs a fresh `uid`. Generate one portably: `uuidgen`, else `cat /proc/sys/kernel/random/uuid`, else `python3 -c 'import uuid; print(uuid.uuid4())'`.
+- A new archetype needs a fresh `uid` — mint a random UUID (v4). If a shell is available, `uuidgen` (or `python3 -c 'import uuid; print(uuid.uuid4())'`) works; otherwise generate the UUID directly (this skill has no `Bash` tool, so don't assume shell access).
 - **Do not hand-write build checksums** (`MD5-CAM-*`, `build_uid`) — they are tool-computed by CKM/ADL tooling. If you edit a published archetype, its checksum simply becomes stale: note that for upstream recomputation rather than inventing a value. This is advisory, not a blocker — a missing/stale checksum never stops local authoring.
 
 ## Step 5: Editing Existing Archetypes

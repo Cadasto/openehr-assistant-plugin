@@ -18,7 +18,7 @@ allowed-tools:
   - mcp__openehr-assistant__examples_get
 ---
 
-# AQL Query Authoring
+# AQL Authoring
 
 > The inline syntax below is a quick crib. The `aql/syntax` guide loaded in Step 1 is authoritative — if they ever disagree, follow the guide.
 

@@ -4,8 +4,9 @@ description: >
   This skill should be used when the user asks to "lint an archetype", "validate an archetype",
   "check archetype compliance", "review archetype quality", or "run archetype rules". Applies
   22 normative lint rules with ERROR/WARNING/INFO severity. Supports STRICT and PERMISSIVE modes.
-  Reports violations only — it does not modify files. Auto-invoked on lint/validate intent, and
-  also directly invocable as `/archetype-lint <file or id> [strict]`.
+  Reports violations only — it does not modify files; to lint *and* remediate, use the
+  `archetype-authoring` skill. Auto-invoked on lint/validate intent, and also directly invocable
+  as `/archetype-lint <file or id> [strict]`.
 allowed-tools:
   - Read
   - Glob
