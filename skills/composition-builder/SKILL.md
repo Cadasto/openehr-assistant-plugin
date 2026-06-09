@@ -5,7 +5,7 @@ description: >
   "validate a composition", "convert a composition", or "generate FLAT/STRUCTURED/CANONICAL format".
   Covers building openEHR compositions in all simplified formats and guiding their validation and
   format conversion (against a target template; there is no automated validator/converter tool).
-  For a quick format explanation or single-payload sketch, use the `/format-data` command instead.
+  Also handles quick format explanations and single-payload sketches directly.
 argument-hint: "<template-id> [format: flat|structured|canonical]"
 allowed-tools:
   - Read
@@ -118,7 +118,8 @@ Use `type_specification_get` for detailed type structure when needed.
 | DV_CODED_TEXT | Coded values | `value`, `defining_code` (terminology_id + code_string) |
 | DV_QUANTITY | Measurements | `magnitude`, `units`, optionally `precision` |
 | DV_DATE_TIME | Timestamps | ISO 8601 value |
-| DV_ORDINAL | Ordered scales | `value` (integer), `symbol` (DV_CODED_TEXT) |
+| DV_ORDINAL | Ordered scales (integer steps) | `value` (integer), `symbol` (DV_CODED_TEXT) |
+| DV_SCALE | Rating scales with non-integer steps (RM ≥ 1.1.0) | `value` (real), `symbol` (DV_CODED_TEXT) |
 | DV_BOOLEAN | True/false | `value` |
 | DV_COUNT | Counts | `magnitude` |
 | DV_PROPORTION | Ratios/percentages | `numerator`, `denominator`, `type` |

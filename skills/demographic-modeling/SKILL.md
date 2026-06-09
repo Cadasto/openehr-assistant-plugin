@@ -5,7 +5,9 @@ description: >
   "model a person/organisation/role", "design party relationships",
   "plan identity structures", or "work with demographic archetypes".
   Covers designing openEHR demographic models using the PARTY hierarchy,
-  roles, capabilities, relationships, and identity patterns.
+  roles, capabilities, relationships, and identity patterns. For clinical EHR
+  archetypes (OBSERVATION/EVALUATION/etc.) use `archetype-authoring`; this skill
+  owns the demographic PARTY model.
 argument-hint: "<task: design|review> [entity type or use-case]"
 allowed-tools:
   - Read

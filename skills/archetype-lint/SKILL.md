@@ -4,8 +4,9 @@ description: >
   This skill should be used when the user asks to "lint an archetype", "validate an archetype",
   "check archetype compliance", "review archetype quality", or "run archetype rules". Applies
   22 normative lint rules with ERROR/WARNING/INFO severity. Supports STRICT and PERMISSIVE modes.
-  Reports violations only — it does not modify files. The `/archetype-lint` command is the quick
-  one-shot equivalent on a file path or CKM id.
+  Reports violations only — it does not modify files; to lint *and* remediate, use the
+  `archetype-authoring` skill. Auto-invoked on lint/validate intent, and also directly invocable
+  as `/archetype-lint <file or id> [strict]`.
 allowed-tools:
   - Read
   - Glob
@@ -68,6 +69,10 @@ The **normative rule definitions live in the `archetypes/rules` guide loaded in 
 For rule 4, verify attribute names against the RM with `type_specification_get` when uncertain.
 
 > Offline fallback only: `skills/openehr-assistant/reference/lint-rules-complete.md` mirrors these definitions for the `clinical-modeler` agent (no MCP access). In the main session, always prefer the loaded `archetypes/rules` guide.
+
+### Avoid known false positives
+
+- **`ITEM_TREE.items {0..*}` is idiomatic** — the established CKM convention for container attributes (e.g. the published `ecg_result.v1`). Do **not** flag it under rule 9 / structural-constraints when at least one contained ELEMENT is mandatory; reserve a finding for genuinely empty or all-optional containers. Flagging idiomatic `items {0..*}` is noise.
 
 ## Step 4: Generate Report
 

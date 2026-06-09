@@ -4,7 +4,7 @@
 [![Version](https://img.shields.io/badge/version-0.7.0-blue)](CHANGELOG.md)
 [![Claude Code](https://img.shields.io/badge/Claude_Code-plugin-D97757?logo=anthropic&logoColor=white)](https://claude.ai/code)
 [![Cursor](https://img.shields.io/badge/Cursor-plugin-000?logo=cursor&logoColor=white)](https://cursor.com)
-[![openehr-assistant-mcp](https://img.shields.io/badge/openehr--assistant--mcp-v0.18.0-brightgreen)](https://github.com/cadasto/openehr-assistant-mcp)
+[![openehr-assistant-mcp](https://img.shields.io/badge/openehr--assistant--mcp-v0.19.0-brightgreen)](https://github.com/cadasto/openehr-assistant-mcp)
 [![openEHR](https://img.shields.io/badge/openEHR-compatible-009688)](https://openehr.org)
 [![Keep a Changelog](https://img.shields.io/badge/Keep%20a%20Changelog-1.1.0-E05735)](CHANGELOG.md)
 
@@ -69,6 +69,8 @@ For **server installation, transports (streamable-http vs stdio), and client-spe
 
 Environment variables (e.g. `CKM_API_BASE_URL`) and Docker/stdio details are documented in the [MCP server README](https://github.com/cadasto/openehr-assistant-mcp).
 
+> **One server, not two.** This plugin bundles its own `.mcp.json`, so it provides the `openehr-assistant` MCP server itself — prefer that. If you *also* added an `openehr-assistant` connector at claude.ai, the same tools appear twice (under a `claude_ai` namespace and the plugin's); that duplicate is optional. If a subagent reports CKM/guide tools "denied", it's a permission-policy gap, not a missing server — see the `permissions.allow` snippet in [`.claude/settings.json`](.claude/settings.json) and [docs/install.md](docs/install.md).
+
 ---
 
 ## Components
@@ -77,44 +79,34 @@ Environment variables (e.g. `CKM_API_BASE_URL`) and Docker/stdio details are doc
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
-| `archetype-authoring` | Creating/editing archetypes | Multi-step archetype authoring with guide-first approach |
+| `archetype-authoring` | Creating/editing/reviewing/translating archetypes | Authoring, review & remediate, rationale prose, translation, CKM-import — guide-first |
 | `archetype-lint` | Reviewing/validating archetypes | 22 normative lint rules with STRICT/PERMISSIVE modes |
 | `template-authoring` | Creating/reviewing templates | Template design with CGEM framework and narrowing principle |
 | `composition-builder` | Building compositions | FLAT/STRUCTURED/CANONICAL format generation |
-| `aql-query` | Writing AQL queries | Query authoring with optimization guidance |
+| `aql-authoring` | Writing AQL queries | Query authoring, explanation, and optimization |
 | `demographic-modeling` | Designing demographic models | PARTY hierarchy, roles, relationships, identity patterns |
-| `openehr-assistant` | Any openEHR mention | Clinical modeling and tool routing |
+| `openehr-assistant` | Any openEHR mention | Clinical modeling, guide browsing, and tool routing |
 
 ### Commands
 
+Multi-step workflows (authoring, review, AQL, compositions) are driven by the **skills** above, which auto-trigger from natural language. Commands are a small set of explicit one-shots:
+
 | Command | Description |
 |---------|-------------|
-| `/archetype-search <query>` | Find archetypes in CKM |
-| `/archetype-explain <id>` | Explain archetype semantics and structure |
-| `/archetype-lint <file or id> [strict]` | Lint archetype against 22 normative rules |
-| `/archetype-review <file or id> [strict]` | Multi-stage review pipeline (intent, lint, fix, re-lint, review packet) |
-| `/template-search <query>` | Find templates in CKM |
-| `/template-explain <id>` | Explain template semantics and structure |
-| `/aql-designer <question or query>` | Explain, design, or review AQL queries |
-| `/format-data <template or question>` | Explain or design openEHR data instances (FLAT/STRUCTURED/CANONICAL) based on a template |
-| `/rm-structure <domain> <concept>` | Explain RM structural concepts in a given domain (`ehr` or `demographic`) — composition categories, ISM states, time, versioning, PARTY hierarchy, identities, privacy |
-| `/guide <topic>` | Browse openEHR implementation guides |
-| `/terminology <code or term>` | Resolve terminology IDs and rubrics |
-| `/type-spec <type name>` | Look up RM/AM/BASE type specifications |
-| `/adl-idiom <pattern>` | Quick ADL constraint pattern lookup |
+| `/ckm-search [archetype\|template] <query>` | Find archetypes or templates in CKM (optional `rmClass` filter) |
+| `/openehr-explain <thing>` | Explain or look up any openEHR thing — archetype, template, RM/AM type, RM structural concept, ADL idiom, AQL query/keyword, or terminology code (auto-detects) |
+| `/semantic-diff <file-a> <file-b>` | Semantic diff of two artefacts (archetype or template); version-bump verdict or sibling/cross-artefact compatibility report |
 | `/archetype-fix-syntax <file>` | Fix ADL syntax errors preserving semantics |
-| `/archetype-translate <file> <lang>` | Add/translate archetype language entries |
-| `/archetype-rationale <file or id> [--section]` | Generate CKM-quality rationale prose (description, purpose, misuse, use) |
 | `/template-from-form <form text or path>` | Map a clinical form to a template sketch (archetypes + narrowing) |
-| `/archetype-impact <archetype-id>` | Scan workspace for all references to an archetype (templates, AQL) |
-| `/archetype-diff <file-a> <file-b>` | Semantic diff between two archetypes; version-bump classification |
-| `/template-diff <file-a> <file-b>` | Semantic diff between two templates; version-bump classification |
+| `/archetype-impact <archetype-id>` | Scan workspace for references to an archetype (templates incl. `.t.json`, parent `.adl` slots, AQL) |
+
+> Creating/editing/reviewing archetypes (incl. **rationale prose** and **translation**), linting, authoring templates, building compositions, writing AQL, and **browsing guides** are handled by the matching **skill** (no command needed) — just describe the task.
 
 ### Agents
 
 | Agent | Description |
 |-------|-------------|
-| `clinical-modeler` | Local clinical model file analyst for reading, writing, reviewing, and editing archetype/template files in the workspace |
+| `clinical-modeler` | Local clinical-model file analyst (read/write/review/edit `.adl`/`.oet`/`.opt`). Writes locally; has read-only MCP lookups (terminology, type specs, guides, single CKM fetch) with offline fallback |
 | `ckm-scout` | CKM reuse-search specialist — parallel searches, ranked recommendation |
 | `spec-researcher` | Spec research specialist using llms.txt/.md twin methodology |
 
@@ -129,7 +121,7 @@ The [openehr-assistant-mcp](https://github.com/cadasto/openehr-assistant-mcp) se
 - Implementation guides across six categories: `archetypes/`, `templates/`, `aql/`, `simplified_formats/`, `specs/` (openEHR specification digests tracking the `development` branch), and `howto/` (toolchain how-tos)
 - Curated worked examples at `openehr://examples/{kind}/{name}` — AQL, FLAT, STRUCTURED payloads, and CKM-published reference `.adl` archetypes
 
-**Compatibility:** This plugin version is built and tested against **openehr-assistant-mcp v0.18.0** ([releases](https://github.com/cadasto/openehr-assistant-mcp/releases)). When updating the plugin, align with that server’s changelog so each plugin release stays compatible with a specific MCP server version.
+**Compatibility:** This plugin version is built and tested against **openehr-assistant-mcp v0.19.0** ([releases](https://github.com/cadasto/openehr-assistant-mcp/releases)). When updating the plugin, align with that server’s changelog so each plugin release stays compatible with a specific MCP server version.
 
 Offline reference material in [`skills/openehr-assistant/reference/`](skills/openehr-assistant/reference/) includes a quick-reference (principles, rules, guide index), minimal ADL and AQL syntax cheatsheets, and an RM type reference (~30 commonly archetyped types with attributes for local lint rule 4 validation); see [AGENTS.md](AGENTS.md) (Syntax and grammar sources) for links to official specs and grammars.
 

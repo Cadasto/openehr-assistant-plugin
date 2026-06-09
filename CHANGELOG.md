@@ -9,8 +9,24 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 
 ## [Unreleased]
 
+### Added
+- Commands `/ckm-search`, `/openehr-explain`, `/semantic-diff` — unified/merged slash commands (see Changed); `/semantic-diff` adds a sibling / cross-artefact mode with a path-compatibility table.
+- `.claude/settings.json` `permissions.allow` for the openEHR Assistant MCP server so subagents aren't silently denied CKM/guide/terminology access; documented in `docs/install.md` (Subagents & MCP permissions).
+
 ### Changed
-- MCP compatibility: aligned with `openehr-assistant-mcp` **v0.18.0** — no plugin-facing tool changes (server-side: `enum`-constrained tool params, CKM search scoring retune, transport Host-header fix); `allowed-tools` ids and the bundled archetype corpus unchanged.
+- **Slash-command surface reduced 20 → 6.** Merged search (`/archetype-search` + `/template-search` → `/ckm-search`), explain/lookup (`/archetype-explain` + `/template-explain` + `/type-spec` + `/rm-structure` + `/adl-idiom` + `/terminology` → `/openehr-explain`), and diff (`/archetype-diff` + `/template-diff` → `/semantic-diff`). Dropped commands that duplicated a skill: `/aql-designer` → `aql-authoring`, `/format-data` → `composition-builder`, `/archetype-review` + `/archetype-rationale` + `/archetype-translate` → `archetype-authoring`, `/guide` → `openehr-assistant`, and `/archetype-lint` → the user-invocable `archetype-lint` skill (same name; `/archetype-lint` still resolves to it). Remaining commands: `/ckm-search`, `/openehr-explain`, `/semantic-diff`, `/archetype-fix-syntax`, `/archetype-impact`, `/template-from-form`.
+- **Skill renamed** `aql-query` → `aql-authoring` (consistency with the `*-authoring` family).
+- Agent `clinical-modeler`: granted **read-only** MCP lookups (terminology, type specs, guides, single CKM fetch) with offline-corpus fallback; previously local-only.
+- Commands/skills: `/archetype-impact` globs `*.t.json` + parent `.adl` slots; `archetype-lint` adds the `ITEM_TREE.items {0..*}` false-positive note; `template-authoring` gains an OET-emitting path + UID note; `archetype-authoring` gains CKM-import-for-reuse, the folded review pipeline, rationale-prose drafting (incl. the openEHR-only `terminology_resolve` limit), and translation (at-code-parity verification + tab-sensitive edit mechanics); `openehr-assistant` gains guide browsing.
+- MCP compatibility: aligned with `openehr-assistant-mcp` **v0.19.0** — additive server-side only (optional `rmClass` filter on `ckm_archetype_search`, tool titles/behaviour annotations, improved CKM recall/ranking, new `templates/serialization-formats` + `archetypes/language-standards-nl` guides, `DV_SCALE` idiom, lint-rule refinements); no plugin-facing tool-id changes, `allowed-tools` and the bundled archetype corpus unchanged.
+- Docs: AGENTS.md / README gotchas for subagent MCP permissions, named MCP params, and deferred-schema preload; `MD5-CAM` demoted to an advisory note (never a blocking requirement).
+- `/openehr-explain`: added an **AQL** branch (explain a query or an AQL keyword/operator, read-only); authoring/optimizing a query stays in the `aql-authoring` skill.
+- Adopted v0.19.0 capabilities: `/ckm-search` and `ckm-scout` use the optional **`rmClass`** filter to scope to structural siblings; `template-authoring` references the new `templates/serialization-formats` guide; `archetype-authoring` + `composition-builder` reference the **`DV_SCALE`** vs `DV_ORDINAL` rating-scale idiom.
+- `archetype-authoring`: progressive disclosure — moved the review/remediate, rationale-prose, and translation procedures to `references/` (lean body + summaries/pointers inline); de-bloated the description; reworded the UID note to not imply a `Bash` tool.
+- Skill quality pass: anti-triggers on `archetype-lint` (lint vs lint+remediate) and `demographic-modeling` (PARTY vs clinical EHR); `aql-authoring` body title + `/openehr-explain` boundary.
+
+### Fixed
+- Agents `ckm-scout` / `spec-researcher` / `clinical-modeler`: explicit `BLOCKED: …` fail-loud with a main-session fallback when MCP access is denied (previously degraded silently).
 
 ## [0.7.0] - 2026-06-07
 

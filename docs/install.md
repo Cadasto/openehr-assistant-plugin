@@ -43,3 +43,22 @@ Add this repository as a plugin (Cursor **Settings → Plugins**, via Git URL or
 Unlike the maintainer plugin, this plugin **bundles a `.mcp.json`** so it works out of the box: it points at the hosted openEHR Assistant MCP server (`streamable-http`). Skill / command / agent `allowed-tools` reference `mcp__openehr-assistant__*` tools resolved from that server.
 
 To use a **local or `stdio`** MCP server instead, override the bundled config in your host. For server installation, transports, and client-specific configuration, see the [openehr-assistant-mcp — Quick Start](https://github.com/cadasto/openehr-assistant-mcp#quick-start) and [AGENTS.md](../AGENTS.md#repository-layout).
+
+## Subagents & MCP permissions
+
+The plugin's agents (`ckm-scout`, `spec-researcher`, and `clinical-modeler`'s read-only lookups) call MCP tools. Agent frontmatter (`tools:`) grants the *capability*, but your host's **permission policy** must still allow the server — otherwise a subagent can be silently denied CKM/guide access even though the same tools work in the main session.
+
+If you hit that, pre-approve the server in your project's `.claude/settings.json` (the plugin repo already ships this in its own [`.claude/settings.json`](../.claude/settings.json)):
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "mcp__openehr-assistant",
+      "mcp__plugin_openehr-assistant_openehr-assistant"
+    ]
+  }
+}
+```
+
+Both namespaces are listed because the server may be wired as the plugin-bundled one (`mcp__plugin_openehr-assistant_openehr-assistant__*`) or as a direct/connector server (`mcp__openehr-assistant__*`). All openEHR Assistant tools are read-only, so allowing the whole server is safe. The agents fail loud with `BLOCKED: …` and route the lookup back to the main session when this isn't in place.

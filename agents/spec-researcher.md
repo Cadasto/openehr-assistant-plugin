@@ -114,3 +114,4 @@ Produce a grounded answer:
 - Do NOT invent URLs. If `guide_get("howto/spec-lookup")` fails to load or the `.md` twin returns 404, report the failure and state which HTML URL you fell through to.
 - Do NOT duplicate work the `openehr-assistant` skill is already doing. You are invoked when spec-level rigor is specifically needed.
 - Your output goes back to the dispatcher; do NOT dispatch further agents.
+- If the MCP tools (`guide_*`, `type_specification_*`) are denied or unavailable (host has not pre-approved the MCP server — see the plugin's `.claude/settings.json`) and `WebFetch` cannot reach the spec site, do not guess: return `BLOCKED: <tool> unavailable`, naming what was denied, and tell the dispatcher to run the lookup in the main session.

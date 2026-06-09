@@ -1,12 +1,12 @@
 ---
 name: archetype-authoring
 description: >
-  This skill should be used when the user asks to "create an archetype", "edit an archetype",
-  "extend an archetype", "specialize an archetype", "design an archetype", or "review an
-  archetype design". Covers creating new openEHR archetypes, editing existing ones, extending
-  via specialization, and reviewing archetype designs. To merely explain an existing archetype
-  (no edits), use the `/archetype-explain` command instead.
-argument-hint: "<task: create|edit|extend|specialize> [archetype-id or concept]"
+  This skill should be used when the user asks to "create", "edit", "specialize",
+  "review / remediate", "write the rationale for", or "translate / localise" an openEHR
+  archetype, or to import a CKM archetype into the workspace for reuse. It covers the full
+  author → review (lint → fix → re-lint) → rationale → translate lifecycle. To merely explain
+  an existing archetype with no edits, use `/openehr-explain` instead.
+argument-hint: "<task: create|edit|specialize|review|rationale|translate|import> [archetype-id or concept]"
 allowed-tools:
   - Read
   - Glob
@@ -66,10 +66,20 @@ ckm_archetype_search("<concept>")
 
 For a small set of well-curated CKM archetypes — blood pressure, medication order, problem/diagnosis, encounter, procedure, anatomical location (CLUSTER), translation requirements (ADMIN_ENTRY) — try `examples_search(kind="archetypes")` when authoring or reviewing an archetype of the same type. These are native `.adl` files exposed as `openehr://examples/archetypes/{name}` and serve as concrete prior-art references for RM-type intent, terminology binding patterns, and structural idioms. Skip this step when the concept is outside the curated set.
 
+### Import a CKM archetype for reuse
+
+When reuse means pulling a published archetype into the workspace (not just citing it), make it land as a wired-in file rather than a copy-paste note:
+
+1. Fetch the native ADL with `ckm_archetype_get("<id>")`.
+2. Write it into the project (e.g. a `local/` directory) under its canonical `openEHR-EHR-<TYPE>.<concept>.v<N>.adl` filename.
+3. If it fills a slot in a target archetype/template, add the constrained slot reference (`allow_archetype … include`) so the reuse is actually wired in.
+
+A reused file keeps its published `uid`/checksums; do not alter them.
+
 ## Step 3: Concept Design
 
 ### One Concept Per Archetype
-Each archetype represents exactly one clinical concept. If you find yourself modeling multiple independent ideas, split into separate archetypes connected via slots.
+Each archetype represents exactly one clinical concept. When multiple independent ideas appear, split into separate archetypes connected via slots.
 
 ### RM Entry Type Selection
 Choose the correct Reference Model entry type:
@@ -98,7 +108,7 @@ Examples:
 Use `guide_adl_idiom_lookup` for specific ADL constraint patterns:
 - Coded text constraints
 - Quantity ranges with units
-- Ordinal scales
+- Ordinal / rating scales — `DV_ORDINAL` for integer-only steps; **`DV_SCALE`** (RM ≥ 1.1.0) for non-integer steps (e.g. Borg CR10 0.5). See the `DV_SCALE` vs `DV_ORDINAL` idiom.
 - Date/time constraints
 - Slot definitions
 
@@ -112,6 +122,10 @@ Use `guide_adl_idiom_lookup` for specific ADL constraint patterns:
 - Keep archetypes terminology-neutral (avoid hardcoding specific value sets)
 - Use explicit slot constraints (avoid open wildcards like `include all`)
 - Design for international use — avoid locale-specific assumptions
+
+### Identifiers and checksums
+- A new archetype needs a fresh `uid` — mint a random UUID (v4). If a shell is available, `uuidgen` (or `python3 -c 'import uuid; print(uuid.uuid4())'`) works; otherwise generate the UUID directly (this skill has no `Bash` tool, so don't assume shell access).
+- **Do not hand-write build checksums** (`MD5-CAM-*`, `build_uid`) — they are tool-computed by CKM/ADL tooling. If you edit a published archetype, its checksum simply becomes stale: note that for upstream recomputation rather than inventing a value. This is advisory, not a blocker — a missing/stale checksum never stops local authoring.
 
 ## Step 5: Editing Existing Archetypes
 
@@ -128,26 +142,16 @@ When extending via specialization:
 - Preserve parent meaning — specialization narrows, never contradicts
 - Maintain transparent lineage in the archetype identifier
 
-## Step 7: Quality Review
+## Step 7: Review, remediate & write rationale
 
-Before finalizing, run through the quality checklist and anti-patterns:
+When reviewing an archetype for quality, publication, or CKM submission, run the full pipeline. Stages at a glance: **intent & provenance → lint → remediate → review packet**, then optional **rationale prose**. Quick provenance note (advisory): if the file mirrors a published CKM archetype, editing it locally diverges from canonical and stales its `MD5-CAM` checksum — prefer contributing upstream; never a blocker. For a quick lint with no remediation, use the `archetype-lint` skill (`/archetype-lint`).
 
-```
-guide_get("archetypes/checklist")
-guide_get("archetypes/anti-patterns")
-```
+- Full pipeline (lint → fix-plan → patch → re-lint → review packet + checklist): **load [`references/review-remediate.md`](references/review-remediate.md)**.
+- Drafting description / purpose / misuse / use prose: **load [`references/rationale-prose.md`](references/rationale-prose.md)**.
 
-Run through the 22 normative lint rules — load `guide_get("archetypes/rules")` for the definitions, or suggest the user run `/archetype-lint` — if reviewing for publication or CKM submission.
+## Step 8: Translate / add a locale
 
-Verify:
-- [ ] One concept per archetype
-- [ ] Correct RM type selected
-- [ ] Valid ADL 1.4 syntax
-- [ ] All at-codes defined in terminology section
-- [ ] Terminology bindings use semantic equivalence
-- [ ] Slot constraints are explicit
-- [ ] No anti-patterns present
-- [ ] Formatting follows conventions
+To add or translate per-language text (`ontology.term_definitions`) for a target language, **load [`references/translation.md`](references/translation.md)** — it covers the three tab-sensitive insertion points and the at-code-parity verification gate. (Translations live in the ontology block in ADL 1.4, not a top-level `terminology` section.)
 
 ## Output
 

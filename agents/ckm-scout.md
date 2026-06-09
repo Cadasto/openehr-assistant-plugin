@@ -65,7 +65,7 @@ Do this even if the user already gave one phrase. Variation reduces recall loss 
 
 ### 2. Parallel CKM searches
 
-Issue all three `ckm_archetype_search` calls in a **single tool-use block** so they execute in parallel — do not serialize them. Collect up to 10 results each.
+Issue all three `ckm_archetype_search` calls in a **single tool-use block** so they execute in parallel — do not serialize them. Collect up to 10 results each. When the target RM class is known (e.g. surveying OBSERVATION siblings), pass the optional **`rmClass`** filter to scope each search to true structural siblings instead of paging through unrelated classes.
 
 Example (all three tool calls in the same assistant message):
 ```
@@ -120,3 +120,7 @@ Apply these thresholds to the top-scoring candidate:
 - Do NOT write archetype ADL. Your output is analysis only. The dispatcher's `archetype-authoring` skill handles authoring.
 - Do NOT fetch full ADL for low-scoring candidates. Token budget.
 - Do NOT route back to `ckm-scout`. You are the leaf.
+
+## When CKM access is blocked
+
+If `ckm_archetype_search`/`ckm_archetype_get` are denied or unavailable (the host has not pre-approved the MCP server — see the plugin's `.claude/settings.json` `permissions.allow`), do not guess or silently degrade. Return a single explicit status — `BLOCKED: no CKM access` — naming what was denied, and tell the dispatcher the supported fallback: **run the reuse survey inline in the main session**, where the same `ckm_*` tools are normally available. A blocked survey must read as a routing problem, never as "no reusable archetype exists."

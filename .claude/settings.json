@@ -5,5 +5,11 @@
         "superpowers@claude-plugins-official": true,
         "plugin-dev@claude-plugins-official": true,
         "claude-md-management@claude-plugins-official": true
+    },
+    "permissions": {
+        "allow": [
+            "mcp__openehr-assistant",
+            "mcp__plugin_openehr-assistant_openehr-assistant"
+        ]
     }
 }

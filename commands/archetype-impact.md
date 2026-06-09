@@ -20,21 +20,24 @@ Compute the impact of editing a given archetype by finding every workspace artef
    ```
    Glob: **/*.oet
    Glob: **/*.opt
+   Glob: **/*.t.json
+   Glob: **/*.adl
    Glob: **/*.aql
    Glob: **/*.sql
    Glob: **/*.md
    ```
-   (`.md` catches AQL examples and documentation that may reference the archetype.)
+   (`.t.json` catches ADL-Designer / web templates; `.adl` catches **parent archetypes** that slot this one in via `allow_archetype`/`include`; `.md` catches AQL examples and documentation.)
 3. For each file, grep for the archetype id:
    ```
    Grep: pattern="<archetype-id>", path=<file>
    ```
-4. For templates (`.oet`/`.opt`) that mention the archetype, also inspect whether it's:
-   - a top-level included archetype (in `<Items>`),
-   - nested as a slot filler (in `<Rule ... archetypeId>`),
+4. For templates (`.oet`/`.opt`/`.t.json`) that mention the archetype, also inspect whether it's:
+   - a top-level included archetype (in `<Items>` / the template's content tree),
+   - nested as a slot filler (in `<Rule ... archetypeId>` or a JSON slot reference),
    - referenced only as documentation text.
-5. For AQL/SQL/md files, extract the full line(s) containing the reference so the user can see the containment and predicate context.
-6. Optionally call `ckm_archetype_get("<archetype-id>")` once to resolve the concept name and report it alongside the impact table for clarity.
+5. For other archetypes (`.adl`), check whether they reference this archetype as a **slot constraint** — grep for the id inside `allow_archetype` / `include` blocks; if found, the other archetype is a *parent* whose slot this one fills.
+6. For AQL/SQL/md files, extract the full line(s) containing the reference so the user can see the containment and predicate context.
+7. Optionally call `ckm_archetype_get("<archetype-id>")` once to resolve the concept name and report it alongside the impact table for clarity.
 
 ## Output format
 
@@ -45,7 +48,8 @@ Compute the impact of editing a given archetype by finding every workspace artef
 
 ## Summary
 
-- Templates referencing: <N>
+- Templates referencing (incl. `.t.json`): <N>
+- Parent archetypes (slot constraints): <P>
 - AQL queries referencing: <M>
 - Documentation / misc: <K>
 
@@ -55,6 +59,13 @@ Compute the impact of editing a given archetype by finding every workspace artef
 |---|---|---|
 | `templates/antenatal.oet` | Top-level include | L42 |
 | `templates/vitals.oet` | Slot filler under `openEHR-EHR-COMPOSITION.encounter.v1` | L118 |
+| `Health Certificate.t.json` | Web-template node | L210 |
+
+## Parent archetypes (slot constraints)
+
+| File | Slot | Line |
+|---|---|---|
+| `openEHR-EHR-COMPOSITION.report.v1.adl` | `allow_archetype … include` | L394 |
 
 ## AQL queries
 
