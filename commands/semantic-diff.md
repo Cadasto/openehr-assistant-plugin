@@ -21,7 +21,7 @@ Compare two openEHR artefacts at the **semantic** level — not textual. Replace
 
 1. Parse **$ARGUMENTS** into `<file-a>` and `<file-b>`. If only one argument was given, ask the user for the second and stop.
 2. `Read` both files.
-3. `Read` the semantic-diff rubric: `references/semantic-diff-rubric.md`. Follow its classification rules exactly.
+3. `Read` the semantic-diff rubric at the **plugin root** — `${CLAUDE_PLUGIN_ROOT}/references/semantic-diff-rubric.md` (Claude Code), or `../references/semantic-diff-rubric.md` from this command, or Glob the installed `references/semantic-diff-rubric.md` (host-agnostic). Follow its classification rules exactly.
 4. **Detect the artefact type** from the file content/extension:
    - **Archetype** — ADL source (`.adl`; `archetype (...)` header, `definition`, `term_definitions`). Load the archetype rules guide:
      ```
