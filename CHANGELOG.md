@@ -9,6 +9,11 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 
 ## [Unreleased]
 
+## [0.8.1] - 2026-06-18
+
+### Fixed
+- Commands: `/semantic-diff` reads the plugin-root `references/semantic-diff-rubric.md` via a resolvable path (`${CLAUDE_PLUGIN_ROOT}/references/…`, `../references/…`, or Glob); the bare path failed a first Read.
+
 ## [0.8.0] - 2026-06-09
 
 Surface consolidation and quality pass: the slash-command surface drops from **20 to 6** (multi-step workflows now live in the skills, which auto-trigger), agent MCP-access is fixed, authoring skills gain improvements distilled from real modelling sessions, and the plugin is aligned with `openehr-assistant-mcp` **v0.19.0**. Removing/renaming commands and a skill is technically breaking; kept in the 0.x line.
