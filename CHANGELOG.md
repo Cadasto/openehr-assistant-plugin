@@ -16,9 +16,11 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 - Agents: `spec-researcher` component list extended with PROC and CNF.
 - Offline twins: `lint-rules-complete.md` (rule 5 defaults + `VCOC`, `ITEM_TREE.items {0..*}` false-positive note, validator-code appendix), `adl-syntax-cheatsheet.md` (defaults & consistency block), `aql-syntax-cheatsheet.md` (LIMIT/OFFSET, MATCHES-vs-IN, VERSION, function split), `rm-type-reference.md` (`PROPORTION_KIND` values), `openehr-quick-reference.md` (B1 HRID wording, template serialisation set, CGEM guide pointer, expanded guide index and specs coverage).
 - Docs: AGENTS.md / README guide-category tables and compatibility notes updated for the new guide set.
+- MCP compatibility: extended to `openehr-assistant-mcp` main as of PR #23 (stricter tool schemas, parameterized prompts); the plugin needs no call-site changes for it, and AGENTS.md now records the calling conventions the server enforces.
 
 ### Fixed
 - Commands/skills: stale guide names corrected — `archetypes/formatting` → `archetypes/reference-formatting` (`/archetype-fix-syntax`, `archetype-authoring`), `archetypes/idioms-cheatsheet` → `archetypes/adl-idioms-cheatsheet` (offline corpus index).
+- Guide references: `guide_get("<category>/<name>")` now uses the resolvable `openehr://guides/<category>/<name>` form across skills, commands and agents — the bare `category/name` string is not a valid URI and fails with `Invalid guide URI`.
 
 ## [0.8.1] - 2026-06-18
 

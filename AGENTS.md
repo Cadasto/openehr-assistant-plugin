@@ -23,9 +23,21 @@ The [openehr-assistant-mcp](https://github.com/cadasto/openehr-assistant-mcp) se
 - **15 MCP prompts**: Guided workflows for common tasks
 - **Resources**: Archetypes, templates, AQL, terminology, type specs, a guide registry spanning six categories (`archetypes/`, `templates/`, `aql/`, `simplified_formats/`, `specs/`, `howto/`), and the `openehr://examples/{kind}/{name}` namespace for curated worked examples (AQL, FLAT, STRUCTURED, reference `.adl` archetypes)
 
-This plugin is aligned with **openehr-assistant-mcp main as of PR #19** (post-v0.19.0 — the guide/prompt refresh adding the CGEM/OPT/web-template guides and the PROC/CNF/BMM3 spec digests; pin to the next tagged server release when it ships). When syncing or aligning plugin changes (skills, commands, allowed-tools, guide URIs), refer to that server’s [releases](https://github.com/cadasto/openehr-assistant-mcp/releases) and changelog so each plugin version remains compatible with a specific MCP server version.
+This plugin is aligned with **openehr-assistant-mcp main as of PR #23** (post-v0.19.0 — PR #19's guide/prompt refresh adding the CGEM/OPT/web-template guides and the PROC/CNF/BMM3 spec digests, plus PR #23's stricter tool schemas and parameterized prompts; pin to the next tagged server release when it ships). When syncing or aligning plugin changes (skills, commands, allowed-tools, guide URIs), refer to that server’s [releases](https://github.com/cadasto/openehr-assistant-mcp/releases) and changelog so each plugin version remains compatible with a specific MCP server version.
 
 MCP tool names in this plugin use the format: `mcp__openehr-assistant__<tool_name>`
+
+### Calling conventions the server enforces
+
+Since PR #23 the server publishes closed input schemas (`additionalProperties: false`) and
+rejects the empty string for optional enum arguments. Two rules follow for anything written
+here, in skills, or in commands:
+
+- **Omit an optional argument, or pass `null` — never `""`.** `kind`, `category`, `component`
+  and friends are nullable enums; `""` is rejected with a JSON-RPC `-32602`.
+- **`guide_get` / `examples_get` take a canonical URI or an explicit `category`/`kind` + `name`.**
+  Write `guide_get("openehr://guides/aql/syntax")`, not `guide_get("aql/syntax")` — the bare
+  `category/name` string is not a resolvable URI and fails with `Invalid guide URI`.
 
 ## Guide-First Principle
 
@@ -45,14 +57,14 @@ The MCP server exposes `openehr://examples/{kind}/{name}` for gold-standard patt
 
 Use these when you need authoritative ADL or AQL syntax (e.g. for `/archetype-fix-syntax`, AQL authoring, or when MCP guides are unavailable). Canonical detail lives in MCP guides and official specs; treat the following as pointers.
 
-- **ADL syntax**: Official narrative in [specifications-AM](https://github.com/openEHR/specifications-AM) (e.g. `docs/ADL1.4/`, appendix C references ANTLR grammars). Normative grammars: [adl-antlr](https://github.com/openEHR/adl-antlr) (referenced by the spec). Consolidated ANTLR4 grammars (ADL1.4, ADL2): [openEHR-antlr4](https://github.com/openEHR/openEHR-antlr4) (`reader_adl14`, `reader_adl2`). MCP guide: `guide_get("archetypes/adl-syntax")`. Published spec: `https://specifications.openehr.org/releases/AM/development/` (see retrieval methodology below).
-- **AQL syntax**: Official narrative and grammar in [specifications-QUERY](https://github.com/openEHR/specifications-QUERY) (`docs/AQL/`). ANTLR4 grammars: [openEHR-antlr4](https://github.com/openEHR/openEHR-antlr4) `reader_aql`. MCP guide: `guide_get("aql/syntax")`. Published spec: `https://specifications.openehr.org/releases/QUERY/development/` (see retrieval methodology below).
+- **ADL syntax**: Official narrative in [specifications-AM](https://github.com/openEHR/specifications-AM) (e.g. `docs/ADL1.4/`, appendix C references ANTLR grammars). Normative grammars: [adl-antlr](https://github.com/openEHR/adl-antlr) (referenced by the spec). Consolidated ANTLR4 grammars (ADL1.4, ADL2): [openEHR-antlr4](https://github.com/openEHR/openEHR-antlr4) (`reader_adl14`, `reader_adl2`). MCP guide: `guide_get("openehr://guides/archetypes/adl-syntax")`. Published spec: `https://specifications.openehr.org/releases/AM/development/` (see retrieval methodology below).
+- **AQL syntax**: Official narrative and grammar in [specifications-QUERY](https://github.com/openEHR/specifications-QUERY) (`docs/AQL/`). ANTLR4 grammars: [openEHR-antlr4](https://github.com/openEHR/openEHR-antlr4) `reader_aql`. MCP guide: `guide_get("openehr://guides/aql/syntax")`. Published spec: `https://specifications.openehr.org/releases/QUERY/development/` (see retrieval methodology below).
 
 The written ADL1.4 spec points to adl-antlr for grammars; openEHR-antlr4 is the single consolidated ANTLR source for both ADL and AQL and is valid for implementation and tooling.
 
 ## Retrieving openEHR specifications
 
-The MCP server's `guide_get("howto/spec-lookup")` is the canonical reference for efficient spec retrieval. Key points this plugin depends on:
+The MCP server's `guide_get("openehr://guides/howto/spec-lookup")` is the canonical reference for efficient spec retrieval. Key points this plugin depends on:
 
 1. **Site index** — `https://specifications.openehr.org/llms.txt` enumerates every release, document, and JSON endpoint as a machine-readable list; use it to resolve component/doc phrases to canonical URLs and discover sibling docs.
 2. **Markdown twin** — every `*.html` spec page has a `.md` counterpart with the same path (e.g. `releases/RM/development/ehr.html` ↔ `releases/RM/development/ehr.md`). The same payload is obtainable by sending `Accept: text/markdown` against the HTML URL. Prefer the Markdown twin for prose, rationale, and examples — it is the cheapest textual source.
@@ -167,4 +179,4 @@ When adding or renaming components, update: **AGENTS.md** (component tables), **
 - **MCP tool parameters are named, not positional.** Skill/command examples use the readable `tool("value")` shorthand, but the real calls take the server's JSON params — e.g. `ckm_archetype_search` → `keyword`, `*_get` → `identifier`, `type_specification_get` → `name`. When unsure, the tool's loaded schema is authoritative; don't guess `{ query }`.
 - **Deferred MCP tool schemas load on first use.** In review/diff flows that call several MCP tools, reference the tools early so their schemas resolve before the first call (avoids first-call round-trips). This is partly a host concern.
 - **The Cursor hook uses a workspace-relative command** (`bash hooks/session-start.sh`), *not* `${CLAUDE_PLUGIN_ROOT}` (a Claude-Code-only variable). Keep both hook configs in step; don't "fix" the Cursor one to use the variable.
-- **Lint rules have one source of truth: `guide_get("archetypes/rules")`.** The `archetype-lint` skill keeps only a compact index; `skills/openehr-assistant/reference/lint-rules-complete.md` is the offline twin for the `clinical-modeler` agent. When the guide changes, update the offline twin — don't re-inline full rule text into the skill.
+- **Lint rules have one source of truth: `guide_get("openehr://guides/archetypes/rules")`.** The `archetype-lint` skill keeps only a compact index; `skills/openehr-assistant/reference/lint-rules-complete.md` is the offline twin for the `clinical-modeler` agent. When the guide changes, update the offline twin — don't re-inline full rule text into the skill.
