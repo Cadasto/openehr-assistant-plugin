@@ -26,7 +26,7 @@ Compute the impact of editing a given archetype by finding every workspace artef
    Glob: **/*.sql
    Glob: **/*.md
    ```
-   (`.t.json` catches ADL-Designer / web templates; `.adl` catches **parent archetypes** that slot this one in via `allow_archetype`/`include`; `.md` catches AQL examples and documentation.)
+   (`.t.json` catches Archetype Designer / web templates; `.adl` catches **parent archetypes** that slot this one in via `allow_archetype`/`include`; `.md` catches AQL examples and documentation.)
 3. For each file, grep for the archetype id:
    ```
    Grep: pattern="<archetype-id>", path=<file>

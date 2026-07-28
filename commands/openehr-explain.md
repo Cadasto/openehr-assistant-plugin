@@ -64,7 +64,7 @@ could be a type or a terminology rubric), ask **one** brief clarifying question,
    6. **Summary** — one documentation-ready paragraph
 
 ### B. Template  (`ckm_template_get`)
-1. Load context: `guide_get("templates/principles")`, `guide_get("templates/rules")`.
+1. Load context: `guide_get("templates/principles")`, `guide_get("templates/rules")`. For a runtime artefact (`.opt` file, web-template JSON, or questions about FLAT path ids), also `guide_get("templates/opt-structure")` / `guide_get("templates/web-template")`.
 2. Retrieve with `ckm_template_get` (id/CKM CID) or `Read` (workspace `.oet`/`.opt`). For an id, ask the preferred format first: OET (design-time, default) or OPT (operational).
 3. Retrieve referenced archetypes via `ckm_archetype_get` for deeper explanation; clarify RM types with `type_specification_get`.
 4. **Do NOT** suggest improvements, assume UI behavior beyond what is explicitly constrained, or add concepts not present.
@@ -109,7 +109,7 @@ could be a type or a terminology rubric), ask **one** brief clarifying question,
 3. Use `type_specification_get` for class-level detail (attributes, functions, invariants) when the user needs it.
 4. Output: definition & purpose; key components/states (tables/trees where apt); relation to other RM structures (and the other domain where relevant); practical implications for modelling, querying, or deployment.
    - Concept areas — **ehr**: ehr-parts, composition-categories, entry-types, ISM states, time, versioning, cross-cutting (`LOCATABLE`/`PARTY_PROXY`). **demographic**: party-hierarchy, roles, identities (`PARTY_IDENTITY` vs `PARTY.details`), relationships, privacy, versioning, archetyping.
-   - For broader `specs/` sub-domains (Common, Data Structures, Data Types, Integration, EHR Extract), point the user to `guide_get("specs/<component>-<doc>")`.
+   - For broader `specs/` sub-domains (Common, Data Structures, Data Types, Integration, EHR Extract, and the PROC/CNF/LANG digests — Task Planning, Decision Language, conformance, BMM/BMM3), point the user to `guide_get("specs/<component>-<doc>")`.
 
 ### G. AQL query / keyword  (`guide_get("aql/syntax")` + `ckm_archetype_get`)
 1. Load context: `guide_get("aql/syntax")` (and `guide_get("aql/principles")` for concepts).

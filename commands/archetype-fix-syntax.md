@@ -22,13 +22,14 @@ Fix ADL syntax errors while preserving clinical semantics.
 1. Load the ADL syntax reference:
    ```
    guide_get("archetypes/adl-syntax")
-   guide_get("archetypes/formatting")
+   guide_get("archetypes/reference-formatting")
    ```
 2. Read the archetype content from: **$ARGUMENTS**
    - If a file path is provided, use the Read tool to load it
    - If inline content is provided, analyze it directly
 3. Identify syntax issues:
-   - Invalid ADL structure (missing sections, malformed blocks)
+   - Invalid ADL structure (missing sections, malformed blocks; section order: `archetype` → `specialise`? → `concept` → `language` → `description`? → `definition` → `invariant`? → `ontology` → `revision_history`?)
+   - Remember the ADL 1.4 defaults before "fixing" them: unstated `occurrences`/`existence` = `{1..1}` — absence is not an error
    - Incorrect constraint syntax (use `guide_adl_idiom_lookup` for correct patterns)
    - Missing or mismatched at-codes
    - **Ontology** inconsistencies (`term_definitions`, `constraint_definitions`, `term_bindings` — standard ADL 1.4 has no separate top-level `terminology` section)

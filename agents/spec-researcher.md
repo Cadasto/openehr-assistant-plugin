@@ -53,7 +53,7 @@ You research openEHR specifications efficiently using the Spec-Lookup-First meth
 
 The dispatcher provides:
 - A spec question (e.g. "what's the full invariant list on COMPOSITION?", "summarise ADL2", "how is the LANG BMM persistence format defined?").
-- Optionally: the target openEHR component (RM, AM, AM2, BASE, QUERY, TERM, LANG, CDS, SM, ITS-REST).
+- Optionally: the target openEHR component (RM, AM, AM2, BASE, QUERY, TERM, LANG, CDS, PROC, CNF, SM, ITS-REST).
 - Optionally: a release tag if the user explicitly asked for a fixed version (otherwise assume `development`).
 
 ## Workflow — follow this order
