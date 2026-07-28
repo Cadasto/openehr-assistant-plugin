@@ -65,7 +65,9 @@ Pipe-delimited paths with value suffixes. Best for simple integrations and form 
 }
 ```
 
-Key suffixes: `|magnitude`, `|unit`, `|code`, `|value`, `|terminology`, `|name`
+Key suffixes: `|magnitude`, `|unit` (DV_QUANTITY); `|code`, `|value`, `|terminology` (DV_CODED_TEXT — `|value`/`|terminology` required only for external terminologies); `|code`, `|value`, `|ordinal` (DV_ORDINAL); `|numerator`, `|denominator`, `|type` (DV_PROPORTION — `|type` is a `PROPORTION_KIND` integer; magnitude is output-only); `|other` (free-text branch of an **open** value set, `listOpen: true` — mutually exclusive with `|code`/`|value`/`|terminology`); `|name`; `|raw` (embed canonical RM JSON with `_type`)
+
+FLAT path segment ids come from the **web template** derived from the target OPT — for the id-normalisation and level-removal rules load `guide_get("templates/web-template")` alongside the simplified-formats guides.
 
 ### STRUCTURED Format
 Nested JSON mirroring the archetype hierarchy. Best for complex UIs and programmatic construction.
@@ -107,6 +109,9 @@ Every composition requires context fields (`ctx/` in FLAT, `ctx` object in STRUC
 - **context**: `start_time` (`ctx/time`) and `setting` (e.g., `primary medical care`, `secondary medical care`)
 - **id_namespace** (`ctx/id_namespace`): Optional, for identification context
 - **id_scheme** (`ctx/id_scheme`): Optional, for identification scheme
+- **participations** (`ctx/participation_name:0`, `ctx/participation_function:0`, `ctx/participation_mode:0`, `ctx/participation_id:0`, …): Optional defaults for `EVENT_CONTEXT.participations` / `ENTRY.other_participations`
+
+`ctx` values are **defaults for the RM tree** (e.g. `ctx/time` feeds `context/start_time`, `history.origin`, `ACTION.time`). Server-side defaults when omitted: `ctx/time` → now(); `ctx/setting` → "other care"; ENTRY `subject` → `PARTY_SELF`; `history.origin` → earliest event time; `ACTIVITY.action_archetype_id` → `/.*/`.
 
 ## Step 5: RM Data Types
 
@@ -137,4 +142,5 @@ Before finalizing a composition, verify:
 - [ ] Terminology codes are valid (use `terminology_resolve` if needed)
 - [ ] Date/time values are valid ISO 8601
 - [ ] Quantity units match archetype constraints
+- [ ] `|other` used only on open (`listOpen: true`) coded leaves, never combined with `|code`/`|value`/`|terminology`
 - [ ] Composition metadata is complete (composer, language, territory, category)

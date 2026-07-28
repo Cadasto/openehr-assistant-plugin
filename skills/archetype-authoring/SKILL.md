@@ -48,7 +48,7 @@ Load additional guides as needed:
 - `guide_get("archetypes/structural-constraints")` — for cardinality, occurrences, existence rules
 - `guide_get("archetypes/terminology")` — for terminology binding patterns
 - `guide_get("archetypes/anti-patterns")` — to avoid common mistakes
-- `guide_get("archetypes/formatting")` — for ADL formatting conventions
+- `guide_get("archetypes/reference-formatting")` — for ADL formatting conventions
 
 ## Step 2: Research Before Creating
 
@@ -95,12 +95,16 @@ Choose the correct Reference Model entry type:
 
 Use `type_specification_get` to verify RM type structure when uncertain.
 
+**Order vs record**: reserve INSTRUCTION/ACTION for genuine order/fulfilment lifecycles (CGEM "Managed Response"); model one-off assessments and simple records as OBSERVATION/EVALUATION ("Event Assessment"). Do not combine orders and observations in one archetype — see `guide_get("templates/cgem-framework")`.
+
 ### Identifier Scheme
 Follow the pattern: `openEHR-EHR-<RM_TYPE>.<concept>.v<VERSION>`
 
 Examples:
 - `openEHR-EHR-OBSERVATION.blood_pressure.v2`
 - `openEHR-EHR-CLUSTER.anatomical_location.v1`
+
+ADL 1.4 source ids carry the **major version only** (`.v1`, `.v2`); the full 3-part semver form (`.v1.0.0`) is the *physical* HRID from the AM Identification spec, used in ADL 2 and CKM revision metadata — do not put it in an ADL 1.4 `archetype` header.
 
 ## Step 4: ADL Authoring
 

@@ -57,10 +57,10 @@ Before answering any openEHR question or starting modeling work, search and load
 
 Key guide categories:
 - `archetypes/` — archetype design principles, ADL syntax, constraints, anti-patterns
-- `templates/` — template design, OET syntax, CGEM framework
-- `aql/` — query syntax, patterns, optimization
+- `templates/` — template design, OET syntax, CGEM framework (`cgem-framework`), and the serialisation set (`serialization-formats` map, `opt-structure`, `web-template`)
+- `aql/` — query syntax, patterns, optimization (incl. VERSION/versioning queries)
 - `simplified_formats/` — FLAT, STRUCTURED, CANONICAL composition formats
-- `specs/` — openEHR specification digests (RM, AM, AM2, BASE, QUERY, TERM, LANG, CDS, SM, ITS-REST); these digests track the `development` branch of the openEHR specifications and replace the legacy `rm/` category
+- `specs/` — openEHR specification digests (RM, AM, AM2, BASE, QUERY, TERM, LANG incl. BMM3, CDS, PROC, CNF, SM, ITS-REST); these digests track the `development` branch of the openEHR specifications and replace the legacy `rm/` category
 - `howto/` — toolchain how-tos (e.g. `spec-lookup` for efficient external spec retrieval via `llms.txt` and Markdown twin URLs)
 
 ## MCP Tool Reference
@@ -148,5 +148,7 @@ When users need deeper task-specific workflows, suggest the appropriate skill or
 - **Translating an archetype** (add a locale) -> archetype-authoring skill
 - **Demographic modeling** -> demographic-modeling skill
 - **Platform / REST service integration** -> consult `guide_get("specs/sm-openehr_platform")` and `guide_get("specs/its-rest-api")`
+- **Process automation / CDS / guidelines** (Task Planning, Decision Language, GDL2) -> consult `guide_get("specs/proc-overview")` first, then `specs/proc-task_planning`, `specs/proc-decision_language`, `specs/cds-GDL2`
+- **Conformance / certification questions** -> consult `guide_get("specs/cnf-guide")`
 - **Deep spec research** (precise attribute/function/invariant questions; cross-document reconciliation) -> dispatch the `spec-researcher` agent
 - **Curated worked examples** (AQL queries, FLAT/STRUCTURED payloads, reference archetypes) -> `examples_search` / `examples_get` MCP tools; resources at `openehr://examples/{kind}/{name}`

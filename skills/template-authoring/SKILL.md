@@ -45,6 +45,8 @@ guide_get("templates/rules")
 Load additional guides as needed:
 - `guide_get("templates/oet-syntax")` — OET authoring syntax
 - `guide_get("templates/oet-idioms-cheatsheet")` — common OET patterns
+- `guide_get("templates/cgem-framework")` — full CGEM dataset-splitting framework (Step 6)
+- `guide_get("templates/opt-structure")` / `guide_get("templates/web-template")` — runtime forms (OPT, web template) when discussing deployment or FLAT/STRUCTURED paths
 
 ## Step 2: Research Before Creating
 
@@ -87,10 +89,16 @@ Templates constrain archetypes — they NEVER expand:
 - **Optional can be excluded**: Set `max=0` to hide fields
 - **Value sets only narrow**: Can restrict coded text options, never add new ones
 - **Cardinality only narrows**: Can reduce max occurrences, never increase beyond archetype definition
+- **Tightening unconstrained RM attributes is allowed**: constraining an RM attribute the archetype left open is still narrowing
+
+A template's four jobs (Archetype Technology Overview): **composition** (fill slots), **element choice** (remove/mandate/leave optional), **narrowing**, and **setting defaults**.
+
+### Defaults vs assumed values
+Set a **default value** (OET: `default="..."` on a `<Rule>`) where the use case fixes or strongly implies a single value (e.g. setting, patient position). Defaults **appear in the recorded data**; archetype-level *assumed values* are semantic fallbacks for omitted optional items and do **not** appear in the data — never confuse the two.
 
 ## Step 6: CGEM Framework
 
-Use the CGEM framework to guide how clinical data splits across templates:
+Use the CGEM framework (freshEHR) to guide how clinical data splits across templates — for the full framework (definitions, openEHR mapping table, caveats) load `guide_get("templates/cgem-framework")`:
 
 | Category | Description | Template Scope |
 |----------|-------------|---------------|
@@ -110,11 +118,11 @@ Use the CGEM framework to guide how clinical data splits across templates:
 | Format | Purpose |
 |--------|---------|
 | **OET** | Authoring format — human-editable XML for template design |
-| **OPT** | Operational Template — flattened XML for runtime deployment |
-| **ADL-Designer `.t.json`** | ADL-Designer's differential template JSON (tool-generated) |
-| **Web Template** | Flattened JSON representation for modern UI development |
+| **OPT** | Operational Template — flattened, self-contained runtime artefact the CDR validates against (XML in ADL 1.4 practice; OPT2 allows ADL/XML/JSON/YAML). Generated, never hand-authored |
+| **Archetype Designer `.t.json`** | Archetype Designer's differential template JSON (tool-generated) |
+| **Web Template** | Vendor JSON projection of the OPT for UI generation; its node ids define the FLAT/STRUCTURED path schema. Derived, never authored |
 
-For when each format is hand-authorable vs tool-generated and what checksums each carries, load `guide_get("templates/serialization-formats")`. Reference syntax guides:
+For when each format is hand-authorable vs tool-generated and what checksums each carries, load `guide_get("templates/serialization-formats")`; for the runtime forms in depth, `guide_get("templates/opt-structure")` and `guide_get("templates/web-template")`. Reference syntax guides:
 ```
 guide_get("templates/oet-syntax")
 guide_get("templates/oet-idioms-cheatsheet")
@@ -126,7 +134,7 @@ Produce a real, slot-correct OET — not just a design sketch. (`/template-from-
 
 1. Root `<template>` with a root **COMPOSITION** archetype reference and a fresh `<id>` (see UID note below).
 2. A `<Content>` entry per included archetype, nested to mirror the COMPOSITION → SECTION → ENTRY → CLUSTER structure.
-3. `<Rule path="…">` elements for each narrowing constraint (`min`/`max`, `limitToList`, unit hardening, `hide_on_form`, label overrides) — respecting the narrowing principle (Step 5).
+3. `<Rule path="…">` elements for each narrowing constraint (`min`/`max`, `limitToList`, unit hardening, `hide_on_form`, label overrides, `default="…"` for use-case-fixed values) — respecting the narrowing principle (Step 5).
 4. A trailing `<Context>` if the design needs composition context (e.g. `/context/setting` fixed to a code).
 
 There is **no automated OET/OPT validator** available, so validate manually against the loaded `templates/oet-syntax` guide and the Step 9 checklist; state any constraint you could not confirm rather than asserting validity.
@@ -147,6 +155,7 @@ Verify:
 - [ ] Excluded fields set to max=0
 - [ ] Terminology constraints appropriate for context
 - [ ] Value sets verified (quantity constraints, unit hardening, "limit to list" coded text)
+- [ ] Defaults set where the use case fixes a single value (setting, patient position); no assumed-value confusion
 - [ ] Annotations and UI hints appropriate (hide_on_form, contextual label overrides)
 - [ ] Valid OET syntax
 
