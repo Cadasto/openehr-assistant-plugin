@@ -4,7 +4,7 @@
 [![Version](https://img.shields.io/badge/version-0.8.0-blue)](CHANGELOG.md)
 [![Claude Code](https://img.shields.io/badge/Claude_Code-plugin-D97757?logo=anthropic&logoColor=white)](https://claude.ai/code)
 [![Cursor](https://img.shields.io/badge/Cursor-plugin-000?logo=cursor&logoColor=white)](https://cursor.com)
-[![openehr-assistant-mcp](https://img.shields.io/badge/openehr--assistant--mcp-v0.19.0-brightgreen)](https://github.com/cadasto/openehr-assistant-mcp)
+[![openehr-assistant-mcp](https://img.shields.io/badge/openehr--assistant--mcp-v0.19.0%2B-brightgreen)](https://github.com/cadasto/openehr-assistant-mcp)
 [![openEHR](https://img.shields.io/badge/openEHR-compatible-009688)](https://openehr.org)
 [![Keep a Changelog](https://img.shields.io/badge/Keep%20a%20Changelog-1.1.0-E05735)](CHANGELOG.md)
 
@@ -121,7 +121,7 @@ The [openehr-assistant-mcp](https://github.com/cadasto/openehr-assistant-mcp) se
 - Implementation guides across six categories: `archetypes/`, `templates/`, `aql/`, `simplified_formats/`, `specs/` (openEHR specification digests tracking the `development` branch), and `howto/` (toolchain how-tos)
 - Curated worked examples at `openehr://examples/{kind}/{name}` — AQL, FLAT, STRUCTURED payloads, and CKM-published reference `.adl` archetypes
 
-**Compatibility:** This plugin version is built and tested against **openehr-assistant-mcp v0.19.0** ([releases](https://github.com/cadasto/openehr-assistant-mcp/releases)). When updating the plugin, align with that server’s changelog so each plugin release stays compatible with a specific MCP server version.
+**Compatibility:** This plugin version is built and tested against **openehr-assistant-mcp v0.19.0 plus the post-0.19.0 guide/prompt refresh on `main`** (PR #19: CGEM/OPT/web-template guides, PROC/CNF/BMM3 spec digests — [releases](https://github.com/cadasto/openehr-assistant-mcp/releases)). References to the new guides degrade gracefully against a v0.19.0 server (use `guide_search` fallbacks); pin to the next tagged server release when it ships. When updating the plugin, align with that server’s changelog so each plugin release stays compatible with a specific MCP server version.
 
 Offline reference material in [`skills/openehr-assistant/reference/`](skills/openehr-assistant/reference/) includes a quick-reference (principles, rules, guide index), minimal ADL and AQL syntax cheatsheets, and an RM type reference (~30 commonly archetyped types with attributes for local lint rule 4 validation); see [AGENTS.md](AGENTS.md) (Syntax and grammar sources) for links to official specs and grammars.
 

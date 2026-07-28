@@ -23,18 +23,18 @@ The [openehr-assistant-mcp](https://github.com/cadasto/openehr-assistant-mcp) se
 - **15 MCP prompts**: Guided workflows for common tasks
 - **Resources**: Archetypes, templates, AQL, terminology, type specs, a guide registry spanning six categories (`archetypes/`, `templates/`, `aql/`, `simplified_formats/`, `specs/`, `howto/`), and the `openehr://examples/{kind}/{name}` namespace for curated worked examples (AQL, FLAT, STRUCTURED, reference `.adl` archetypes)
 
-This plugin is aligned with **openehr-assistant-mcp v0.19.0**. When syncing or aligning plugin changes (skills, commands, allowed-tools, guide URIs), refer to that server’s [releases](https://github.com/cadasto/openehr-assistant-mcp/releases) and changelog so each plugin version remains compatible with a specific MCP server version.
+This plugin is aligned with **openehr-assistant-mcp main as of PR #19** (post-v0.19.0 — the guide/prompt refresh adding the CGEM/OPT/web-template guides and the PROC/CNF/BMM3 spec digests; pin to the next tagged server release when it ships). When syncing or aligning plugin changes (skills, commands, allowed-tools, guide URIs), refer to that server’s [releases](https://github.com/cadasto/openehr-assistant-mcp/releases) and changelog so each plugin version remains compatible with a specific MCP server version.
 
 MCP tool names in this plugin use the format: `mcp__openehr-assistant__<tool_name>`
 
 ## Guide-First Principle
 
 All skills and commands instruct the AI assistant to **load relevant guides from the MCP server before answering**. The guides are the authoritative knowledge registry, organised across six categories. A compact offline summary lives at `skills/openehr-assistant/reference/openehr-quick-reference.md` for use by the `clinical-modeler` agent and as a quick refresher; the same folder contains minimal **ADL** and **AQL syntax cheatsheets** (`adl-syntax-cheatsheet.md`, `aql-syntax-cheatsheet.md`) for offline structural/syntax checks, and an **RM type reference** (`rm-type-reference.md`) covering ~30 commonly archetyped RM types with their attributes for local lint rule 4 (Valid RM Attributes Only) validation. Canonical guides via MCP always take precedence.
-- `archetypes/` — principles, rules, ADL syntax, idioms, structural constraints, terminology, anti-patterns, checklist, language standards, formatting
-- `templates/` — principles, rules, OET syntax, OET idioms, checklist
+- `archetypes/` — principles, rules, ADL syntax, idioms, structural constraints, terminology, anti-patterns, checklist, language standards, reference formatting (`reference-formatting`)
+- `templates/` — principles, rules, CGEM framework (`cgem-framework`), OET syntax, OET idioms, checklist, and the serialisation set (`serialization-formats`, `opt-structure`, `web-template`)
 - `aql/` — principles, syntax, idioms, checklist
 - `simplified_formats/` — principles, rules, idioms, checklist
-- `specs/` — openEHR specification digests covering AM, AM2, BASE, RM (including EHR, Demographic, Common, Data Types, Data Structures), QUERY (AQL), TERM, LANG, CDS (GDL2), SM (platform services), ITS-REST. Digests track the openEHR **development** branch; the former `rm/` category has been migrated into this namespace.
+- `specs/` — openEHR specification digests covering AM, AM2, BASE, RM (including EHR, Demographic, Common, Data Types, Data Structures), QUERY (AQL), TERM, LANG (including BMM, BMM3, EL, ODIN), CDS (GDL2), PROC (overview, Task Planning, Decision Language), CNF (conformance guide), SM (platform services), ITS-REST. Digests track the openEHR **development** branch; the former `rm/` category has been migrated into this namespace.
 - `howto/` — toolchain how-tos (e.g. `spec-lookup` for efficient external spec retrieval via `llms.txt` and Markdown twin URLs).
 
 ### Curated worked examples (new in MCP v0.16)
