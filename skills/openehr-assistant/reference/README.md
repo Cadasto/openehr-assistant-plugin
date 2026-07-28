@@ -11,10 +11,10 @@
 | File | Load when… | Authoritative source |
 |------|-----------|----------------------|
 | `openehr-quick-reference.md` | A fast refresher on principles, rules, and the guide index is needed | the relevant MCP guide |
-| `adl-syntax-cheatsheet.md` | A minimal ADL syntax check is needed offline | `guide_get("archetypes/adl-syntax")` |
-| `adl-syntax-reference.md` | Fuller ADL syntax detail is needed offline | `guide_get("archetypes/adl-syntax")` + specifications-AM |
-| `adl-idioms-reference.md` | An ADL constraint idiom/pattern lookup is needed offline | `guide_adl_idiom_lookup` / `guide_get("archetypes/adl-idioms-cheatsheet")` |
-| `aql-syntax-cheatsheet.md` | A minimal AQL syntax check is needed offline | `guide_get("aql/syntax")` |
-| `oet-syntax-reference.md` | OET/template syntax detail is needed offline | `guide_get("templates/oet-syntax")` |
+| `adl-syntax-cheatsheet.md` | A minimal ADL syntax check is needed offline | `guide_get("openehr://guides/archetypes/adl-syntax")` |
+| `adl-syntax-reference.md` | Fuller ADL syntax detail is needed offline | `guide_get("openehr://guides/archetypes/adl-syntax")` + specifications-AM |
+| `adl-idioms-reference.md` | An ADL constraint idiom/pattern lookup is needed offline | `guide_adl_idiom_lookup` / `guide_get("openehr://guides/archetypes/adl-idioms-cheatsheet")` |
+| `aql-syntax-cheatsheet.md` | A minimal AQL syntax check is needed offline | `guide_get("openehr://guides/aql/syntax")` |
+| `oet-syntax-reference.md` | OET/template syntax detail is needed offline | `guide_get("openehr://guides/templates/oet-syntax")` |
 | `rm-type-reference.md` | Validating RM attribute names (lint rule 4) offline | `type_specification_get` (BMM-backed) |
-| `lint-rules-complete.md` | The full 22 lint-rule definitions are needed offline | `guide_get("archetypes/rules")` |
+| `lint-rules-complete.md` | The full 22 lint-rule definitions are needed offline | `guide_get("openehr://guides/archetypes/rules")` |

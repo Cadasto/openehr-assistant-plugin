@@ -61,7 +61,7 @@ The dispatcher provides:
 ### 1. Load the methodology
 
 ```
-guide_get("howto/spec-lookup")
+guide_get("openehr://guides/howto/spec-lookup")
 ```
 
 Keep its rules in mind: llms.txt resolves component/doc names; `.md` twins are the cheapest textual source; class tables live in HTML or BMM (not Markdown); `development` branch is the tracking target.
@@ -111,7 +111,7 @@ Produce a grounded answer:
 ## Constraints
 
 - Do NOT fetch HTML spec pages before exhausting digest, `.md` twin, and `type_specification_get`. Every HTML fetch is ~30k words of tokens.
-- Do NOT invent URLs. If `guide_get("howto/spec-lookup")` fails to load or the `.md` twin returns 404, report the failure and state which HTML URL you fell through to.
+- Do NOT invent URLs. If `guide_get("openehr://guides/howto/spec-lookup")` fails to load or the `.md` twin returns 404, report the failure and state which HTML URL you fell through to.
 - Do NOT duplicate work the `openehr-assistant` skill is already doing. You are invoked when spec-level rigor is specifically needed.
 - Your output goes back to the dispatcher; do NOT dispatch further agents.
 - If the MCP tools (`guide_*`, `type_specification_*`) are denied or unavailable (host has not pre-approved the MCP server — see the plugin's `.claude/settings.json`) and `WebFetch` cannot reach the spec site, do not guess: return `BLOCKED: <tool> unavailable`, naming what was denied, and tell the dispatcher to run the lookup in the main session.

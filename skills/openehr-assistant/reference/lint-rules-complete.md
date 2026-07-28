@@ -2,7 +2,7 @@
 
 **Purpose:** Offline reference for all 22 normative archetype lint rules with severity, description, and violation/fix examples. Use when reviewing or linting local archetype files.
 
-> **Offline twin.** This file mirrors the canonical `guide_get("archetypes/rules")` guide for the `clinical-modeler` agent, which has no MCP access. In the main session, the loaded guide is authoritative — prefer it over this copy, and keep this file in sync when the guide changes.
+> **Offline twin.** This file mirrors the canonical `guide_get("openehr://guides/archetypes/rules")` guide for the `clinical-modeler` agent, which has no MCP access. In the main session, the loaded guide is authoritative — prefer it over this copy, and keep this file in sync when the guide changes.
 
 ---
 

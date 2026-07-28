@@ -25,11 +25,11 @@ Compare two openEHR artefacts at the **semantic** level — not textual. Replace
 4. **Detect the artefact type** from the file content/extension:
    - **Archetype** — ADL source (`.adl`; `archetype (...)` header, `definition`, `term_definitions`). Load the archetype rules guide:
      ```
-     guide_get("archetypes/rules")
+     guide_get("openehr://guides/archetypes/rules")
      ```
    - **Template** — OET (authoring XML, `<template>`) or OPT (operational, `<template_id>` / flattened `OPERATIONAL_TEMPLATE`). Load the template rules guide:
      ```
-     guide_get("templates/rules")
+     guide_get("openehr://guides/templates/rules")
      ```
    - If the two files are different artefact types (e.g. an ADL vs an OPT), report that mismatch and ask the user to confirm intent before proceeding.
 5. **Detect the comparison mode** from the root identifiers:

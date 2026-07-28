@@ -27,9 +27,9 @@ allowed-tools:
 Before writing or reviewing any AQL query, load the authoritative guides:
 
 ```
-guide_get("aql/principles")
-guide_get("aql/syntax")
-guide_get("aql/idioms-cheatsheet")
+guide_get("openehr://guides/aql/principles")
+guide_get("openehr://guides/aql/syntax")
+guide_get("openehr://guides/aql/idioms-cheatsheet")
 ```
 
 ### Consult worked examples (when applicable)
@@ -154,7 +154,7 @@ Spec-normative aggregates: `COUNT`, `MIN`, `MAX`, `SUM`, `AVG` (`COUNT`/`MIN`/`M
 Run through the AQL checklist:
 
 ```
-guide_get("aql/checklist")
+guide_get("openehr://guides/aql/checklist")
 ```
 
 Verify:

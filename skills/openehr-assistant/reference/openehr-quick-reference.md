@@ -213,8 +213,8 @@ When guides conflict, apply this priority (highest first):
 
 Minimal offline syntax reminders (full detail: MCP guides or AGENTS.md):
 
-- **ADL**: [adl-syntax-cheatsheet.md](adl-syntax-cheatsheet.md) — ADL 1.4 section order; use `guide_get("archetypes/adl-syntax")` or AGENTS.md for spec/grammar links.
-- **AQL**: [aql-syntax-cheatsheet.md](aql-syntax-cheatsheet.md) — SELECT/FROM/WHERE structure; use `guide_get("aql/syntax")` or AGENTS.md for spec/grammar links.
+- **ADL**: [adl-syntax-cheatsheet.md](adl-syntax-cheatsheet.md) — ADL 1.4 section order; use `guide_get("openehr://guides/archetypes/adl-syntax")` or AGENTS.md for spec/grammar links.
+- **AQL**: [aql-syntax-cheatsheet.md](aql-syntax-cheatsheet.md) — SELECT/FROM/WHERE structure; use `guide_get("openehr://guides/aql/syntax")` or AGENTS.md for spec/grammar links.
 
 ---
 
@@ -297,7 +297,7 @@ When MCP access is available, prefer routed retrieval over direct HTTP fetches:
 1. **Spec overview questions** → `guide_get(category="specs", name="<component>-<doc>")` (250–900 word digests tracking the `development` branch).
 2. **Class-level attribute / function / invariant detail** → `type_specification_get("<TYPE_NAME>")` (BMM-backed, exhaustive).
 3. **Worked examples** (AQL, FLAT, STRUCTURED, reference `.adl` archetypes) → `examples_search(kind=...)` / `examples_get("openehr://examples/<kind>/<name>")`.
-4. **Efficient external spec retrieval** → `guide_get("howto/spec-lookup")`; it documents the `llms.txt` site index, the `.md` twin URL pattern (every `*.html` spec page has a `.md` counterpart — prose only, not per-class tables), and the `/api/{components,classes,releases}.json` endpoints.
+4. **Efficient external spec retrieval** → `guide_get("openehr://guides/howto/spec-lookup")`; it documents the `llms.txt` site index, the `.md` twin URL pattern (every `*.html` spec page has a `.md` counterpart — prose only, not per-class tables), and the `/api/{components,classes,releases}.json` endpoints.
 
 This plugin tracks `releases/XX/development/` for external spec URLs unless the user explicitly asks for a fixed release tag.
 

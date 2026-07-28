@@ -51,7 +51,7 @@ could be a type or a terminology rubric), ask **one** brief clarifying question,
 ## Step 2 — Route to the matching lookup and explain
 
 ### A. Archetype  (`ckm_archetype_get`)
-1. Load context: `guide_get("archetypes/principles")`, `guide_get("archetypes/structural-constraints")`, `guide_get("archetypes/terminology")`.
+1. Load context: `guide_get("openehr://guides/archetypes/principles")`, `guide_get("openehr://guides/archetypes/structural-constraints")`, `guide_get("openehr://guides/archetypes/terminology")`.
 2. Retrieve with `ckm_archetype_get` (id) or `Read` (workspace `.adl`).
 3. Clarify RM types with `type_specification_get`; note related archetypes referenced in slots.
 4. **Do NOT** suggest improvements, assume template/UI behavior, or add concepts not present.
@@ -64,7 +64,7 @@ could be a type or a terminology rubric), ask **one** brief clarifying question,
    6. **Summary** — one documentation-ready paragraph
 
 ### B. Template  (`ckm_template_get`)
-1. Load context: `guide_get("templates/principles")`, `guide_get("templates/rules")`. For a runtime artefact (`.opt` file, web-template JSON, or questions about FLAT path ids), also `guide_get("templates/opt-structure")` / `guide_get("templates/web-template")`.
+1. Load context: `guide_get("openehr://guides/templates/principles")`, `guide_get("openehr://guides/templates/rules")`. For a runtime artefact (`.opt` file, web-template JSON, or questions about FLAT path ids), also `guide_get("openehr://guides/templates/opt-structure")` / `guide_get("openehr://guides/templates/web-template")`.
 2. Retrieve with `ckm_template_get` (id/CKM CID) or `Read` (workspace `.oet`/`.opt`). For an id, ask the preferred format first: OET (design-time, default) or OPT (operational).
 3. Retrieve referenced archetypes via `ckm_archetype_get` for deeper explanation; clarify RM types with `type_specification_get`.
 4. **Do NOT** suggest improvements, assume UI behavior beyond what is explicitly constrained, or add concepts not present.
@@ -93,7 +93,7 @@ could be a type or a terminology rubric), ask **one** brief clarifying question,
    - Common variations or modifications
 
 ### E. Terminology  (`terminology_resolve`)
-1. Load context: `guide_get("archetypes/terminology")`.
+1. Load context: `guide_get("openehr://guides/archetypes/terminology")`.
 2. `terminology_resolve` for the code/rubric/description.
 3. Distinguish **terminology groups** (concept-rubric pairs under an openEHR groupId) from **codesets** (standardized enumerations).
 4. Output:
@@ -103,16 +103,16 @@ could be a type or a terminology rubric), ask **one** brief clarifying question,
    - Related codes or value sets
    - Whether it is a group or codeset, its purpose in openEHR, and clinical usage context
 
-### F. RM structural concept  (`guide_get("specs/rm-ehr" | "specs/rm-demographic")` + `type_specification_get`)
+### F. RM structural concept  (`guide_get("openehr://guides/specs/rm-ehr" | ".../specs/rm-demographic")` + `type_specification_get`)
 1. Determine the domain — `ehr` or `demographic`. If not given, infer from the concept (e.g. "composition" → ehr, "party" → demographic) and state the inference up front.
-2. Load the RM digest: `guide_get("specs/rm-ehr")` or `guide_get("specs/rm-demographic")`.
+2. Load the RM digest: `guide_get("openehr://guides/specs/rm-ehr")` or `guide_get("openehr://guides/specs/rm-demographic")`.
 3. Use `type_specification_get` for class-level detail (attributes, functions, invariants) when the user needs it.
 4. Output: definition & purpose; key components/states (tables/trees where apt); relation to other RM structures (and the other domain where relevant); practical implications for modelling, querying, or deployment.
    - Concept areas — **ehr**: ehr-parts, composition-categories, entry-types, ISM states, time, versioning, cross-cutting (`LOCATABLE`/`PARTY_PROXY`). **demographic**: party-hierarchy, roles, identities (`PARTY_IDENTITY` vs `PARTY.details`), relationships, privacy, versioning, archetyping.
-   - For broader `specs/` sub-domains (Common, Data Structures, Data Types, Integration, EHR Extract, and the PROC/CNF/LANG digests — Task Planning, Decision Language, conformance, BMM/BMM3), point the user to `guide_get("specs/<component>-<doc>")`.
+   - For broader `specs/` sub-domains (Common, Data Structures, Data Types, Integration, EHR Extract, and the PROC/CNF/LANG digests — Task Planning, Decision Language, conformance, BMM/BMM3), point the user to `guide_get("openehr://guides/specs/<component>-<doc>")`.
 
-### G. AQL query / keyword  (`guide_get("aql/syntax")` + `ckm_archetype_get`)
-1. Load context: `guide_get("aql/syntax")` (and `guide_get("aql/principles")` for concepts).
+### G. AQL query / keyword  (`guide_get("openehr://guides/aql/syntax")` + `ckm_archetype_get`)
+1. Load context: `guide_get("openehr://guides/aql/syntax")` (and `guide_get("openehr://guides/aql/principles")` for concepts).
 2. **Given a full query** — explain its structure and what it returns: `SELECT` projection, `FROM`/`CONTAINS` containment, `WHERE` predicates, `ORDER BY`/`LIMIT`. Resolve referenced archetype paths with `ckm_archetype_get` where it aids the explanation; verify path endpoints against the deployed template, not display labels.
 3. **Given a keyword / operator / function** — explain its meaning, syntax, and a minimal example from the guide.
 4. **Read-only.** Do NOT optimize or rewrite. To author, optimize, or review a query, hand off to the `aql-authoring` skill.

@@ -38,15 +38,15 @@ When guides conflict, apply this priority (highest first):
 Before any template work, load the authoritative guides:
 
 ```
-guide_get("templates/principles")
-guide_get("templates/rules")
+guide_get("openehr://guides/templates/principles")
+guide_get("openehr://guides/templates/rules")
 ```
 
 Load additional guides as needed:
-- `guide_get("templates/oet-syntax")` — OET authoring syntax
-- `guide_get("templates/oet-idioms-cheatsheet")` — common OET patterns
-- `guide_get("templates/cgem-framework")` — full CGEM dataset-splitting framework (Step 6)
-- `guide_get("templates/opt-structure")` / `guide_get("templates/web-template")` — runtime forms (OPT, web template) when discussing deployment or FLAT/STRUCTURED paths
+- `guide_get("openehr://guides/templates/oet-syntax")` — OET authoring syntax
+- `guide_get("openehr://guides/templates/oet-idioms-cheatsheet")` — common OET patterns
+- `guide_get("openehr://guides/templates/cgem-framework")` — full CGEM dataset-splitting framework (Step 6)
+- `guide_get("openehr://guides/templates/opt-structure")` / `guide_get("openehr://guides/templates/web-template")` — runtime forms (OPT, web template) when discussing deployment or FLAT/STRUCTURED paths
 
 ## Step 2: Research Before Creating
 
@@ -98,7 +98,7 @@ Set a **default value** (OET: `default="..."` on a `<Rule>`) where the use case 
 
 ## Step 6: CGEM Framework
 
-Use the CGEM framework (freshEHR) to guide how clinical data splits across templates — for the full framework (definitions, openEHR mapping table, caveats) load `guide_get("templates/cgem-framework")`:
+Use the CGEM framework (freshEHR) to guide how clinical data splits across templates — for the full framework (definitions, openEHR mapping table, caveats) load `guide_get("openehr://guides/templates/cgem-framework")`:
 
 | Category | Description | Template Scope |
 |----------|-------------|---------------|
@@ -122,10 +122,10 @@ Use the CGEM framework (freshEHR) to guide how clinical data splits across templ
 | **Archetype Designer `.t.json`** | Archetype Designer's differential template JSON (tool-generated) |
 | **Web Template** | Vendor JSON projection of the OPT for UI generation; its node ids define the FLAT/STRUCTURED path schema. Derived, never authored |
 
-For when each format is hand-authorable vs tool-generated and what checksums each carries, load `guide_get("templates/serialization-formats")`; for the runtime forms in depth, `guide_get("templates/opt-structure")` and `guide_get("templates/web-template")`. Reference syntax guides:
+For when each format is hand-authorable vs tool-generated and what checksums each carries, load `guide_get("openehr://guides/templates/serialization-formats")`; for the runtime forms in depth, `guide_get("openehr://guides/templates/opt-structure")` and `guide_get("openehr://guides/templates/web-template")`. Reference syntax guides:
 ```
-guide_get("templates/oet-syntax")
-guide_get("templates/oet-idioms-cheatsheet")
+guide_get("openehr://guides/templates/oet-syntax")
+guide_get("openehr://guides/templates/oet-idioms-cheatsheet")
 ```
 
 ## Step 8b: Emit the OET
@@ -144,7 +144,7 @@ There is **no automated OET/OPT validator** available, so validate manually agai
 Run through the quality checklist:
 
 ```
-guide_get("templates/checklist")
+guide_get("openehr://guides/templates/checklist")
 ```
 
 Verify:

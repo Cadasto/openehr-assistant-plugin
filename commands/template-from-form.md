@@ -20,8 +20,8 @@ Inverse clinical-modelling workflow: start from a form the user wants to impleme
    - An inline text description — use directly.
 2. Load the template-authoring and CGEM guides:
    ```
-   guide_get("templates/principles")
-   guide_get("templates/rules")
+   guide_get("openehr://guides/templates/principles")
+   guide_get("openehr://guides/templates/rules")
    ```
 3. Parse the form into a structured field list. For each form field, capture: label, data type (free text / coded / quantity / date / boolean), cardinality (single / repeating), mandatoriness. Surface this inventory as a `## Parsed form inventory` section in your output so the user can verify interpretation before committing to a template.
 4. For each field group (a cluster of related fields, e.g. vital signs together), decide the target RM entry type using this mapping:

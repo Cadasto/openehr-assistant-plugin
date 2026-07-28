@@ -21,8 +21,8 @@ Fix ADL syntax errors while preserving clinical semantics.
 
 1. Load the ADL syntax reference:
    ```
-   guide_get("archetypes/adl-syntax")
-   guide_get("archetypes/reference-formatting")
+   guide_get("openehr://guides/archetypes/adl-syntax")
+   guide_get("openehr://guides/archetypes/reference-formatting")
    ```
 2. Read the archetype content from: **$ARGUMENTS**
    - If a file path is provided, use the Read tool to load it

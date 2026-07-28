@@ -29,9 +29,9 @@ allowed-tools:
 Before building any composition, load the authoritative guides:
 
 ```
-guide_get("simplified_formats/principles")
-guide_get("simplified_formats/rules")
-guide_get("simplified_formats/idioms-cheatsheet")
+guide_get("openehr://guides/simplified_formats/principles")
+guide_get("openehr://guides/simplified_formats/rules")
+guide_get("openehr://guides/simplified_formats/idioms-cheatsheet")
 ```
 
 ### Consult worked examples (when applicable)
@@ -67,7 +67,7 @@ Pipe-delimited paths with value suffixes. Best for simple integrations and form 
 
 Key suffixes: `|magnitude`, `|unit` (DV_QUANTITY); `|code`, `|value`, `|terminology` (DV_CODED_TEXT — `|value`/`|terminology` required only for external terminologies); `|code`, `|value`, `|ordinal` (DV_ORDINAL); `|numerator`, `|denominator`, `|type` (DV_PROPORTION — `|type` is a `PROPORTION_KIND` integer; magnitude is output-only); `|other` (free-text branch of an **open** value set, `listOpen: true` — mutually exclusive with `|code`/`|value`/`|terminology`); `|name`; `|raw` (embed canonical RM JSON with `_type`)
 
-FLAT path segment ids come from the **web template** derived from the target OPT — for the id-normalisation and level-removal rules load `guide_get("templates/web-template")` alongside the simplified-formats guides.
+FLAT path segment ids come from the **web template** derived from the target OPT — for the id-normalisation and level-removal rules load `guide_get("openehr://guides/templates/web-template")` alongside the simplified-formats guides.
 
 ### STRUCTURED Format
 Nested JSON mirroring the archetype hierarchy. Best for complex UIs and programmatic construction.

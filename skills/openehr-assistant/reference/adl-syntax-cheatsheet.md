@@ -1,6 +1,6 @@
 # ADL syntax cheatsheet
 
-**Purpose:** Minimal offline reminder of ADL 1.4 structure. For full syntax and constraint patterns, use `guide_get("archetypes/adl-syntax")` or see AGENTS.md for spec and grammar links.
+**Purpose:** Minimal offline reminder of ADL 1.4 structure. For full syntax and constraint patterns, use `guide_get("openehr://guides/archetypes/adl-syntax")` or see AGENTS.md for spec and grammar links.
 
 ---
 
@@ -33,4 +33,4 @@ Sections must appear in this order. Every node in the definition must have a cor
 
 ---
 
-For full syntax use `guide_get("archetypes/adl-syntax")` or see AGENTS.md for spec/grammar links.
+For full syntax use `guide_get("openehr://guides/archetypes/adl-syntax")` or see AGENTS.md for spec/grammar links.

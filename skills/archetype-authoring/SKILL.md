@@ -39,16 +39,16 @@ When guides conflict, apply this priority (highest first):
 Before any archetype work, load the authoritative guides:
 
 ```
-guide_get("archetypes/principles")
-guide_get("archetypes/rules")
-guide_get("archetypes/adl-syntax")
+guide_get("openehr://guides/archetypes/principles")
+guide_get("openehr://guides/archetypes/rules")
+guide_get("openehr://guides/archetypes/adl-syntax")
 ```
 
 Load additional guides as needed:
-- `guide_get("archetypes/structural-constraints")` — for cardinality, occurrences, existence rules
-- `guide_get("archetypes/terminology")` — for terminology binding patterns
-- `guide_get("archetypes/anti-patterns")` — to avoid common mistakes
-- `guide_get("archetypes/reference-formatting")` — for ADL formatting conventions
+- `guide_get("openehr://guides/archetypes/structural-constraints")` — for cardinality, occurrences, existence rules
+- `guide_get("openehr://guides/archetypes/terminology")` — for terminology binding patterns
+- `guide_get("openehr://guides/archetypes/anti-patterns")` — to avoid common mistakes
+- `guide_get("openehr://guides/archetypes/reference-formatting")` — for ADL formatting conventions
 
 ## Step 2: Research Before Creating
 
@@ -95,7 +95,7 @@ Choose the correct Reference Model entry type:
 
 Use `type_specification_get` to verify RM type structure when uncertain.
 
-**Order vs record**: reserve INSTRUCTION/ACTION for genuine order/fulfilment lifecycles (CGEM "Managed Response"); model one-off assessments and simple records as OBSERVATION/EVALUATION ("Event Assessment"). Do not combine orders and observations in one archetype — see `guide_get("templates/cgem-framework")`.
+**Order vs record**: reserve INSTRUCTION/ACTION for genuine order/fulfilment lifecycles (CGEM "Managed Response"); model one-off assessments and simple records as OBSERVATION/EVALUATION ("Event Assessment"). Do not combine orders and observations in one archetype — see `guide_get("openehr://guides/templates/cgem-framework")`.
 
 ### Identifier Scheme
 Follow the pattern: `openEHR-EHR-<RM_TYPE>.<concept>.v<VERSION>`

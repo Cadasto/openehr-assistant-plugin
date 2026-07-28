@@ -24,10 +24,10 @@ An openEHR archetype linting engine. Evaluate archetypes against 22 normative ru
 ## Step 1: Load Guides (MANDATORY)
 
 ```
-guide_get("archetypes/rules")
-guide_get("archetypes/structural-constraints")
-guide_get("archetypes/anti-patterns")
-guide_get("archetypes/terminology")
+guide_get("openehr://guides/archetypes/rules")
+guide_get("openehr://guides/archetypes/structural-constraints")
+guide_get("openehr://guides/archetypes/anti-patterns")
+guide_get("openehr://guides/archetypes/terminology")
 ```
 
 ## Step 2: Determine Mode

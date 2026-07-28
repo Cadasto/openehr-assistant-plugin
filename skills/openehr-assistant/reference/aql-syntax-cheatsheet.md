@@ -1,6 +1,6 @@
 # AQL syntax cheatsheet
 
-**Purpose:** Minimal offline reminder of AQL structure. For full syntax and path rules, use `guide_get("aql/syntax")` or see AGENTS.md for spec and grammar links.
+**Purpose:** Minimal offline reminder of AQL structure. For full syntax and path rules, use `guide_get("openehr://guides/aql/syntax")` or see AGENTS.md for spec and grammar links.
 
 ---
 
@@ -24,4 +24,4 @@ Containment defines the candidate set; archetype paths in SELECT define what is 
 
 ---
 
-For full syntax use `guide_get("aql/syntax")` or see AGENTS.md for spec/grammar links.
+For full syntax use `guide_get("openehr://guides/aql/syntax")` or see AGENTS.md for spec/grammar links.
