@@ -72,7 +72,7 @@ data matches {
 - **occurrences** — object nodes only (how many times an object may appear)
 - **cardinality** — multi-valued container attributes only (how many children allowed)
 
-Never interchange them.
+Never interchange them. ADL 1.4 defaults when unstated: `occurrences` = `{1..1}`, `existence` = `{1..1}`; `{0}`/`{0..0}` prohibits a node/attribute. They must also be **mutually consistent**: the interval (sum of sibling occurrences minima)..(sum of sibling occurrences maxima) must fit inside the container's cardinality interval (validator-tooling check `VCOC`).
 
 **Violation:**
 ```adl
@@ -126,6 +126,8 @@ ELEMENT occurrences matches {1..1}
 No clinical justification for mandatory.
 
 **Fix:** Change to `0..1` (optional) or document why mandatory.
+
+> **Known false positive:** `ITEM_TREE.items {0..*}` is the idiomatic CKM convention for container attributes (e.g. the published `ecg_result.v1`) when at least one contained ELEMENT is mandatory. Flag only genuinely empty or all-optional containers.
 
 ---
 
@@ -255,6 +257,10 @@ Deprecated nodes should be retained and explicitly marked, not deleted.
 | **ERROR** | 1, 2, 3, 4, 5, 6, 7, 8, 15, 16, 20, 21 |
 | **WARNING** | 9, 10, 11, 12, 13, 14, 17, 18, 22 |
 | **INFO** | 19 |
+
+## Validator Tooling Codes (recognise in tool output)
+
+Mnemonic validity codes (`VARID`, `VARCN`, `VARDF`, `VARON`, `VARDT`, `VATDF`, `VACDF`, `VDFAI`, `VDFPT`, `VCOC`, `VUNT`) come from **AOM2 / validator tooling** (ADL Workbench, `archie`, CKM) — they are **not** ADL 1.4 spec-normative text. Useful mappings: `VATDF`/`VACDF` ≈ rules 8/16, `VARDT` ≈ rule 3, `VCOC` ≈ rule 5 consistency, `VUNT` = a `use_node` reference's stated RM type must be the same as, or a supertype of, the target node's type.
 
 ## Lint Output Format
 

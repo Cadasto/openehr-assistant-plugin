@@ -24,7 +24,7 @@
 |------|----------|---------|
 | **A1** | ERROR | One coherent concept per archetype |
 | **A2** | ERROR | Do not combine unrelated concepts |
-| **B1** | ERROR | ID follows `openEHR-<DOMAIN>-<RM_TYPE>.<concept>.v<VERSION>` |
+| **B1** | ERROR | ID follows `<rm_publisher>-<rm_closure>-<rm_class>.<concept>.v<version>`; ADL 1.4 source uses major version only (`.v1`) — `v1.0.0` is the physical HRID (AM Identification / CKM metadata) |
 | **C1** | ERROR | Use RM structures as intended |
 | **C2** | WARNING | Cardinalities justified by clinical reality, not UI convenience |
 | **C3** | WARNING | Maximise optionality in archetypes; restriction belongs in templates |
@@ -160,10 +160,12 @@ Three levels of subject identification via PARTY_SELF:
   - Mandatory stays mandatory
   - Optional can become mandatory or excluded (`max=0`)
   - Value sets can be reduced but not expanded
-- **OET** (source) for authoring; **OPT** (operational) flattened XML for runtime
+- Template jobs: **composition** (fill slots), **element choice** (remove/mandate), **narrowing**, and **setting defaults**
+- **Defaults vs assumed values**: template defaults appear in the recorded data; archetype-level assumed values do not
+- **OET** (source) for authoring; **OPT** (operational) flattened for runtime (XML in ADL 1.4 practice; OPT2 allows ADL/XML/JSON/YAML); **web template** (JSON) is the vendor runtime projection driving UI and FLAT/STRUCTURED paths
 - Templates bridge clinical models and UIs (rename elements, `hide_on_form` flags)
 
-> Full guide: `openehr://guides/templates/principles`
+> Full guides: `openehr://guides/templates/principles`, serialisation set: `openehr://guides/templates/serialization-formats`, `openehr://guides/templates/opt-structure`, `openehr://guides/templates/web-template`
 
 ---
 
@@ -177,6 +179,8 @@ Three levels of subject identification via PARTY_SELF:
 | **Managed Response** | Formal order/fulfilment cycle (referral, prescription) | Instruction/Action |
 
 One form can read/write multiple compositions. Distinguish true managed workflows (Instruction/Action) from simple records.
+
+> Full guide: `openehr://guides/templates/cgem-framework` (freshEHR CGEM — definitions, openEHR mapping table, caveats)
 
 ---
 
@@ -220,7 +224,7 @@ Minimal offline syntax reminders (full detail: MCP guides or AGENTS.md):
 | Guide | URI |
 |-------|-----|
 | Principles | `openehr://guides/archetypes/principles` |
-| Rules (22 normative) | `openehr://guides/archetypes/rules` |
+| Design Rules (rule sets A–K) | `openehr://guides/archetypes/rules` |
 | ADL 1.4 Syntax | `openehr://guides/archetypes/adl-syntax` |
 | ADL Idioms Cheatsheet | `openehr://guides/archetypes/adl-idioms-cheatsheet` |
 | Structural Constraints | `openehr://guides/archetypes/structural-constraints` |
@@ -235,8 +239,12 @@ Minimal offline syntax reminders (full detail: MCP guides or AGENTS.md):
 |-------|-----|
 | Principles | `openehr://guides/templates/principles` |
 | Rules | `openehr://guides/templates/rules` |
+| CGEM Framework | `openehr://guides/templates/cgem-framework` |
 | OET Syntax | `openehr://guides/templates/oet-syntax` |
 | OET Idioms | `openehr://guides/templates/oet-idioms-cheatsheet` |
+| Serialization Formats | `openehr://guides/templates/serialization-formats` |
+| OPT Structure | `openehr://guides/templates/opt-structure` |
+| Web Template | `openehr://guides/templates/web-template` |
 | Checklist | `openehr://guides/templates/checklist` |
 
 ### AQL
@@ -262,7 +270,7 @@ Minimal offline syntax reminders (full detail: MCP guides or AGENTS.md):
 | Demographic Model | `openehr://guides/specs/rm-demographic` |
 | Platform Services | `openehr://guides/specs/sm-openehr_platform` |
 
-The MCP server exposes additional spec digests under `openehr://guides/specs/` covering AM (ADL1.4, AOM1.4, Overview, Identification), AM2 (ADL2, AOM2, OPT2), BASE, QUERY (AQL), TERM, LANG, CDS (GDL2), SM, and ITS-REST. Digests track the openEHR **development** branch.
+The MCP server exposes additional spec digests under `openehr://guides/specs/` covering AM (ADL1.4, AOM1.4, Overview, Identification), AM2 (ADL2, AOM2, OPT2), BASE, QUERY (AQL), TERM, LANG (incl. BMM, BMM3, EL, ODIN), CDS (GDL2), PROC (overview, task planning, decision language), CNF (conformance guide), SM, and ITS-REST. Digests track the openEHR **development** branch.
 
 ### OpenAPI REST Schemas
 
