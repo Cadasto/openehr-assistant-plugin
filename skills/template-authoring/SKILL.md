@@ -22,7 +22,6 @@ allowed-tools:
   - mcp__openehr-assistant__ckm_archetype_search
   - mcp__openehr-assistant__ckm_archetype_get
   - mcp__openehr-assistant__guide_get
-  - mcp__openehr-assistant__guide_adl_idiom_lookup
   - mcp__openehr-assistant__type_specification_get
   - mcp__openehr-assistant__terminology_resolve
 ---
@@ -66,7 +65,7 @@ If creating a new template, search for archetypes to include:
 ckm_archetype_search("<concept>")
 ```
 
-**When CKM comes up empty**, published-on-GitHub project content is a secondary channel — repositories tagged with the **`openehr-content`** topic (search `topic:openehr-content`, ~14 repos: freshEHR, Apperta-CKM projects, regional programmes, individual modellers). CKM holds relatively few templates, so this is more often useful for templates than for archetypes. Treat what you find as **leads, not governed artefacts**: unlike CKM there is no editorial review, no reliable `lifecycle_state`, and no integrity guarantee, so cite the repo and commit you looked at, never present a find as "published". This needs web access (`WebSearch`/`WebFetch`/`gh`), which this skill does not hold — ask the main session to run the search.
+**When CKM comes up empty**, published-on-GitHub project content is a secondary channel — repositories tagged with the **`openehr-content`** topic (search `topic:openehr-content`, ~14 repos: freshEHR, Apperta-CKM projects, regional programmes, individual modellers). CKM holds relatively few templates, so this is more often useful for templates than for archetypes. Treat finds as **leads, not governed artefacts**: unlike CKM there is no editorial review, no reliable `lifecycle_state`, and no integrity guarantee, so cite the repo and commit you looked at, never present a find as "published". This needs web access (`WebSearch`/`WebFetch`/`gh`), which this skill does not hold — ask the main session to run the search.
 
 ## Step 3: Use-Case Specificity
 
@@ -115,7 +114,7 @@ Use CGEM (freshEHR's analysis method — a design aid, **not** an openEHR specif
 
 Applying it: inventory the datapoints → categorise each C/G/E/M → group same-category datapoints into candidate templates → set each template's category to match → decide reuse (Global Background is usually already modelled and often only *read* by the form; Event templates are prime reuse candidates) → confirm Managed Response items genuinely need INSTRUCTION/ACTION + ISM and downgrade the rest to simple records.
 
-Three things to state explicitly when you report a split:
+Three things to state explicitly in any split report:
 - **Four CGEM categories, three category codes** — Managed Response is not a `COMPOSITION.category`; it is an `event` (or `persistent`) composition distinguished by its INSTRUCTION/ACTION entries and the ISM.
 - **`451 episodic` is normative but unevenly implemented** — confirm the target platform supports it; `persistent` plus governance conventions is the common fallback.
 - **One form commonly spans several compositions** across several categories, so a single form rarely means a single template.
@@ -136,7 +135,7 @@ One design intent, four serialisations at three layers — **not** interchangeab
 
 | Format | Layer | Purpose |
 |--------|-------|---------|
-| **OET** (`.oet`) | source | Authoring format — human-editable XML referencing archetypes plus narrowing. The artefact you version |
+| **OET** (`.oet`) | source | Authoring format — human-editable XML referencing archetypes plus narrowing. The artefact to version |
 | **Archetype Designer `.t.json`** | source | AOM2 **differential** template JSON (`@type: TEMPLATE`, `parentArchetypeId`, `differential: true`, `templateOverlays`) — the JSON analogue of OET, from Better's Archetype Designer ("Export Fileset"). Tool-managed: read and review it, but make design edits in the tool or in an OET |
 | **OPT** (`.opt`/`.optx`/`.optj`) | compiled | Operational Template — flattened, self-contained runtime artefact the CDR validates against (XML in ADL 1.4 practice; OPT2 adds ADL/XML/JSON, and raw vs profiled variants). Generated, never hand-authored |
 | **Web Template** (JSON) | derived runtime | Better/EHRbase simplified projection **of the OPT** for UI generation; its node ids define the FLAT/STRUCTURED path schema. Derived, lossy, never authored |
@@ -162,7 +161,7 @@ Produce a real, slot-correct OET — not just a design sketch. (The from-form mo
 3. `<Rule path="…">` elements for each narrowing constraint (`min`/`max`, `limitToList`, unit hardening, `hide_on_form`, label overrides, `default="…"` for use-case-fixed values) — respecting the narrowing principle (Step 5).
 4. A trailing `<Context>` if the design needs composition context (e.g. `/context/setting` fixed to a code).
 
-There is **no automated OET/OPT validator** available, so validate manually against the loaded `templates/oet-syntax` guide and the Step 9 checklist; state any constraint you could not confirm rather than asserting validity.
+There is **no automated OET/OPT validator** available, so validate manually against the loaded `templates/oet-syntax` guide and the Step 9 checklist; state any unconfirmed constraint rather than asserting validity.
 
 ## Step 9: Quality Review
 

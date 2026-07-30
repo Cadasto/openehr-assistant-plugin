@@ -7,29 +7,17 @@ Inverse clinical-modelling workflow: start from a form the user wants to impleme
 1. Interpret the form description as either:
    - A path to a file (`.md`, `.txt`, `.html`) containing the form description — then `Read` it.
    - An inline text description — use directly.
-2. Load the template-authoring and CGEM guides:
+2. Load the CGEM guide (Step 1 of the main skill already loaded `templates/principles` and `templates/rules`):
    ```
-   guide_get("openehr://guides/templates/principles")
-   guide_get("openehr://guides/templates/rules")
    guide_get("openehr://guides/templates/cgem-framework")
    ```
 3. Parse the form into a structured field list. For each form field, capture: label, data type (free text / coded / quantity / date / boolean), cardinality (single / repeating), mandatoriness. Surface this inventory as a `## Parsed form inventory` section in the output so the user can verify interpretation before committing to a template.
-4. **Split the dataset before sketching any template.** A form is a screen, not a composition — classify each field (or field group) into one CGEM category, then group same-category fields into candidate compositions. Report this as a `## Dataset split (CGEM)` section:
+4. **Split the dataset before sketching any template.** A form is a screen, not a composition — classify each field (or field group) into one CGEM category **using the Step 6 table and caveats of the main skill** (already in context; do not restate them from memory), then group same-category fields into candidate compositions. What this mode adds on top of Step 6:
+   - a candidate-template mapping per category: Global Background is usually **already modelled** (reuse a published template; often *read-only* on this form); Contextual Situation → one instance per pathway; Event Assessment → prime reuse candidate across forms; Managed Response → a separate order template (INSTRUCTION + ACTION with ISM tracking);
+   - report the split as a `## Dataset split (CGEM)` section, stating how many compositions the form implies and which are **written** vs merely **read** (Global Background is frequently read via AQL, not written by the form), plus the three Step 6 caveats;
+   - downgrade any field that *looks* like a Managed Response but is really a simple record ("Seen by key worker? Y/N", "Referral date") to a Contextual or Event template, and say so.
 
-   | CGEM category | Data nature | `COMPOSITION.category` | Candidate template |
-   |---|---|---|---|
-   | **Global Background** | true for life, one current version updated in place | `persistent` (431) | usually **already modelled** — reuse a published template; often *read-only* on this form |
-   | **Contextual Situation** | single source of truth for one journey / episode / condition | `episodic` (451) | one instance per pathway |
-   | **Event Assessment** | discrete repeated recording, each submission a new record | `event` (433) | prime reuse candidate across forms |
-   | **Managed Response** | genuine order/fulfilment cycle tracked to completion | **no category code** — usually `event` | INSTRUCTION + ACTION with ISM tracking |
-
-   Then state, in the output:
-   - how many compositions the form implies, and which are **written** vs merely **read** (Global Background is frequently read via AQL, not written by the form);
-   - that four CGEM categories map onto **three** category codes — Managed Response is distinguished by INSTRUCTION/ACTION + the ISM, not by its category;
-   - a caveat where a split depends on `451 episodic`, which is normative but unevenly implemented (`persistent` plus governance conventions is the common fallback);
-   - any field that *looks* like a Managed Response but is really a simple record ("Seen by key worker? Y/N", "Referral date") — downgrade it to a Contextual or Event template and say so.
-
-   CGEM is freshEHR's analysis method, not an openEHR specification — present it as a design rationale the user can overrule, not a rule.
+   Present CGEM as a design rationale the user can overrule, not a rule.
 5. For each field group (a cluster of related fields, e.g. vital signs together), decide the target RM entry type using this mapping:
 
 | Form field group resembles… | RM entry type |

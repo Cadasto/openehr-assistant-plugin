@@ -28,7 +28,7 @@ Compare two openEHR artefacts at the **semantic** level — not textual. Auto-de
 
 ## Instructions
 
-1. Parse **$ARGUMENTS** into `<file-a>` and `<file-b>`. If only one argument was given, ask the user for the second and stop.
+1. Parse **$ARGUMENTS** into `<file-a>` and `<file-b>`. When invoked from conversation rather than `/semantic-diff` (no arguments), take the two artefact paths (or CKM ids) from the user's request. If only one artefact is identifiable, ask the user for the second and stop.
 2. `Read` both files.
 3. `Read` the rubric bundled with this skill — [`references/semantic-diff-rubric.md`](references/semantic-diff-rubric.md). Follow its classification rules exactly.
 4. **Detect the artefact type** from the file content/extension:
@@ -70,10 +70,10 @@ Compare the two artefacts and classify each change per the rubric (major / minor
 - Narrowing per archetype — compare cardinality, occurrences, existence, value sets, terminology bindings. **Stricter** narrowing = major (breaks composition consumers); **looser** = minor (previously-valid instances stay valid); new optional content = minor.
 - RM-level composition category (event / persistent / episodic) — a change here is always major.
 
-Use `type_specification_get` if you need authoritative RM/AM type detail (attributes, allowed structure) to judge a change. Produce the output per the rubric's **Output layout**, adapted for templates with archetype-level grouping where useful.
+Use `type_specification_get` when authoritative RM/AM type detail (attributes, allowed structure) is needed to judge a change. Produce the output per the rubric's **Output layout**, adapted for templates with archetype-level grouping where useful.
 
 ### Version-mode constraints
-- If the two files turn out to have **different** root concepts, do not refuse: emit a one-line note that input concepts differ and you have auto-switched to **sibling mode** (§B), then produce the §B report instead.
+- If the two files turn out to have **different** root concepts, do not refuse: emit a one-line note that input concepts differ and the comparison has auto-switched to **sibling mode** (§B), then produce the §B report instead.
 - If a **template narrows an archetype beyond what that archetype allows**, flag it as a **validation error** rather than classifying — the template itself is broken.
 - OET vs OPT of the *same* template is meaningful but mixes authoring and runtime forms; warn the user that the comparison spans format types.
 
@@ -99,7 +99,7 @@ The two artefacts are different concepts, so a version bump does not apply. Emit
 
 ### Sibling-mode constraints
 - Do **not** emit a patch/minor/major verdict and do **not** reference rule G1 — it is out of scope for distinct concepts.
-- If you later determine the two are actually the same concept (e.g. one is a renamed copy), note that and switch to version mode (§A).
+- If the two later turn out to be the same concept (e.g. one is a renamed copy), note that and switch to version mode (§A).
 
 ## Shared constraints
 

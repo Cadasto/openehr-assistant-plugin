@@ -6,12 +6,13 @@ description: >
   Covers building openEHR compositions in all simplified formats and guiding their validation and
   format conversion (against a target template; there is no automated validator/converter tool).
   Also handles quick format explanations and single-payload sketches directly.
-argument-hint: "<template-id> [format: flat|structured|canonical]"
+argument-hint: "<task: build|validate|convert> <template-id> [format: flat|structured|canonical] [payload-path]"
 allowed-tools:
   - Read
   - Glob
   - Grep
   - Write
+  - Edit
   - mcp__openehr-assistant__ckm_template_get
   - mcp__openehr-assistant__guide_get
   - mcp__openehr-assistant__type_specification_get
@@ -135,7 +136,13 @@ Use `type_specification_get` for detailed type structure when needed.
 
 ## Step 6: Validation
 
-Before finalizing a composition, verify:
+Load the authoritative checklist first:
+
+```
+guide_get("openehr://guides/simplified_formats/checklist")
+```
+
+Then, before finalizing a composition, verify (summary — the loaded checklist wins on any disagreement):
 - [ ] All required fields are present (check template constraints)
 - [ ] Cardinality constraints are met (min/max occurrences)
 - [ ] `_type` annotations are correct (CANONICAL format)

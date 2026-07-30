@@ -14,6 +14,7 @@ allowed-tools:
   - Grep
   - Write
   - Edit
+  - WebSearch
   - mcp__openehr-assistant__ckm_archetype_search
   - mcp__openehr-assistant__ckm_archetype_get
   - mcp__openehr-assistant__guide_get
@@ -61,7 +62,7 @@ ckm_archetype_search("<concept>")
 
 **Reuse-first principle**: If a suitable archetype exists, use it. Only create new archetypes when no existing archetype covers the concept. If a close match exists, consider specialization instead.
 
-**If CKM has nothing**, check the secondary channel before concluding "new": GitHub repositories tagged with the **`openehr-content`** topic (`topic:openehr-content`) publish project-level archetypes and templates outside CKM. These are **un-governed leads** — no editorial review, no dependable `lifecycle_state` — so use them as prior art and style reference, cite the repo and commit, and never call such a find "published". Requires web access, so run it in the main session (`WebSearch`/`gh`), not in `ckm-scout`.
+**If CKM has nothing**, check the secondary channel before concluding "new": GitHub repositories tagged with the **`openehr-content`** topic (`topic:openehr-content`) publish project-level archetypes and templates outside CKM. These are **un-governed leads** — no editorial review, no dependable `lifecycle_state` — so use them as prior art and style reference, cite the repo and commit, and never call such a find "published". Requires web access, so run it in the main session (`WebSearch`, or `gh` where a shell is available — this skill holds no `Bash`), not in `ckm-scout`.
 
 **For deep reuse surveys** (unfamiliar domain, or the first few hits look marginal), dispatch the `ckm-scout` agent instead of running searches inline. It runs 3 parallel phrasings, ranks candidates, and returns a reuse/specialize/new recommendation — keeping CKM search noise out of this skill's context.
 
@@ -132,7 +133,7 @@ Use `guide_adl_idiom_lookup` for specific ADL constraint patterns:
 
 ### Identifiers and checksums
 - A new archetype needs a fresh `uid` — mint a random UUID (v4). If a shell is available, `uuidgen` (or `python3 -c 'import uuid; print(uuid.uuid4())'`) works; otherwise generate the UUID directly (this skill has no `Bash` tool, so don't assume shell access).
-- **Do not hand-write build checksums** (`MD5-CAM-*`, `build_uid`) — they are tool-computed by CKM/ADL tooling. If you edit a published archetype, its checksum simply becomes stale: note that for upstream recomputation rather than inventing a value. This is advisory, not a blocker — a missing/stale checksum never stops local authoring.
+- **Do not hand-write build checksums** (`MD5-CAM-*`, `build_uid`) — they are tool-computed by CKM/ADL tooling. If editing a published archetype, its checksum simply becomes stale: note that for upstream recomputation rather than inventing a value. This is advisory, not a blocker — a missing/stale checksum never stops local authoring.
 
 ## Step 5: Editing Existing Archetypes
 
@@ -155,7 +156,7 @@ When extending via specialization:
 
 ## Step 7: Review, remediate & write rationale
 
-When reviewing an archetype for quality, publication, or CKM submission, run the full pipeline. Stages at a glance: **intent & provenance → lint → remediate → review packet**, then optional **rationale prose**. Quick provenance note (advisory): if the file mirrors a published CKM archetype, editing it locally diverges from canonical and stales its `MD5-CAM` checksum — prefer contributing upstream; never a blocker. For a quick lint with no remediation, use the `archetype-lint` skill (`/archetype-lint`).
+When reviewing an archetype for quality, publication, or CKM submission, run the full pipeline. Stages at a glance: **intent & provenance → lint → remediate → review packet**, then optional **rationale prose**. (Provenance is advisory and detailed in the pipeline reference — editing a published CKM mirror diverges from canonical; never a blocker.) For a quick lint with no remediation, use the `archetype-lint` skill (`/archetype-lint`).
 
 - Full pipeline (lint → fix-plan → patch → re-lint → review packet + checklist): **load [`references/review-remediate.md`](references/review-remediate.md)**.
 - Drafting description / purpose / misuse / use prose: **load [`references/rationale-prose.md`](references/rationale-prose.md)**.

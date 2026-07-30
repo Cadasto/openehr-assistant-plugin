@@ -53,7 +53,7 @@ Before answering any openEHR question or starting modeling work, search and load
 
 1. Use `guide_search` to find relevant guides for the topic
 2. Use `guide_get` to load the full guide content — pass a canonical `openehr://guides/<category>/<name>` URI, or `category` + `name`
-3. Base your answer on the guide content, not on general knowledge
+3. Base the answer on the guide content, not on general knowledge
 
 `guide_search` returns `{ items, total }` — `total` counts matches before the `maxResults` cap (default 10, max 50), so raise the cap when `total` is larger and the top hits look thin. Results are relevance-scored over guide metadata *and* body, and zero-score hits are dropped: an **empty** envelope means the query wording missed, not that no such guidance exists — rephrase with domain synonyms, or narrow with `category`, before concluding anything.
 
@@ -90,16 +90,7 @@ The MCP server's own `instructions` carry conditional retrieval policies (Spec-L
 
 ### Template Design
 
-Select appropriate archetypes from CKM and combine them into COMPOSITION structures. Before deciding *how many* templates a dataset needs, categorise it with **CGEM** (freshEHR's analysis method — a design aid, not an openEHR specification); load `guide_get("openehr://guides/templates/cgem-framework")` for the full framework:
-
-| CGEM category | Description | `COMPOSITION.category` |
-|----------|-------------|---------------|
-| **Global Background** | True across all contexts for life; one current version updated in place (allergies, problem list, CPR decision) | `persistent` (431) |
-| **Contextual Situation** | Single source of truth for one care journey / episode / condition (staging summary, condition care plan) | `episodic` (451) |
-| **Event Assessment** | Discrete repeated recordings; each submission a new record (vitals at a visit, lab result) | `event` (433) |
-| **Managed Response** | Formal order/fulfilment cycle tracked to completion (referral, prescription) | **not a category code** — usually `event`, distinguished by INSTRUCTION/ACTION + ISM |
-
-Two caveats worth stating to users: four CGEM categories map onto **three** category codes, and `451 episodic` — though normative — is unevenly implemented, so confirm platform support before relying on it (`persistent` plus governance conventions is the common fallback). One form commonly reads/writes several compositions across several categories.
+Select appropriate archetypes from CKM and combine them into COMPOSITION structures. Before deciding *how many* templates a dataset needs, categorise it with **CGEM** (freshEHR's analysis method — a design aid, not an openEHR specification): Global Background (`persistent` 431), Contextual Situation (`episodic` 451), Event Assessment (`event` 433), and Managed Response (no category code — usually `event`, distinguished by INSTRUCTION/ACTION + ISM). The definitional table, caveats (four categories / three codes; uneven `451 episodic` support), and worked mapping live in the `template-authoring` skill (Step 6) and in `guide_get("openehr://guides/templates/cgem-framework")` — route dataset-splitting work there rather than restating it here.
 
 ### Archetype Selection
 

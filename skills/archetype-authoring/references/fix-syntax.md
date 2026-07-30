@@ -44,4 +44,4 @@ If conflicts arise between syntax and idioms, ADL syntax takes precedence over i
 1. **Corrected ADL** in a code block (or the applied Edit, when fixing a file)
 2. **Minimal change log**: what was fixed and why (before/after snippets)
 3. **Remaining ambiguities**: issues that could not be resolved without semantic decisions
-4. **Detected semantic issues** (do NOT fix): modeling quality, terminology meaning, scope, over/under-constraint — route these to the review pipeline (`references/review-remediate.md`) or the `archetype-lint` skill
+4. **Detected semantic issues** (do NOT fix): modeling quality, terminology meaning, scope, over/under-constraint — route these to the review-remediate pipeline (Step 7 of the main skill; `review-remediate.md` in this directory) or the `archetype-lint` skill

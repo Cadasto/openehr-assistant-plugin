@@ -7,6 +7,7 @@ description: >
   Reports violations only — it does not modify files; to lint *and* remediate, use the
   `archetype-authoring` skill. Auto-invoked on lint/validate intent, and also directly invocable
   as `/archetype-lint <file or id> [strict]`.
+argument-hint: "<file or id> [strict]"
 allowed-tools:
   - Read
   - Glob
@@ -107,11 +108,6 @@ For rule 4, verify attribute names against the RM with `type_specification_get` 
 - STRICT mode: any WARNING -> overall status = FAIL
 - PERMISSIVE mode: WARNINGs allowed if justified
 
-## Step 5: Fix Guidance (Optional)
+## Step 5: After the Report (routing only)
 
-If the user asks for fixes after linting, provide a minimal-diff fix plan:
-- For each violation: which rule it resolves, whether it changes paths, whether it affects semantics
-- Version bump recommendation (patch/minor/major) with justification
-- Prefer template-level constraints over archetype constraints where applicable
-
-Do NOT apply fixes automatically. Present the plan and wait for user approval. To actually apply fixes, route to the `archetype-authoring` skill — its fix-syntax mode for parse/structure errors, its review-remediate pipeline for semantic findings.
+This skill reports; the report's **Suggested Fix** column is the ceiling of what it provides. When the user asks for a fix plan or for fixes to be applied, route to the `archetype-authoring` skill — its fix-syntax mode for parse/structure errors, its review-remediate pipeline (minimal-diff plan, path/semantics impact, version-bump justification) for semantic findings.
