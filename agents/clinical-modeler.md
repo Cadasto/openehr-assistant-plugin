@@ -52,11 +52,20 @@ tools:
   - Write
   - Edit
   - Bash
+  # MCP entries are listed under both mount namespaces (bare = project/user .mcp.json,
+  # plugin-scoped = this plugin's bundled .mcp.json). Non-matching entries are dropped,
+  # so both must be present for MCP access to survive either mount. scripts/validate.py
+  # enforces the pairing.
   - mcp__openehr-assistant__ckm_archetype_get
   - mcp__openehr-assistant__guide_get
   - mcp__openehr-assistant__guide_adl_idiom_lookup
   - mcp__openehr-assistant__type_specification_get
   - mcp__openehr-assistant__terminology_resolve
+  - mcp__plugin_openehr-assistant_openehr-assistant__ckm_archetype_get
+  - mcp__plugin_openehr-assistant_openehr-assistant__guide_get
+  - mcp__plugin_openehr-assistant_openehr-assistant__guide_adl_idiom_lookup
+  - mcp__plugin_openehr-assistant_openehr-assistant__type_specification_get
+  - mcp__plugin_openehr-assistant_openehr-assistant__terminology_resolve
 ---
 
 # Clinical Modeler Agent

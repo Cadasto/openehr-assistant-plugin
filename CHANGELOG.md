@@ -28,6 +28,8 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 - CGEM: all four category tables now carry the `COMPOSITION.category` codes (431/451/433), the four-categories-three-codes caveat, the `451 episodic` support warning, and the non-normative freshEHR framing; `composition-builder` gains `episodic` and a CGEM pointer on `ctx/category`.
 
 ### Fixed
+- Agents: `ckm-scout`, `clinical-modeler` and `spec-researcher` list every MCP tool under both mount namespaces (`mcp__openehr-assistant__*` and `mcp__plugin_openehr-assistant_openehr-assistant__*`); under a bundled-plugin mount the bare-only form matched nothing, so `ckm-scout` was refused with `would be spawned with zero tools` and the other two ran without MCP access.
+- Validation: `scripts/validate.py` fails when an agent lists an MCP tool under one mount namespace but not the other; `docs/install.md` documents the three mount shapes and the claude.ai-connector caveat.
 - Commands: `/archetype-impact` no longer calls `.t.json` a web template — it is an AOM2 differential *source* template; the impact table now splits source from compiled references and says which `.opt` needs regenerating.
 - Commands/skills: stale guide names corrected — `archetypes/formatting` → `archetypes/reference-formatting` (`/archetype-fix-syntax`, `archetype-authoring`), `archetypes/idioms-cheatsheet` → `archetypes/adl-idioms-cheatsheet` (offline corpus index).
 - Guide references: `guide_get("<category>/<name>")` now uses the resolvable `openehr://guides/<category>/<name>` form across skills, commands and agents — the bare `category/name` string is not a valid URI and fails with `Invalid guide URI`.

@@ -61,4 +61,29 @@ If you hit that, pre-approve the server in your project's `.claude/settings.json
 }
 ```
 
-Both namespaces are listed because the server may be wired as the plugin-bundled one (`mcp__plugin_openehr-assistant_openehr-assistant__*`) or as a direct/connector server (`mcp__openehr-assistant__*`). All openEHR Assistant tools are read-only, so allowing the whole server is safe. The agents fail loud with `BLOCKED: …` and route the lookup back to the main session when this isn't in place.
+Both namespaces are listed because the server may be wired as the plugin-bundled one (`mcp__plugin_openehr-assistant_openehr-assistant__*`) or registered directly under its plain name in a project/user `.mcp.json` (`mcp__openehr-assistant__*`). All openEHR Assistant tools are read-only, so allowing the whole server is safe. The agents fail loud with `BLOCKED: …` and route the lookup back to the main session when this isn't in place.
+
+### Mount shape matters for the agents
+
+The same server yields a different tool-id namespace per mount, and agent `tools:` entries are matched **literally**:
+
+| How the server is mounted | Live tool ids |
+|---|---|
+| Project or user `.mcp.json` under the key `openehr-assistant` | `mcp__openehr-assistant__<tool>` |
+| This plugin's bundled `.mcp.json` | `mcp__plugin_openehr-assistant_openehr-assistant__<tool>` |
+| claude.ai connector | `mcp__claude_ai_<connector>__<tool>` |
+
+The three agents ship both of the first two forms, so they work under either without configuration. The **connector** shape is named after your connector, so the plugin cannot predict it: under a connector-only mount the agents lose MCP access (and `ckm-scout`, whose `tools:` is MCP-only, is refused with `would be spawned with zero tools`). If that is your setup, register the server in a project `.mcp.json` as well — that is the one mount the agents can rely on:
+
+```json
+{
+  "mcpServers": {
+    "openehr-assistant": {
+      "type": "streamable-http",
+      "url": "https://openehr-assistant-mcp.apps.cadasto.com/"
+    }
+  }
+}
+```
+
+The main session is unaffected either way — only agent `tools:` matching is namespace-sensitive.
