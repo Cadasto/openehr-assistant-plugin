@@ -16,6 +16,8 @@ The **openEHR Assistant Plugin** is an AI plugin by Cadasto B.V. that provides c
 - **AQL** — Archetype Query Language for querying clinical data repositories
 - **CKM** — Clinical Knowledge Manager, the international archetype/template registry
 
+Not all openEHR content lives in CKM: a small convention exists of tagging GitHub repositories that publish archetypes/templates with the **`openehr-content`** topic (~14 repos — freshEHR, Apperta-CKM projects, regional programmes, individual modellers). It is a genuine secondary discovery channel, thinner but broader than CKM for *templates*, and **un-governed** — no editorial review, no dependable `lifecycle_state`, no integrity guarantee. Skills reference it only as a fallback after CKM, and only in the main session: no MCP tool searches it, so it needs `WebSearch`/`gh`.
+
 ## Companion MCP Server
 
 The [openehr-assistant-mcp](https://github.com/cadasto/openehr-assistant-mcp) server provides:

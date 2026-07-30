@@ -60,6 +60,8 @@ ckm_archetype_search("<concept>")
 
 **Reuse-first principle**: If a suitable archetype exists, use it. Only create new archetypes when no existing archetype covers the concept. If a close match exists, consider specialization instead.
 
+**If CKM has nothing**, check the secondary channel before concluding "new": GitHub repositories tagged with the **`openehr-content`** topic (`topic:openehr-content`) publish project-level archetypes and templates outside CKM. These are **un-governed leads** — no editorial review, no dependable `lifecycle_state` — so use them as prior art and style reference, cite the repo and commit, and never call such a find "published". Requires web access, so run it in the main session (`WebSearch`/`gh`), not in `ckm-scout`.
+
 **For deep reuse surveys** (unfamiliar domain, or the first few hits look marginal), dispatch the `ckm-scout` agent instead of running searches inline. It runs 3 parallel phrasings, ranks candidates, and returns a reuse/specialize/new recommendation — keeping CKM search noise out of this skill's context.
 
 ### Consult gold-standard reference archetypes (when applicable)

@@ -65,6 +65,8 @@ If creating a new template, search for archetypes to include:
 ckm_archetype_search("<concept>")
 ```
 
+**When CKM comes up empty**, published-on-GitHub project content is a secondary channel — repositories tagged with the **`openehr-content`** topic (search `topic:openehr-content`, ~14 repos: freshEHR, Apperta-CKM projects, regional programmes, individual modellers). CKM holds relatively few templates, so this is more often useful for templates than for archetypes. Treat what you find as **leads, not governed artefacts**: unlike CKM there is no editorial review, no reliable `lifecycle_state`, and no integrity guarantee, so cite the repo and commit you looked at, never present a find as "published". This needs web access (`WebSearch`/`WebFetch`/`gh`), which this skill does not hold — ask the main session to run the search.
+
 ## Step 3: Use-Case Specificity
 
 Templates target particular clinical workflows. Define the use-case clearly:
