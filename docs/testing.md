@@ -19,7 +19,7 @@ Install from your working copy (see [install.md](install.md)), then exercise the
   ```
   /ckm-search blood pressure               # CKM discovery (archetypes or templates)
   /openehr-explain DV_QUANTITY             # type / archetype / RM-concept / idiom / terminology lookup
-  /semantic-diff old.adl new.adl           # version-bump / sibling diff
+  /archetype-impact openEHR-EHR-OBSERVATION.blood_pressure.v2   # workspace impact scan
   ```
 
   Guide browsing has no command — ask in natural language ("show me the AQL syntax guide") and the auto-invoked `openehr-assistant` skill loads it via `guide_search` / `guide_get`.
@@ -28,7 +28,7 @@ Install from your working copy (see [install.md](install.md)), then exercise the
 
   If the tools, prompts, or guides a **self-hosted** server advertises look stale (a guide the release notes added is missing, an argument the new schema rejects still passes), the server's discovery cache is stale, not the plugin: since MCP v0.20.0 that cache is namespaced by `APP_VERSION`, so an upgrade without a version bump keeps serving the old capability ads — clear it server-side (see the MCP repo's `docs/development.md` → "Gotcha — MCP discovery cache"). The hosted instance in the bundled `.mcp.json` is unaffected.
 
-- **Skill auto-triggering** — mention an openEHR concept in conversation *without* a command (e.g. "help me design a blood pressure archetype", or "lint this archetype" → `archetype-lint`) and confirm the relevant skill (`openehr-assistant`, `archetype-authoring`, `archetype-lint`, …) engages and follows the Guide-First principle. Skills are also `/`-invocable (e.g. `/archetype-lint`).
+- **Skill auto-triggering** — mention an openEHR concept in conversation *without* a command (e.g. "help me design a blood pressure archetype", "lint this archetype" → `archetype-lint`, "this archetype won't parse" → `archetype-authoring` fix-syntax mode, "sketch a template from this form" → `template-authoring`, "compare these two archetypes" → `semantic-diff`) and confirm the relevant skill engages and follows the Guide-First principle. Skills are also `/`-invocable (e.g. `/archetype-lint`, `/semantic-diff old.adl new.adl`).
 - **Hooks** — open a workspace containing `*.adl` / `*.oet` / `*.opt` files and confirm the `SessionStart` hook prints the openEHR context line. On Claude Code, a `Write`/`Edit` to an `.adl` file should emit the `/archetype-lint` reminder (PostToolUse).
 
 After editing content, reinstall (or restart the session) to pick up changes.

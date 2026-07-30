@@ -1,12 +1,15 @@
 ---
 name: openehr-assistant
 description: >
-  This skill should be used when the user mentions openEHR concepts (archetypes, templates,
-  AQL, ADL, CKM, RM types, compositions, OPT, terminology bindings, clinical modeling, CGEM /
-  composition categories) outside of a specific command context. Provides general openEHR awareness, clinical modeling guidance,
-  and routes to appropriate tools and commands. Not for focused tasks owned by a dedicated skill —
-  archetype authoring/linting, template authoring, composition building, AQL, or demographic
-  modeling — route those to the matching skill; this skill is the awareness and routing layer.
+  This skill should be used when a conversation touches openEHR outside a task owned by a
+  dedicated skill — e.g. "what is an archetype?", "how do openEHR templates work?", "which
+  composition category fits this data?", "find me a guide on X", "where do I start with
+  openEHR modeling?" — or names openEHR concepts (ADL, CKM, RM types, OPT, terminology
+  bindings, CGEM). Provides general openEHR awareness, guide browsing (`guide_search` /
+  `guide_get`), clinical modeling guidance, and tool/skill routing. Not for focused tasks
+  owned by a dedicated skill — archetype authoring/linting, template authoring, composition
+  building, AQL authoring, artefact diffing, or demographic modeling — route those to the
+  matching skill; this skill is the awareness and routing layer.
 user-invocable: false
 allowed-tools:
   - mcp__openehr-assistant__ckm_archetype_search
@@ -53,7 +56,7 @@ Before answering any openEHR question or starting modeling work, search and load
 
 1. Use `guide_search` to find relevant guides for the topic
 2. Use `guide_get` to load the full guide content — pass a canonical `openehr://guides/<category>/<name>` URI, or `category` + `name`
-3. Base your answer on the guide content, not on general knowledge
+3. Base the answer on the guide content, not on general knowledge
 
 `guide_search` returns `{ items, total }` — `total` counts matches before the `maxResults` cap (default 10, max 50), so raise the cap when `total` is larger and the top hits look thin. Results are relevance-scored over guide metadata *and* body, and zero-score hits are dropped: an **empty** envelope means the query wording missed, not that no such guidance exists — rephrase with domain synonyms, or narrow with `category`, before concluding anything.
 
@@ -90,16 +93,7 @@ The MCP server's own `instructions` carry conditional retrieval policies (Spec-L
 
 ### Template Design
 
-Select appropriate archetypes from CKM and combine them into COMPOSITION structures. Before deciding *how many* templates a dataset needs, categorise it with **CGEM** (freshEHR's analysis method — a design aid, not an openEHR specification); load `guide_get("openehr://guides/templates/cgem-framework")` for the full framework:
-
-| CGEM category | Description | `COMPOSITION.category` |
-|----------|-------------|---------------|
-| **Global Background** | True across all contexts for life; one current version updated in place (allergies, problem list, CPR decision) | `persistent` (431) |
-| **Contextual Situation** | Single source of truth for one care journey / episode / condition (staging summary, condition care plan) | `episodic` (451) |
-| **Event Assessment** | Discrete repeated recordings; each submission a new record (vitals at a visit, lab result) | `event` (433) |
-| **Managed Response** | Formal order/fulfilment cycle tracked to completion (referral, prescription) | **not a category code** — usually `event`, distinguished by INSTRUCTION/ACTION + ISM |
-
-Two caveats worth stating to users: four CGEM categories map onto **three** category codes, and `451 episodic` — though normative — is unevenly implemented, so confirm platform support before relying on it (`persistent` plus governance conventions is the common fallback). One form commonly reads/writes several compositions across several categories.
+Select appropriate archetypes from CKM and combine them into COMPOSITION structures. Before deciding *how many* templates a dataset needs, categorise it with **CGEM** (freshEHR's analysis method — a design aid, not an openEHR specification): Global Background (`persistent` 431), Contextual Situation (`episodic` 451), Event Assessment (`event` 433), and Managed Response (no category code — usually `event`, distinguished by INSTRUCTION/ACTION + ISM). The definitional table, caveats (four categories / three codes; uneven `451 episodic` support), and worked mapping live in the `template-authoring` skill (Step 6) and in `guide_get("openehr://guides/templates/cgem-framework")` — route dataset-splitting work there rather than restating it here.
 
 ### Archetype Selection
 
@@ -141,14 +135,16 @@ Use `type_specification_get` to verify RM type structures. Use `guide_adl_idiom_
 When users need deeper task-specific workflows, suggest the appropriate skill or command:
 
 - **Creating/editing archetypes** -> archetype-authoring skill
-- **Creating templates** -> template-authoring skill
+- **Validating / linting an archetype** (report only, no edits) -> archetype-lint skill (`/archetype-lint`)
+- **Creating templates** (including splitting a clinical form into templates) -> template-authoring skill
 - **Building compositions** -> composition-builder skill
 - **Writing AQL queries** -> aql-authoring skill
 - **Searching CKM** (archetypes or templates) -> `/ckm-search`
 - **Explaining or looking up** an archetype, template, RM/AM type, RM structural concept, ADL idiom, AQL query/keyword, or terminology code -> `/openehr-explain`
+- **Finding where an archetype is used** (workspace scan across templates, parent-archetype slots, AQL) -> `/archetype-impact`
 - **Browsing / finding an implementation guide** -> handle it here: `guide_search` to find it, `guide_get` to load it, then summarise (the guides are an agent-facing knowledge layer; no separate command needed)
-- **Comparing two artefacts** (version bump or sibling diff) -> `/semantic-diff`
-- **Fixing syntax** -> `/archetype-fix-syntax`
+- **Comparing two artefacts** (version bump or sibling diff) -> semantic-diff skill (`/semantic-diff`)
+- **Fixing ADL syntax** ("won't parse / won't validate") -> `archetype-authoring` skill, fix-syntax mode
 - **Translating an archetype** (add a locale) -> archetype-authoring skill
 - **Demographic modeling** -> demographic-modeling skill
 - **Platform / REST service integration** -> consult `guide_get("openehr://guides/specs/sm-openehr_platform")` and `guide_get("openehr://guides/specs/its-rest-api")`

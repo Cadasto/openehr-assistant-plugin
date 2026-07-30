@@ -31,7 +31,7 @@ Purpose: classify changes between two versions of an archetype or template to re
 - Formatting / whitespace / comment changes.
 - Translation corrections.
 
-## Output layout (for the commands)
+## Output layout (for the skill)
 
 ```
 # <archetype-id or template-id>  <v_old> → <v_new>
@@ -57,4 +57,4 @@ Purpose: classify changes between two versions of an archetype or template to re
 
 - When uncertain whether a binding is "non-equivalent", call `terminology_resolve` on both old and new codes and compare concept definitions — **openEHR** terminology only (it errors on external codes); for SNOMED CT / LOINC / ICD bindings compare `term_bindings` against the local `term_definitions` rubrics and flag for human review.
 - When uncertain whether a text change alters clinical meaning, quote both versions and flag the change for human review — do not auto-classify as patch.
-- If the files do not share the same root concept id, do **not** refuse and do **not** emit a version-bump verdict — note that the concepts differ and switch to the sibling / cross-artefact compatibility report (`/semantic-diff` §B).
+- If the files do not share the same root concept id, do **not** refuse and do **not** emit a version-bump verdict — note that the concepts differ and switch to the sibling / cross-artefact compatibility report (§B of this skill).

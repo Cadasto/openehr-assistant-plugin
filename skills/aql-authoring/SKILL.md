@@ -11,7 +11,9 @@ allowed-tools:
   - Glob
   - Grep
   - mcp__openehr-assistant__guide_get
+  - mcp__openehr-assistant__ckm_archetype_search
   - mcp__openehr-assistant__ckm_archetype_get
+  - mcp__openehr-assistant__ckm_template_search
   - mcp__openehr-assistant__ckm_template_get
   - mcp__openehr-assistant__type_specification_get
   - mcp__openehr-assistant__examples_search
@@ -40,13 +42,13 @@ When the user asks for a query to adapt, or when the clinical question matches a
 
 AQL queries operate on archetypes. Before writing a query:
 
-1. State assumptions about deployed templates/archetypes — verify path endpoints and RM types against the deployed template, not display labels
-2. Identify which archetypes contain the data you need
+1. State assumptions about deployed templates/archetypes — verify path endpoints and RM types against the deployed template, not display labels; when a deployed template is named, fetch it (`ckm_template_search` → `ckm_template_get`) rather than guessing paths
+2. Identify which archetypes contain the required data (`ckm_archetype_search` when the archetype id is not yet known)
 3. Load the archetype to understand its path structure:
    ```
    ckm_archetype_get("<archetype-id>")
    ```
-4. Use `type_specification_get` if you need to understand RM type details
+4. Use `type_specification_get` to clarify RM type details when needed
 
 ## Step 3: AQL Syntax
 
@@ -94,10 +96,10 @@ FROM EHR e
   CONTAINS VERSION v[LATEST_VERSION]
     CONTAINS COMPOSITION c
 ```
-Always state `[LATEST_VERSION]` or `[ALL_VERSIONS]` explicitly — the no-predicate default is not defined by the spec (implementations commonly return latest only). These constructs are **grammar-level only** (semantics not in spec prose); verify engine support. Common projections: `v/uid/value`, `v/preceding_version_uid/value`, `v/commit_audit/time_committed/value`, `v/commit_audit/change_type`, `v/lifecycle_state/defining_code/code_string`.
+Always state `[LATEST_VERSION]` or `[ALL_VERSIONS]` explicitly — the no-predicate default is not defined by the spec (implementations commonly return latest only). Version predicates are grammar-level constructs; consult the `aql/syntax` guide for semantics, engine caveats, and the common `v/…` projections.
 
 ### Operators
-`MATCHES` with a `{…}` value list is spec-normative (items are OR-ed; parameters allowed) — prefer it for code-set filters; `IN` is **not** in the spec (engine extension). `LIKE` patterns must match the entire value (`'*…*'` for substring; wildcards `?`/`*`).
+`MATCHES` with a `{…}` value list is spec-normative — prefer it for code-set filters; `IN` is **not** in the spec (engine extension). `LIKE` patterns must match the entire value. Details and edge cases in the `aql/syntax` guide.
 
 ### Parameterized Queries
 Use `$parameter` syntax for reusable queries:
@@ -138,7 +140,7 @@ GROUP BY e/ehr_id/value
 ```
 
 ### Functions — spec vs engine
-Spec-normative aggregates: `COUNT`, `MIN`, `MAX`, `SUM`, `AVG` (`COUNT`/`MIN`/`MAX` are the safest across engines). The spec also defines core single-row functions (string `LENGTH`/`CONTAINS`/`POSITION`/`SUBSTRING`/`CONCAT`/`CONCAT_WS`; numeric `ABS`/`MOD`/`CEIL`/`FLOOR`/`ROUND`; date/time `CURRENT_DATE`/`CURRENT_TIME`/`CURRENT_DATE_TIME` (alias `NOW`)/`CURRENT_TIMEZONE`; plus `TERMINOLOGY(...)`), but engine coverage varies — verify before relying on them. **Any other function is an engine extension.**
+Spec-normative aggregates: `COUNT`, `MIN`, `MAX`, `SUM`, `AVG` (`COUNT`/`MIN`/`MAX` are the safest across engines). For the spec's single-row function list — and what counts as an engine extension — consult the `aql/syntax` guide before relying on a function; engine coverage varies.
 
 ## Step 5: Optimization
 

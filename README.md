@@ -79,11 +79,12 @@ Environment variables (e.g. `CKM_API_BASE_URL`) and Docker/stdio details are doc
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
-| `archetype-authoring` | Creating/editing/reviewing/translating archetypes | Authoring, review & remediate, rationale prose, translation, CKM-import — guide-first |
-| `archetype-lint` | Reviewing/validating archetypes | 24 normative lint rules with STRICT/PERMISSIVE modes |
-| `template-authoring` | Creating/reviewing templates | Template design with CGEM framework and narrowing principle |
+| `archetype-authoring` | Creating/editing/reviewing/translating archetypes | Authoring, review & remediate, rationale prose, translation, ADL syntax fixing, CKM-import — guide-first |
+| `archetype-lint` | Linting/validating archetype rules compliance | 24 normative lint rules with STRICT/PERMISSIVE modes |
+| `template-authoring` | Creating/reviewing templates | Template design with CGEM framework and narrowing principle; form → template sketch |
 | `composition-builder` | Building compositions | FLAT/STRUCTURED/CANONICAL format generation |
 | `aql-authoring` | Writing AQL queries | Query authoring, explanation, and optimization |
+| `semantic-diff` | Comparing two artefacts (also `/semantic-diff`) | Version-bump verdict or sibling/cross-artefact compatibility report |
 | `demographic-modeling` | Designing demographic models | PARTY hierarchy, roles, relationships, identity patterns |
 | `openehr-assistant` | Any openEHR mention | Clinical modeling, guide browsing, and tool routing |
 
@@ -95,18 +96,15 @@ Multi-step workflows (authoring, review, AQL, compositions) are driven by the **
 |---------|-------------|
 | `/ckm-search [archetype\|template] <query>` | Find archetypes or templates in CKM (optional `rmClass` filter) |
 | `/openehr-explain <thing>` | Explain or look up any openEHR thing — archetype, template, RM/AM type, RM structural concept, ADL idiom, AQL query/keyword, or terminology code (auto-detects) |
-| `/semantic-diff <file-a> <file-b>` | Semantic diff of two artefacts (archetype or template); version-bump verdict or sibling/cross-artefact compatibility report |
-| `/archetype-fix-syntax <file>` | Fix ADL syntax errors preserving semantics |
-| `/template-from-form <form text or path>` | Split a clinical form across compositions (CGEM) and sketch each template (archetypes + narrowing) |
 | `/archetype-impact <archetype-id>` | Scan workspace for references to an archetype (source templates `.oet`/`.t.json`, compiled `.opt`, parent `.adl` slots, AQL) |
 
-> Creating/editing/reviewing archetypes (incl. **rationale prose** and **translation**), linting, authoring templates, building compositions, writing AQL, and **browsing guides** are handled by the matching **skill** (no command needed) — just describe the task.
+> Creating/editing/reviewing archetypes (incl. **rationale prose**, **translation**, and **ADL syntax fixing**), linting, authoring templates (incl. the **form → template sketch**), building compositions, writing AQL, **diffing two artefacts**, and **browsing guides** are handled by the matching **skill** (no command needed) — just describe the task.
 
 ### Agents
 
 | Agent | Description |
 |-------|-------------|
-| `clinical-modeler` | Local clinical-model file analyst (read/write/review/edit `.adl`/`.oet`/`.opt`). Writes locally; has read-only MCP lookups (terminology, type specs, guides, single CKM fetch) with offline fallback |
+| `clinical-modeler` | Local clinical-model file analyst (read/write/review/edit `.adl`/`.oet`/`.t.json`/`.opt`). Writes locally; has read-only MCP lookups (terminology, type specs, guides, single CKM fetch) with offline fallback |
 | `ckm-scout` | CKM reuse-search specialist — parallel searches, ranked recommendation |
 | `spec-researcher` | Spec research specialist using llms.txt/.md twin methodology |
 

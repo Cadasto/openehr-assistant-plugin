@@ -10,14 +10,14 @@ The detailed companion to [AGENTS.md](../AGENTS.md) and [CONTRIBUTING.md](../CON
 ## Layout
 
 - `skills/<name>/SKILL.md` — one subdirectory per skill, YAML frontmatter + markdown body. Optional `references/` and `examples/` subdirectories for bulky supplementary content (e.g. `skills/openehr-assistant/reference/`, `…/examples/`).
-- `commands/<name>.md` — one file per slash command, YAML frontmatter + body. Shared command reference material lives in the top-level `references/` directory (e.g. `references/semantic-diff-rubric.md`), **not** under `commands/` — host validators treat every `commands/**/*.md` as a command, so a reference file there is mis-detected.
+- `commands/<name>.md` — one file per slash command, YAML frontmatter + body. Reference material never goes under `commands/` — host validators treat every `commands/**/*.md` as a command, so a reference file there is mis-detected; put it in the consuming skill's `references/` subdirectory instead (e.g. `skills/semantic-diff/references/semantic-diff-rubric.md`).
 - `agents/<name>.md` — one file per agent, YAML frontmatter + system prompt.
 - Keep both manifests (`.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`) in sync.
 
 ## Choosing skill vs command vs agent
 
-- **Command** — a thin, single-interaction wrapper around MCP tools for a focused task. Use `$ARGUMENTS` for input and `argument-hint` in frontmatter. Keep instructions concise; the command should complete in one turn.
-- **Skill** — a multi-step, context-rich workflow that may span several turns and load multiple guides. Mark `auto-invocable` / `user-invocable` as appropriate.
+- **Skill** (the default for new functionality) — any multi-step or context-rich workflow. Both hosts have unified commands and skills: a skill is `/`-invocable like a command, takes `argument-hint` / `$ARGUMENTS`, *and* auto-triggers from natural language and can carry bulky material in `references/`. Mark `auto-invocable` / `user-invocable` as appropriate.
+- **Command** — reserved for a thin, single-interaction wrapper around MCP tools (a lookup or scan that completes in one turn, needs no supporting files, and should not auto-trigger). A command that grows steps or needs a reference file is a skill — fold it in, as with `/archetype-fix-syntax` → `archetype-authoring` and `/semantic-diff` → the `semantic-diff` skill.
 - **Agent** — a context-isolated subagent for heavy or parallel work (e.g. `ckm-scout`, `spec-researcher`) so the main session's context stays clean.
 
 ## The `description` field (the trigger)

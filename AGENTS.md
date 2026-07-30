@@ -71,7 +71,7 @@ The MCP server exposes `openehr://examples/{kind}/{name}` for gold-standard patt
 
 ## Syntax and grammar sources
 
-Use these when you need authoritative ADL or AQL syntax (e.g. for `/archetype-fix-syntax`, AQL authoring, or when MCP guides are unavailable). Canonical detail lives in MCP guides and official specs; treat the following as pointers.
+Use these when you need authoritative ADL or AQL syntax (e.g. for the `archetype-authoring` fix-syntax mode, AQL authoring, or when MCP guides are unavailable). Canonical detail lives in MCP guides and official specs; treat the following as pointers.
 
 - **ADL syntax**: Official narrative in [specifications-AM](https://github.com/openEHR/specifications-AM) (e.g. `docs/ADL1.4/`, appendix C references ANTLR grammars). Normative grammars: [adl-antlr](https://github.com/openEHR/adl-antlr) (referenced by the spec). Consolidated ANTLR4 grammars (ADL1.4, ADL2): [openEHR-antlr4](https://github.com/openEHR/openEHR-antlr4) (`reader_adl14`, `reader_adl2`). MCP guide: `guide_get("openehr://guides/archetypes/adl-syntax")`. Published spec: `https://specifications.openehr.org/releases/AM/development/` (see retrieval methodology below).
 - **AQL syntax**: Official narrative and grammar in [specifications-QUERY](https://github.com/openEHR/specifications-QUERY) (`docs/AQL/`). ANTLR4 grammars: [openEHR-antlr4](https://github.com/openEHR/openEHR-antlr4) `reader_aql`. MCP guide: `guide_get("openehr://guides/aql/syntax")`. Published spec: `https://specifications.openehr.org/releases/QUERY/development/` (see retrieval methodology below).
@@ -92,27 +92,25 @@ For spec overview questions ("what does the EHR IM define?", "summarise ADL2"), 
 
 ## Components
 
-### Skills (7)
+### Skills (8)
 | Skill | Purpose |
 |-------|---------|
 | `openehr-assistant` | Auto-invoked openEHR awareness, clinical modeling, **guide browsing** (`guide_search`/`guide_get`), and tool routing |
-| `archetype-authoring` | Create, edit, extend, specialize archetypes; CKM-import for reuse; **review & remediate** pipeline (absorbs `/archetype-review`); **rationale prose** (absorbs `/archetype-rationale`); **translate / add a locale** (absorbs `/archetype-translate`) |
+| `archetype-authoring` | Create, edit, extend, specialize archetypes; CKM-import for reuse; **review & remediate** pipeline (absorbs `/archetype-review`); **rationale prose** (absorbs `/archetype-rationale`); **translate / add a locale** (absorbs `/archetype-translate`); **fix ADL syntax** (absorbs `/archetype-fix-syntax`) |
 | `archetype-lint` | Auto-invoked archetype validation with 24 normative lint rules (STRICT/PERMISSIVE) |
-| `template-authoring` | Create and constrain templates (OET/OPT) |
+| `template-authoring` | Create and constrain templates (OET/OPT); **form → template sketch** with CGEM split (absorbs `/template-from-form`) |
 | `composition-builder` | Build compositions (FLAT/STRUCTURED/CANONICAL) |
 | `aql-authoring` | Write, explain, optimize AQL queries |
+| `semantic-diff` | Semantic diff of two artefacts — archetype or template, version-bump **or** sibling/cross-artefact mode with a path-compatibility table; rubric bundled in `references/`; also `/semantic-diff`-invocable |
 | `demographic-modeling` | Design demographic models (PARTY hierarchy, roles, relationships, identity patterns) |
 
-### Commands (6)
-A deliberately small slash surface — multi-step workflows live in the **skills** (which auto-trigger and are also `/`-invocable); commands are explicit one-shots. Former commands were merged (search/explain/lookups/diffs) or folded into skills (`/aql-designer`→`aql-authoring`, `/format-data`→`composition-builder`, `/archetype-review` + `/archetype-rationale` + `/archetype-translate`→`archetype-authoring`, `/rm-structure`→`/openehr-explain`, `/guide` + `/archetype-lint`→ the `openehr-assistant` and `archetype-lint` skills). Note: `/archetype-lint` still works — it resolves to the user-invocable `archetype-lint` skill.
+### Commands (3)
+A deliberately small slash surface — multi-step workflows live in the **skills** (which auto-trigger and are also `/`-invocable); commands are explicit one-shots. Former commands were merged (search/explain/lookups/diffs), folded into skills (`/aql-designer`→`aql-authoring`, `/format-data`→`composition-builder`, `/archetype-review` + `/archetype-rationale` + `/archetype-translate` + `/archetype-fix-syntax`→`archetype-authoring`, `/template-from-form`→`template-authoring`, `/rm-structure`→`/openehr-explain`, `/guide` + `/archetype-lint`→ the `openehr-assistant` and `archetype-lint` skills), or converted to a skill outright (`/semantic-diff`). Note: `/archetype-lint` and `/semantic-diff` still work — they resolve to the user-invocable skills of the same name.
 
 | Command | Purpose |
 |---------|---------|
 | `/ckm-search` | Find CKM **archetypes or templates** (`[archetype\|template] <query>`; optional `rmClass` filter) — merges `/archetype-search` + `/template-search` |
 | `/openehr-explain` | Explain / look up **any** openEHR thing — archetype, template, RM/AM type, **RM structural concept**, ADL idiom, **AQL query/keyword**, or terminology code (auto-detects) — merges `/archetype-explain`, `/template-explain`, `/type-spec`, `/rm-structure`, `/adl-idiom`, `/terminology` |
-| `/semantic-diff` | Semantic diff of two artefacts — archetype or template, version-bump **or** sibling/cross-artefact mode with a path-compatibility table — merges `/archetype-diff` + `/template-diff` |
-| `/archetype-fix-syntax` | Fix ADL syntax |
-| `/template-from-form` | Split a clinical form across compositions (CGEM categories) and sketch each template (archetypes + narrowing) |
 | `/archetype-impact` | Scan workspace for references to an archetype across templates (`.oet`/`.opt`/`.t.json`), parent `.adl` slots, and AQL |
 
 ### Agents (3)
@@ -140,7 +138,7 @@ This repo supports **both Claude Code and Cursor**; shared assets (skills, comma
 - **Claude settings**: `.claude/settings.json` enables the maintainer plugins used while developing this repo (skill-creator, superpowers, plugin-dev, claude-md-management); `.claude/CLAUDE.md` imports this file via `@../AGENTS.md`. `.claude/settings.local.json` is gitignored (personal overrides).
 - **Validation**: `scripts/validate.sh` (graceful local wrapper — warns and skips if Python is absent) runs `scripts/validate.py`, which checks both manifests, dual-host parity, declared component paths, the bundled `.mcp.json`, and skill/command/agent frontmatter. CI pins Python and runs the validator strictly ([`.github/workflows/validate.yml`](.github/workflows/validate.yml)).
 - **Contributor docs**: `docs/` holds committed human-facing references — [install](docs/install.md), [testing](docs/testing.md), [versioning](docs/versioning.md), [authoring](docs/authoring.md); `.github/` holds issue + PR templates and the validate workflow.
-- **Shared command references**: `references/` — top-level dir for reference material consumed by commands (e.g. `references/semantic-diff-rubric.md`). Kept out of `commands/` so host validators don't treat it as a command (see Gotchas).
+- **Reference material**: bulky supplementary content lives inside the consuming skill's `references/` subdirectory (e.g. `skills/semantic-diff/references/semantic-diff-rubric.md`) — never under `commands/` (see Gotchas).
 
 ## Development
 
@@ -163,8 +161,8 @@ Then verify a command (`/ckm-search blood pressure`) and skill auto-triggering a
 - Contributor reference, plans, specs, and design docs go in **`docs/`**
 - All markdown files use YAML frontmatter for metadata
 - `allowed-tools` (skills/commands) pre-approves MCP tools to avoid permission prompts; **agents use `tools:`** instead — `allowed-tools:` in an agent file is ignored and the agent silently inherits all tools
-- Skills: use `auto-invocable` / `user-invocable` in frontmatter as needed; follow Guide-First (load MCP guides before acting)
-- Commands: use `argument-hint` in frontmatter and `$ARGUMENTS` in body for user input; keep instructions concise for single-interaction completion
+- Skills: use `auto-invocable` / `user-invocable` in frontmatter as needed; `argument-hint` and `$ARGUMENTS` work here too (skills are `/`-invocable); follow Guide-First (load MCP guides before acting)
+- Commands: use `argument-hint` in frontmatter and `$ARGUMENTS` in body for user input; keep instructions concise for single-interaction completion. Prefer a skill for anything multi-step — commands are thin one-shots (see [docs/authoring.md](docs/authoring.md))
 
 ### Documentation Sync
 When adding or renaming components, update: **AGENTS.md** (component tables), **README.md** (tables), and **hooks/session-start.sh** (the "Available: /command1, ..." list). Cursor uses the same skills/commands/agents paths; no separate Cursor-only list is required.
@@ -191,7 +189,7 @@ When adding or renaming components, update: **AGENTS.md** (component tables), **
 
 - **Agents use `tools:`, not `allowed-tools:`.** `allowed-tools:` is a skills/commands key; in an agent file it is ignored and the agent silently inherits *all* tools. Use `tools:` (a YAML list is fine). See `agents/clinical-modeler.md` for the correct form.
 - **An MCP id in agent `tools:` must be listed under *both* mount namespaces.** `tools:` entries are matched literally against live tool ids, and an MCP tool's id depends on how the server was mounted: `mcp__openehr-assistant__<tool>` for a project/user `.mcp.json`, `mcp__plugin_openehr-assistant_openehr-assistant__<tool>` when it comes from this plugin's bundled `.mcp.json` (a claude.ai connector gives a third shape, `mcp__claude_ai_<connector>__<tool>`). A non-matching entry is **dropped silently**, and an agent whose entire `tools:` list resolves to nothing is **refused** — `would be spawned with zero tools`. So `ckm-scout` (MCP-only `tools:`) failed to spawn at all under a plugin mount, while `clinical-modeler` and `spec-researcher` spawned with built-ins only and hit their `BLOCKED: …` path. All three now list both forms, and `scripts/validate.py` enforces the pairing. Note the contrast with skills/commands: `allowed-tools` only pre-approves permissions, so a namespace miss there costs a prompt, not access.
-- **Shared command references live in top-level `references/`, not under `commands/`.** Host validators (`claude plugin validate`) treat every `commands/**/*.md` as a command and warn on missing frontmatter — so a reference file there is mis-detected. Example: `references/semantic-diff-rubric.md`, consumed by `/semantic-diff`.
+- **Never put reference `.md` files under `commands/`.** Host validators (`claude plugin validate`) treat every `commands/**/*.md` as a command and warn on missing frontmatter — so a reference file there is mis-detected. Reference material belongs inside the consuming skill's `references/` subdirectory (e.g. `skills/semantic-diff/references/semantic-diff-rubric.md`); a command that needs bulky reference content is a sign it should be a skill.
 - **Subagents need the MCP server pre-approved or they silently lose CKM/guide access.** Agent frontmatter `tools:` grants the *capability*, but the host's permission policy must still allow the server. The repo's `.claude/settings.json` `permissions.allow` lists the `openehr-assistant` server (both the bundled `mcp__plugin_openehr-assistant_openehr-assistant` and `mcp__openehr-assistant` namespaces); users who hit "CKM denied in a subagent" should add the same to their project settings. `ckm-scout` / `spec-researcher` / `clinical-modeler` fail loud with `BLOCKED: …` and route the lookup back to the main session when this isn't in place.
 - **MCP tool parameters are named, not positional.** Skill/command examples use the readable `tool("value")` shorthand, but the real calls take the server's JSON params — e.g. `ckm_archetype_search` → `keyword`, `*_get` → `identifier`, `type_specification_get` → `name`. When unsure, the tool's loaded schema is authoritative; don't guess `{ query }`.
 - **Deferred MCP tool schemas load on first use.** In review/diff flows that call several MCP tools, reference the tools early so their schemas resolve before the first call (avoids first-call round-trips). This is partly a host concern.

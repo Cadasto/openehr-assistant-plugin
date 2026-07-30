@@ -13,7 +13,7 @@ description: >
   user: "Review the archetypes in my project for structural issues"
   assistant: "I'll use the clinical-modeler agent to scan your workspace for .adl files and check them for structural correctness."
   <commentary>
-  Local file analysis of archetype structure does not require CKM or MCP tools — the clinical-modeler agent can check ADL validity, at-code completeness, and naming conventions using only local file access.
+  Local structural review (ADL validity, at-code completeness, naming) needs only workspace file access.
   </commentary>
   </example>
 
@@ -22,16 +22,7 @@ description: >
   user: "Do all the slot references in my templates point to archetypes that exist in this project?"
   assistant: "I'll use the clinical-modeler agent to cross-reference your .oet template files against the .adl archetypes in the workspace."
   <commentary>
-  Cross-referencing slot references between local templates and archetypes is a workspace-only operation — no MCP access needed.
-  </commentary>
-  </example>
-
-  <example>
-  Context: The user has written a new archetype and wants a quick check before CKM submission.
-  user: "Check this archetype file for obvious issues before I submit it to CKM"
-  assistant: "I'll use the clinical-modeler agent to run local lint checks on the archetype — at-code completeness, cardinality, ontology integrity, and structural validity."
-  <commentary>
-  Pre-submission lint checks that can be performed locally (term definitions, occurrences vs cardinality, single concept rule) are handled by the clinical-modeler agent. Full CKM-aware review requires the main session.
+  Cross-referencing local templates against workspace archetypes is a workspace-only operation.
   </commentary>
   </example>
 
@@ -126,39 +117,11 @@ When reviewing models, check for:
 
 ### Lint rule awareness
 
-Load **lint-rules-complete.md** for all 24 rules with examples. The rules that can be fully verified locally (without MCP):
+Load **lint-rules-complete.md** for all 24 rules — names, severities, and violation/fix examples live there, not here. What this agent can verify **locally**:
 
-**ERROR rules (locally verifiable):**
-- Rule 1: Single Concept — one coherent concept per archetype
-- Rule 2: ENTRY Type Semantics — correct ENTRY subtype for clinical statement
-- Rule 3: Root RM Type Match — root node matches declared RM type
-- Rule 4: Valid RM Attributes Only — verify against **rm-type-reference.md** (covers ~30 common types); for exotic types call `type_specification_get`, or flag for the main session if blocked
-- Rule 5: occurrences vs cardinality — correct usage on objects vs containers
-- Rule 6: Specialisation Integrity — child does not contradict parent
-- Rule 7: Path Stability — path changes require major version
-- Rule 8: Term Definition Completeness — every at-code has text + description
-- Rule 15: Attribute Multiplicity — C_SINGLE_ATTRIBUTE has one child
-- Rule 16: Ontology Integrity — ac-codes reference valid at-codes
-- Rule 20: Identity vs Role Separation — PERSON must not contain role semantics
-- Rule 21: Patch Version Discipline — no semantic changes in patch versions
-
-**WARNING rules (locally verifiable):**
-- Rule 9: Mandatory Data Justification — min>0 only if clinically required
-- Rule 10: Arbitrary Upper Bounds — no magic numbers
-- Rule 11: CLUSTER Semantics — semantic groups, not generic containers
-- Rule 12: Slot Discipline — constrained, not wildcard
-- Rule 13: Template Leakage — no workflow/UI in archetypes
-- Rule 14: Unconstrained Leaf Nodes — no DV_* matches {*} without justification
-- Rule 22: Deprecation Handling — deprecated nodes retained, not deleted
-- Rule 23: Prose ↔ Slot Consistency — archetype ids named in `use`/`misuse`/`comment` are admitted by a slot `include`
-- Rule 24: Translation Accuracy — no `*(en)` placeholder stubs or mis-copied labels in non-English `term_definitions`
-
-**INFO rules (contextual guidance):**
-- Rule 19: Archetypable Demographics — when authoring PARTY demographics, which types may be archetyped (see **lint-rules-complete.md**)
-
-**Rules needing terminology verification** (use `terminology_resolve`; if blocked, flag for the main session):
-- Rule 17: Terminology Neutrality — bindings optional, not hardcoded
-- Rule 18: Semantic Binding Accuracy — verify the bound code is a semantic match
+- **Locally verifiable:** ERROR rules 1–8, 15, 16, 20, 21; WARNING rules 9–14, 22, 23, 24; INFO rule 19 (contextual demographics guidance).
+- **Rule 4 (Valid RM Attributes Only):** verify against **rm-type-reference.md** (~30 common types); for exotic types call `type_specification_get`, or flag for the main session if blocked.
+- **Rules 17–18 (terminology neutrality / binding accuracy):** need `terminology_resolve`; if blocked, flag for the main session.
 
 Report findings with severity matching the normative rules.
 
@@ -179,12 +142,6 @@ When writing or editing clinical model files:
 - Preserve existing formatting conventions
 - Maintain backwards compatibility in archetype paths
 - Validate structural completeness before writing
-
-## Triggering Examples
-
-- "Review the archetypes in my project for structural issues" — local file analysis, no MCP needed
-- "Do all the slot references in my templates point to archetypes that exist?" — cross-referencing local .adl/.oet files
-- "Check this archetype file for obvious issues before I submit it to CKM" — local lint checks (at-codes, cardinality, ontology integrity)
 
 ## Output Format
 

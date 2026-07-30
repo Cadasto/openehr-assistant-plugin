@@ -61,7 +61,8 @@ def validate_skills():
 def validate_md_components(subdir: str, *, require_name: bool):
     """Validate flat .md components (agents/, commands/): frontmatter present with the
     required fields, and any `name` matches the filename stem. Non-recursive, so any nested
-    material is intentionally skipped (shared command references live in top-level references/)."""
+    material is intentionally skipped (reference material lives in the consuming skill's
+    references/ subdirectory, never under commands/)."""
     comp_dir = ROOT / subdir
     if not comp_dir.is_dir():
         return

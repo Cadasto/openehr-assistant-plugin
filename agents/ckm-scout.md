@@ -6,14 +6,15 @@ description: >
   reuse-first principle by running parallel searches with varied phrasings and returning
   a ranked reuse/specialize/new recommendation. Invoke proactively when the user asks to
   find/search a CKM archetype, before any archetype authoring workflow, or when initial
-  CKM hits look marginal. Examples:
+  CKM hits look marginal. Not for fetching a single already-identified archetype — call
+  `ckm_archetype_get` inline for that. Examples:
 
   <example>
   Context: The user asks to author a new archetype without having searched CKM first.
   user: "I need to design an archetype for spirometry results"
   assistant: "Before authoring from scratch, I'll dispatch ckm-scout to see if a reusable archetype already exists."
   <commentary>
-  Reuse-first is the single most-violated openEHR principle; a context-isolated CKM search runs 3 parallel phrasings and ranks candidates without polluting the main authoring context.
+  Reuse-first is the most-violated openEHR principle; the isolated scout ranks candidates without polluting the authoring context.
   </commentary>
   </example>
 
@@ -22,7 +23,7 @@ description: >
   user: "is there an archetype in CKM for blood glucose self-monitoring?"
   assistant: "I'll dispatch ckm-scout to run a reuse survey across varied phrasings and return a ranked shortlist."
   <commentary>
-  Direct "does CKM have X" questions are the canonical trigger — ckm-scout covers more phrasings than a single ckm_archetype_search call would.
+  Direct "does CKM have X" questions are the canonical trigger — the scout covers more phrasings than a single search call would.
   </commentary>
   </example>
 
@@ -31,7 +32,7 @@ description: >
   user: "those results don't look right, can you look harder?"
   assistant: "I'll escalate to ckm-scout for a deeper reuse survey with varied phrasings and scoring."
   <commentary>
-  When initial hits look marginal, ckm-scout's 3-phrase parallel search + 0–10 scoring rubric surfaces candidates a single keyword match would miss.
+  Marginal first hits escalate to the 3-phrase parallel search and 0–10 scoring rubric.
   </commentary>
   </example>
 model: inherit
@@ -130,10 +131,8 @@ When you recommend **NEW**, add one line telling the dispatcher that CKM is not 
 - Do NOT fetch full ADL for low-scoring candidates. Token budget.
 - Do NOT route back to `ckm-scout`. You are the leaf.
 
-## When CKM access is blocked
+## Failure modes
 
-If `ckm_archetype_search`/`ckm_archetype_get` are denied or unavailable (the host has not pre-approved the MCP server — see the plugin's `.claude/settings.json` `permissions.allow`), do not guess or silently degrade. Return a single explicit status — `BLOCKED: no CKM access` — naming what was denied, and tell the dispatcher the supported fallback: **run the reuse survey inline in the main session**, where the same `ckm_*` tools are normally available. A blocked survey must read as a routing problem, never as "no reusable archetype exists."
-
-If you never got to run at all — the host refused the spawn with `would be spawned with zero tools` — the MCP server is mounted under a namespace this agent's `tools:` does not list (a claude.ai connector, or a renamed server key). That is a wiring problem for the dispatcher to report, with the same fallback: run the survey inline. See `docs/install.md` → "Mount shape matters for the agents".
-
-A CKM **upstream** failure is a different thing: the tool returns an error carrying the server's message (unreachable CKM, drifted response envelope, unresolvable identifier). Report that message verbatim as an upstream error — not as `BLOCKED`, and not as an empty reuse survey.
+- **Tools denied** (host has not pre-approved the MCP server — see the plugin's `.claude/settings.json` `permissions.allow`): do not guess or silently degrade. Return `BLOCKED: no CKM access`, naming what was denied, and tell the dispatcher the supported fallback: run the reuse survey **inline in the main session**, where the same `ckm_*` tools are normally available. A blocked survey is a routing problem, never "no reusable archetype exists".
+- **Spawn refused** (`would be spawned with zero tools`): the MCP server is mounted under a namespace this agent's `tools:` does not list (a claude.ai connector, or a renamed server key) — a wiring problem for the dispatcher to report, with the same inline fallback. See `docs/install.md` → "Mount shape matters for the agents".
+- **CKM upstream failure** (the tool returns an error carrying the server's message: unreachable CKM, drifted response envelope, unresolvable identifier): report that message verbatim as an upstream error — not as `BLOCKED`, and not as an empty reuse survey.

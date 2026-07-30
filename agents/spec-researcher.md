@@ -14,7 +14,7 @@ description: >
   user: "what's the full invariant list on COMPOSITION?"
   assistant: "I'll dispatch spec-researcher to fetch the class-level table from the RM spec."
   <commentary>
-  Class-level tables live in HTML or BMM, not in the Markdown twin; a specialist agent routes efficiently to `type_specification_get` first.
+  Class-level tables live in HTML or BMM, not the Markdown twin — route to `type_specification_get` first.
   </commentary>
   </example>
 
@@ -23,7 +23,7 @@ description: >
   user: "how is the LANG BMM persistence format defined in the spec?"
   assistant: "I'll dispatch spec-researcher to fetch the LANG spec digest and fall through to the .md twin if needed."
   <commentary>
-  The `howto/spec-lookup` methodology starts with the digest, then the .md twin, then escalates to HTML — saving tokens and staying grounded.
+  The methodology goes digest → .md twin → HTML, cheapest source first.
   </commentary>
   </example>
 
@@ -32,7 +32,7 @@ description: >
   user: "cross-check what ADL2 says about specialization versus what AOM2 says — are they consistent?"
   assistant: "I'll dispatch spec-researcher to pull both spec digests and reconcile."
   <commentary>
-  Cross-document reconciliation is context-heavy; isolating it in a subagent keeps the main session's context clean.
+  Cross-document reconciliation is context-heavy; isolating it keeps the main session clean.
   </commentary>
   </example>
 model: inherit

@@ -2,11 +2,12 @@
 name: archetype-lint
 description: >
   This skill should be used when the user asks to "lint an archetype", "validate an archetype",
-  "check archetype compliance", "review archetype quality", or "run archetype rules". Applies
+  "check archetype compliance", "check archetype rules compliance", or "run archetype rules". Applies
   24 normative lint rules with ERROR/WARNING/INFO severity. Supports STRICT and PERMISSIVE modes.
   Reports violations only — it does not modify files; to lint *and* remediate, use the
   `archetype-authoring` skill. Auto-invoked on lint/validate intent, and also directly invocable
   as `/archetype-lint <file or id> [strict]`.
+argument-hint: "<file or id> [strict]"
 allowed-tools:
   - Read
   - Glob
@@ -70,7 +71,7 @@ The **normative rule definitions live in the `archetypes/rules` guide loaded in 
 
 For rule 4, verify attribute names against the RM with `type_specification_get` when uncertain.
 
-> Offline fallback only: `skills/openehr-assistant/reference/lint-rules-complete.md` mirrors these definitions for the `clinical-modeler` agent (no MCP access). In the main session, always prefer the loaded `archetypes/rules` guide.
+> Offline fallback only: `skills/openehr-assistant/reference/lint-rules-complete.md` mirrors these definitions as the `clinical-modeler` agent's fallback when its read-only MCP lookups are blocked. In the main session, always prefer the loaded `archetypes/rules` guide.
 
 ### Avoid known false positives
 
@@ -107,11 +108,6 @@ For rule 4, verify attribute names against the RM with `type_specification_get` 
 - STRICT mode: any WARNING -> overall status = FAIL
 - PERMISSIVE mode: WARNINGs allowed if justified
 
-## Step 5: Fix Guidance (Optional)
+## Step 5: After the Report (routing only)
 
-If the user asks for fixes after linting, provide a minimal-diff fix plan:
-- For each violation: which rule it resolves, whether it changes paths, whether it affects semantics
-- Version bump recommendation (patch/minor/major) with justification
-- Prefer template-level constraints over archetype constraints where applicable
-
-Do NOT apply fixes automatically. Present the plan and wait for user approval.
+This skill reports; the report's **Suggested Fix** column is the ceiling of what it provides. When the user asks for a fix plan or for fixes to be applied, route to the `archetype-authoring` skill — its fix-syntax mode for parse/structure errors, its review-remediate pipeline (minimal-diff plan, path/semantics impact, version-bump justification) for semantic findings.
