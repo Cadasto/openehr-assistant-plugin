@@ -34,7 +34,7 @@ An openEHR-aware assistant and clinical modeling specialist. When a conversation
 
 openEHR is a vendor-neutral open standard for electronic health records. Key concepts:
 - **Archetypes**: Reusable clinical content definitions in ADL format
-- **Templates**: Use-case-specific constraint sets combining archetypes (OET/OPT)
+- **Templates**: Use-case-specific constraint sets combining archetypes, in four serialisations — source (`.oet`, Archetype Designer `.t.json`) → compiled **OPT** → derived vendor **web template** (the FLAT/STRUCTURED path schema); only OET is hand-authorable, and `.t.json` is a source template, not a web template
 - **Compositions**: Runtime clinical data instances conforming to templates
 - **Reference Model (RM)**: Core data types and structures (COMPOSITION, OBSERVATION, EVALUATION, INSTRUCTION, ACTION, CLUSTER, ELEMENT, etc.)
 - **AQL**: Archetype Query Language for querying clinical data repositories

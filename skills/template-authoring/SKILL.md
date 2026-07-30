@@ -2,8 +2,10 @@
 name: template-authoring
 description: >
   This skill should be used when the user asks to "create a template", "design a template",
-  "constrain archetypes into a template", "review a template", or "work with OET/OPT files".
-  Covers creating openEHR templates, constraining archetypes, reviewing designs, and OET/OPT authoring.
+  "constrain archetypes into a template", "review a template", or "work with OET / .t.json /
+  OPT / web-template files". Covers creating openEHR templates, constraining archetypes,
+  reviewing designs, OET authoring, and reading the tool-generated serialisations
+  (Archetype Designer `.t.json`, OPT, vendor web template).
   Use `/ckm-search` to find existing CKM templates and `/openehr-explain` to explain one; this
   skill is for authoring and constraining new OET designs.
 argument-hint: "<task: create|review> [template-id or use-case]"
@@ -113,14 +115,22 @@ Use the CGEM framework (freshEHR) to guide how clinical data splits across templ
 - Constrain value sets to the local clinical context
 - Use `terminology_resolve` to verify terminology bindings inherited from archetypes
 
-## Step 8: OET vs OPT
+## Step 8: The four serialisations
 
-| Format | Purpose |
-|--------|---------|
-| **OET** | Authoring format — human-editable XML for template design |
-| **OPT** | Operational Template — flattened, self-contained runtime artefact the CDR validates against (XML in ADL 1.4 practice; OPT2 allows ADL/XML/JSON/YAML). Generated, never hand-authored |
-| **Archetype Designer `.t.json`** | Archetype Designer's differential template JSON (tool-generated) |
-| **Web Template** | Vendor JSON projection of the OPT for UI generation; its node ids define the FLAT/STRUCTURED path schema. Derived, never authored |
+One design intent, four serialisations at three layers — **not** interchangeable, and only OET is hand-authorable:
+
+| Format | Layer | Purpose |
+|--------|-------|---------|
+| **OET** (`.oet`) | source | Authoring format — human-editable XML referencing archetypes plus narrowing. The artefact you version |
+| **Archetype Designer `.t.json`** | source | AOM2 **differential** template JSON (`@type: TEMPLATE`, `parentArchetypeId`, `differential: true`, `templateOverlays`) — the JSON analogue of OET, from Better's Archetype Designer ("Export Fileset"). Tool-managed: read and review it, but make design edits in the tool or in an OET |
+| **OPT** (`.opt`/`.optx`/`.optj`) | compiled | Operational Template — flattened, self-contained runtime artefact the CDR validates against (XML in ADL 1.4 practice; OPT2 adds ADL/XML/JSON, and raw vs profiled variants). Generated, never hand-authored |
+| **Web Template** (JSON) | derived runtime | Better/EHRbase simplified projection **of the OPT** for UI generation; its node ids define the FLAT/STRUCTURED path schema. Derived, lossy, never authored |
+
+```
+OET (or .t.json) + archetypes  ──►  OPT  ──►  web template
+```
+
+**`.t.json` is not a web template** — it sits at the *source* layer with slots intact, while a web template is flattened runtime JSON with `aqlPath`/`inputs`. Both come from Better, at opposite ends of the pipeline; "the Better template" is ambiguous, so always name which one.
 
 For when each format is hand-authorable vs tool-generated and what checksums each carries, load `guide_get("openehr://guides/templates/serialization-formats")`; for the runtime forms in depth, `guide_get("openehr://guides/templates/opt-structure")` and `guide_get("openehr://guides/templates/web-template")`. Reference syntax guides:
 ```

@@ -65,7 +65,7 @@ could be a type or a terminology rubric), ask **one** brief clarifying question,
 
 ### B. Template  (`ckm_template_get`)
 1. Load context: `guide_get("openehr://guides/templates/principles")`, `guide_get("openehr://guides/templates/rules")`. For a runtime artefact (`.opt` file, web-template JSON, or questions about FLAT path ids), also `guide_get("openehr://guides/templates/opt-structure")` / `guide_get("openehr://guides/templates/web-template")`.
-2. Retrieve with `ckm_template_get` (id/CKM CID) or `Read` (workspace `.oet`/`.opt`). For an id, ask the preferred format first: OET (design-time, default) or OPT (operational).
+2. Retrieve with `ckm_template_get` (CKM CID) or `Read` (workspace `.oet`, `.t.json`, `.opt`/`.optx`/`.optj`, or a web-template JSON). For a CID, ask the preferred format first: OET (design-time, default) or OPT (operational). Name the layer you are explaining — **source** (OET / Archetype Designer `.t.json`: slots and overlays intact), **compiled** (OPT: constraints inlined), or **derived runtime** (web template: simplified, lossy, the FLAT/STRUCTURED path schema) — and load `guide_get("openehr://guides/templates/serialization-formats")` when the artefact is not an OET.
 3. Retrieve referenced archetypes via `ckm_archetype_get` for deeper explanation; clarify RM types with `type_specification_get`.
 4. **Do NOT** suggest improvements, assume UI behavior beyond what is explicitly constrained, or add concepts not present.
 5. Output:

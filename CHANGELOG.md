@@ -21,7 +21,11 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 - Commands/agents: `/ckm-search` reports search `total` and retrieves by CID; `/openehr-explain` and `ckm-scout` state the `ckm_archetype_get` identifier rule; `ckm-scout` separates upstream CKM errors from `BLOCKED`.
 - Skills/commands: `/semantic-diff` (and its rubric) guard `terminology_resolve` to openEHR codes; `openehr-assistant` documents `guide_search` scoring/`total` and corrects the external-terminology advice; `clinical-modeler` MCP-lookup list carries the same limits.
 
+- Template serialisations: OET, Archetype Designer `.t.json`, OPT (`.opt`/`.optx`/`.optj`) and vendor web template are now named as four artefacts at three layers across AGENTS.md, README, `template-authoring` (Step 8), `openehr-assistant`, `/openehr-explain`, `/semantic-diff` and `clinical-modeler`.
+- Discovery: `hooks/session-start.sh` detects `.t.json` and `.optx`/`.optj`; the Cursor rule `openehr-context.mdc` globs cover `.adls`, `.t.json`, `.optx`/`.optj` and `.aql`.
+
 ### Fixed
+- Commands: `/archetype-impact` no longer calls `.t.json` a web template — it is an AOM2 differential *source* template; the impact table now splits source from compiled references and says which `.opt` needs regenerating.
 - Commands/skills: stale guide names corrected — `archetypes/formatting` → `archetypes/reference-formatting` (`/archetype-fix-syntax`, `archetype-authoring`), `archetypes/idioms-cheatsheet` → `archetypes/adl-idioms-cheatsheet` (offline corpus index).
 - Guide references: `guide_get("<category>/<name>")` now uses the resolvable `openehr://guides/<category>/<name>` form across skills, commands and agents — the bare `category/name` string is not a valid URI and fails with `Invalid guide URI`.
 

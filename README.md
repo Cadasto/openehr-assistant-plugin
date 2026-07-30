@@ -98,7 +98,7 @@ Multi-step workflows (authoring, review, AQL, compositions) are driven by the **
 | `/semantic-diff <file-a> <file-b>` | Semantic diff of two artefacts (archetype or template); version-bump verdict or sibling/cross-artefact compatibility report |
 | `/archetype-fix-syntax <file>` | Fix ADL syntax errors preserving semantics |
 | `/template-from-form <form text or path>` | Map a clinical form to a template sketch (archetypes + narrowing) |
-| `/archetype-impact <archetype-id>` | Scan workspace for references to an archetype (templates incl. `.t.json`, parent `.adl` slots, AQL) |
+| `/archetype-impact <archetype-id>` | Scan workspace for references to an archetype (source templates `.oet`/`.t.json`, compiled `.opt`, parent `.adl` slots, AQL) |
 
 > Creating/editing/reviewing archetypes (incl. **rationale prose** and **translation**), linting, authoring templates, building compositions, writing AQL, and **browsing guides** are handled by the matching **skill** (no command needed) — just describe the task.
 

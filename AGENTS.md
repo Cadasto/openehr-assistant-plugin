@@ -10,7 +10,7 @@ The **openEHR Assistant Plugin** is an AI plugin by Cadasto B.V. that provides c
 
 **openEHR** is a vendor-neutral open standard for electronic health records. Key concepts:
 - **Archetypes** — reusable clinical content definitions in ADL (Archetype Definition Language) format
-- **Templates** — use-case-specific constraint sets combining archetypes (OET for authoring, OPT for runtime)
+- **Templates** — use-case-specific constraint sets combining archetypes, in four serialisations: **OET** (`.oet`, hand-authored source) and Archetype Designer **`.t.json`** (AOM2 differential source) compile to an **OPT** (runtime contract), from which a vendor **web template** (Better/EHRbase JSON) is derived for FLAT/STRUCTURED data entry. `.t.json` is a *source* template, not a web template
 - **Compositions** — runtime clinical data instances conforming to templates
 - **Reference Model (RM)** — core data types and structures
 - **AQL** — Archetype Query Language for querying clinical data repositories
@@ -133,7 +133,7 @@ This repo supports **both Claude Code and Cursor**; shared assets (skills, comma
 - **MCP config**: `.mcp.json` — MCP server connection (default: streamable-http to hosted openehr-assistant-mcp); used by both hosts
 - **Claude hooks**: `hooks/hooks.json` — array of `{ "type": "SessionStart", "command": "..." }`; use `${CLAUDE_PLUGIN_ROOT}` in command paths
 - **Cursor hooks**: `hooks/cursor-hooks.json` — object `{ "hooks": { "sessionStart": [...] } }`; command runs from plugin root
-- **Shared hook script**: `hooks/session-start.sh` — detects `.openehr-project.json`, `*.adl`, `*.oet`, `*.opt` and prints context
+- **Shared hook script**: `hooks/session-start.sh` — detects `.openehr-project.json`, `*.adl`, `*.oet`, `*.t.json`, `*.opt`/`*.optx`/`*.optj` and prints context
 - **Cursor rules**: `rules/` — `.mdc` files (e.g. `openehr-context.mdc`) for Cursor-only rule guidance
 - **Claude settings**: `.claude/settings.json` enables the maintainer plugins used while developing this repo (skill-creator, superpowers, plugin-dev, claude-md-management); `.claude/CLAUDE.md` imports this file via `@../AGENTS.md`. `.claude/settings.local.json` is gitignored (personal overrides).
 - **Validation**: `scripts/validate.sh` (graceful local wrapper — warns and skips if Python is absent) runs `scripts/validate.py`, which checks both manifests, dual-host parity, declared component paths, the bundled `.mcp.json`, and skill/command/agent frontmatter. CI pins Python and runs the validator strictly ([`.github/workflows/validate.yml`](.github/workflows/validate.yml)).

@@ -1,6 +1,6 @@
 ---
 name: semantic-diff
-description: Semantic diff between two openEHR artefacts — auto-detects archetype (ADL) vs template (OET/OPT) and version vs sibling/cross-artefact comparison; reports added/removed at-codes or archetype includes, cardinality/occurrences/narrowing and terminology-binding changes, and either a version-bump verdict (patch/minor/major per rule G1) or a sibling compatibility/divergence report with a path-compatibility table.
+description: Semantic diff between two openEHR artefacts — auto-detects archetype (ADL) vs template (OET, Archetype Designer `.t.json`, OPT, web template) and version vs sibling/cross-artefact comparison; reports added/removed at-codes or archetype includes, cardinality/occurrences/narrowing and terminology-binding changes, and either a version-bump verdict (patch/minor/major per rule G1) or a sibling compatibility/divergence report with a path-compatibility table.
 argument-hint: "<file-a> <file-b>"
 allowed-tools:
   - Read
@@ -15,7 +15,7 @@ allowed-tools:
 
 # /semantic-diff
 
-Compare two openEHR artefacts at the **semantic** level — not textual. Replaces `/archetype-diff` and `/template-diff`: it auto-detects whether the inputs are **archetypes** (ADL) or **templates** (OET/OPT), and whether the comparison is between two **versions** of the same concept or between **siblings / distinct concepts**, then produces the appropriate report.
+Compare two openEHR artefacts at the **semantic** level — not textual. Replaces `/archetype-diff` and `/template-diff`: it auto-detects whether the inputs are **archetypes** (ADL) or **templates** (OET, `.t.json`, OPT, web template), and whether the comparison is between two **versions** of the same concept or between **siblings / distinct concepts**, then produces the appropriate report.
 
 ## Instructions
 
@@ -27,11 +27,16 @@ Compare two openEHR artefacts at the **semantic** level — not textual. Replace
      ```
      guide_get("openehr://guides/archetypes/rules")
      ```
-   - **Template** — OET (authoring XML, `<template>`) or OPT (operational, `<template_id>` / flattened `OPERATIONAL_TEMPLATE`). Load the template rules guide:
+   - **Template** — one of four serialisations; load the template rules guide, plus the serialisation map when the pair is not OET:
      ```
      guide_get("openehr://guides/templates/rules")
+     guide_get("openehr://guides/templates/serialization-formats")
      ```
-   - If the two files are different artefact types (e.g. an ADL vs an OPT), report that mismatch and ask the user to confirm intent before proceeding.
+     - **OET** (`.oet`) — authoring XML, `<template>`: diff archetype includes and `<Rule>` narrowing.
+     - **`.t.json`** — Archetype Designer **source** template (AOM2 differential JSON: `@type: TEMPLATE`, `parentArchetypeId`, `differential: true`, `templateOverlays`): diff the root `definition` and the per-archetype overlays. It is *not* a web template.
+     - **OPT** (`.opt`/`.optx`/`.optj`) — compiled operational template with archetype constraints inlined; also `guide_get("openehr://guides/templates/opt-structure")`. Differences here may come from a recompile rather than a design change, so say which; a raw-vs-profiled OPT pair differs in retained languages/bindings, not in design.
+     - **Web template** (derived runtime JSON: `templateId`, `webTemplate`/`tree`, per-leaf `inputs`, `aqlPath`) — generated from an OPT; also `guide_get("openehr://guides/templates/web-template")`. Diff it only to assess **FLAT/STRUCTURED path-schema impact** on clients; never treat a web-template delta as the design delta, and point the user at the OET/`.t.json` pair for that.
+   - Different serialisations of the same design are **not** comparable node-for-node (a `.t.json` keeps slots that its OPT has inlined). If the two files are different artefact types (e.g. an ADL vs an OPT, or an OET vs its own web template), report the mismatch, say which layer each sits at, and ask the user to confirm intent before proceeding.
 5. **Detect the comparison mode** from the root identifiers:
    - **Version mode** — same root concept / archetype id / template id, differing version (or differing revision of the same concept). Use the version-bump workflow in §A.
    - **Sibling / cross-artefact mode** — **different** root concepts (e.g. `...health_summary` vs `...report`, or two distinct templates). Use the compatibility/divergence workflow in §B. Do **not** refuse, and do **not** emit a version-bump verdict — a bump is meaningless across distinct concepts.

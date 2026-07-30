@@ -22,8 +22,14 @@ if [ "$oet_count" -gt 0 ]; then
   found+=("templates: ${oet_count} .oet files")
 fi
 
-# Count OPT files (operational templates)
-opt_count=$(find . -name "*.opt" -not -path "./.git/*" 2>/dev/null | wc -l)
+# Count Archetype Designer source templates (AOM2 differential JSON)
+tjson_count=$(find . -name "*.t.json" -not -path "./.git/*" 2>/dev/null | wc -l)
+if [ "$tjson_count" -gt 0 ]; then
+  found+=("source templates: ${tjson_count} .t.json files (Archetype Designer)")
+fi
+
+# Count OPT files (operational templates; OPT2 adds .optx/.optj)
+opt_count=$(find . \( -name "*.opt" -o -name "*.optx" -o -name "*.optj" \) -not -path "./.git/*" 2>/dev/null | wc -l)
 if [ "$opt_count" -gt 0 ]; then
   found+=("operational templates: ${opt_count} .opt files")
 fi

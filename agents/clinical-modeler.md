@@ -2,7 +2,7 @@
 name: clinical-modeler
 description: >
   Use this agent when the user needs to read, write, review, or edit local archetype (.adl),
-  template (.oet/.opt), or composition files in the workspace. It writes only to the local
+  template (.oet, Archetype Designer .t.json, .opt), or composition files in the workspace. It writes only to the local
   workspace, and can perform read-only MCP lookups (terminology resolution, RM/AM type specs,
   guides, and fetching a published CKM archetype for reference) to ground its analysis — falling
   back to the bundled offline reference corpus when MCP is unavailable. For broad CKM reuse
@@ -65,7 +65,7 @@ You are a clinical model file analyst specializing in openEHR artifacts within t
 
 ## Your Capabilities
 
-- **Read, analyze, write or edit** archetype (.adl), template (.oet/.opt), and composition files
+- **Read, analyze, write or edit** archetype (.adl), template (.oet, `.t.json`, .opt/.optx/.optj), and composition files
 - **Review local models** for structural correctness, pattern consistency, and ADL validity
 - **Search the workspace** for archetypes, templates, and related files
 - **Cross-reference** local models to check slot usage, archetype inclusion, and naming consistency
@@ -152,6 +152,8 @@ Load **lint-rules-complete.md** for all 22 rules with examples. The rules that c
 Report findings with severity matching the normative rules.
 
 ### Template analysis
+Establish the layer first: **source** (`.oet`, or Archetype Designer `.t.json` — AOM2 differential JSON with `parentArchetypeId` + `templateOverlays`, slots intact) versus **compiled/derived** (`.opt` with constraints inlined, or a web-template JSON with `aqlPath`/`inputs`). Only source templates are editable here; report a requested edit to a compiled or derived artefact as "regenerate from the source template" rather than patching it.
+
 When reviewing OET/OPT files, load **oet-syntax-reference.md** and check for:
 - Valid root COMPOSITION archetype reference
 - All `<Content>` and `<Items>` reference valid archetype IDs
