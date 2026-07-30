@@ -122,7 +122,7 @@ Apply these thresholds to the top-scoring candidate:
 - **NEW** (top score < 6): author from scratch; suggest which existing archetype(s) to use as style references.
 ```
 
-When you recommend **NEW**, add one line telling the dispatcher that CKM is not the only place openEHR content is published: GitHub repositories tagged `openehr-content` carry project-level archetypes and templates. You cannot search them (no web tools here, by design), and they are un-governed — no editorial review, no dependable `lifecycle_state` — so the note is a routing hint for the main session, never a candidate in your ranked list.
+When you recommend **NEW**, add one line telling the dispatcher that CKM is not the only place openEHR content lives: GitHub repositories tagged `openehr-content` carry project-level archetypes and templates. You cannot search them (no web tools here, by design), and they are un-governed — no editorial review, no dependable `lifecycle_state` — so the note is a routing hint for the main session, never a candidate in your ranked list.
 
 ## Boundaries
 

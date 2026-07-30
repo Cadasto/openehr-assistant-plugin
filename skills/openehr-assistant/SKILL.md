@@ -152,7 +152,7 @@ When users need deeper task-specific workflows, suggest the appropriate skill or
 - **Translating an archetype** (add a locale) -> archetype-authoring skill
 - **Demographic modeling** -> demographic-modeling skill
 - **Platform / REST service integration** -> consult `guide_get("openehr://guides/specs/sm-openehr_platform")` and `guide_get("openehr://guides/specs/its-rest-api")`
-- **Process automation / CDS / guidelines** (Task Planning, Decision Language, GDL2) -> consult `guide_get("openehr://guides/specs/proc-overview")` first, then `specs/proc-task_planning`, `specs/proc-decision_language`, `specs/cds-GDL2`
+- **Process automation / CDS / guidelines** (Task Planning, Decision Language, GDL2) -> consult `guide_get("openehr://guides/specs/proc-overview")` first, then `openehr://guides/specs/proc-task_planning`, `openehr://guides/specs/proc-decision_language`, `openehr://guides/specs/cds-GDL2`
 - **Conformance / certification questions** -> consult `guide_get("openehr://guides/specs/cnf-guide")`
 - **Deep spec research** (precise attribute/function/invariant questions; cross-document reconciliation) -> dispatch the `spec-researcher` agent
 - **Curated worked examples** (AQL queries, FLAT/STRUCTURED payloads, reference archetypes) -> `examples_search` / `examples_get` MCP tools; resources at `openehr://examples/{kind}/{name}`

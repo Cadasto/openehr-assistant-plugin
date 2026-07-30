@@ -31,7 +31,7 @@ fi
 # Count OPT files (operational templates; OPT2 adds .optx/.optj)
 opt_count=$(find . \( -name "*.opt" -o -name "*.optx" -o -name "*.optj" \) -not -path "./.git/*" 2>/dev/null | wc -l)
 if [ "$opt_count" -gt 0 ]; then
-  found+=("operational templates: ${opt_count} .opt files")
+  found+=("operational templates: ${opt_count} OPT files (.opt/.optx/.optj)")
 fi
 
 # Only print if openEHR resources were found

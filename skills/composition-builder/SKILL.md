@@ -139,7 +139,7 @@ Before finalizing a composition, verify:
 - [ ] All required fields are present (check template constraints)
 - [ ] Cardinality constraints are met (min/max occurrences)
 - [ ] `_type` annotations are correct (CANONICAL format)
-- [ ] Terminology codes are valid (use `terminology_resolve` if needed)
+- [ ] Terminology codes are valid (use `terminology_resolve` for **openEHR** codes only — it errors on external codes; check SNOMED CT / LOINC / ICD against the template's own bindings)
 - [ ] Date/time values are valid ISO 8601
 - [ ] Quantity units match archetype constraints
 - [ ] `|other` used only on open (`listOpen: true`) coded leaves, never combined with `|code`/`|value`/`|terminology`

@@ -119,6 +119,27 @@ def validate_agent_mcp_namespaces(plugin_name):
                     f"'{bare_prefix}{tool}' (agent loses MCP access under a project/user .mcp.json)")
 
 
+BARE_GUIDE_GET_RE = re.compile(r'guide_get\(\s*"(?!openehr://)')
+
+
+def validate_guide_get_uris():
+    """``guide_get`` takes a canonical ``openehr://guides/...`` URI (or explicit
+    ``category``/``name`` arguments); a bare ``guide_get("category/name")`` string lands in
+    the ``uri`` parameter and is rejected by the server (``Invalid guide URI``). Flag any
+    copy-pasteable positional call that is not URI-form. CHANGELOG.md is not scanned (it
+    records the historical bad form)."""
+    for base in ("skills", "commands", "agents", "references", "rules", "docs"):
+        comp_dir = ROOT / base
+        if not comp_dir.is_dir():
+            continue
+        for doc in sorted(p for ext in ("*.md", "*.mdc") for p in comp_dir.rglob(ext)):
+            rel = doc.relative_to(ROOT)
+            for lineno, line in enumerate(doc.read_text().splitlines(), 1):
+                if BARE_GUIDE_GET_RE.search(line):
+                    err(f'{rel}:{lineno}: bare guide_get("category/name") — use the '
+                        f'resolvable guide_get("openehr://guides/<category>/<name>") form')
+
+
 def validate_manifest_paths(manifest: dict, label: str):
     for field in MANIFEST_PATH_FIELDS:
         value = manifest.get(field)
@@ -181,6 +202,7 @@ def main():
     validate_md_components("agents", require_name=True)
     validate_md_components("commands", require_name=False)
     validate_agent_mcp_namespaces(manifests.get(".claude-plugin", {}).get("name"))
+    validate_guide_get_uris()
 
 
 if __name__ == "__main__":
@@ -191,4 +213,4 @@ if __name__ == "__main__":
             print(f"  - {e}")
         sys.exit(1)
     print("OK: manifests, dual-host parity, MCP config, component paths, skills, agents, "
-          "agent MCP namespace pairing, and commands are valid")
+          "agent MCP namespace pairing, commands, and guide_get URI forms are valid")

@@ -95,7 +95,7 @@ The two artefacts are different concepts, so a version bump does not apply. Emit
 ## Shared constraints
 
 - This is a **semantic** tool: do **not** perform a git-style line-by-line diff. Line numbers are irrelevant.
-- When uncertain whether a terminology binding is non-equivalent, resolve both codes via `terminology_resolve` and compare concept definitions before classifying.
+- When uncertain whether a terminology binding is non-equivalent, resolve both codes via `terminology_resolve` and compare concept definitions before classifying — **openEHR** terminology only (it errors on anything else); for SNOMED CT / LOINC / ICD bindings compare the `term_bindings` entries and their `term_definitions` rubrics instead, and flag the pair for human review when equivalence is not evident.
 - When uncertain whether a text change alters clinical meaning, quote both versions and flag for human review — do not auto-classify as patch.
 - When a version-mode classification is genuinely ambiguous, report the finding under a **Review needed** group with a targeted question instead of guessing.
 - To compare against a published revision the user does not have locally, fetch it with `ckm_archetype_get` (archetypes) or `ckm_template_get` (templates), then diff as above.

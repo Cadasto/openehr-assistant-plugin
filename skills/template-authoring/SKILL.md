@@ -123,7 +123,7 @@ Three things to state explicitly when you report a split:
 
 - Prefer DV_CODED_TEXT over free text where possible
 - Constrain value sets to the local clinical context
-- Use `terminology_resolve` to verify terminology bindings inherited from archetypes
+- Use `terminology_resolve` to verify **openEHR** terminology bindings inherited from archetypes — openEHR terminology only; it errors on external codes, so check SNOMED CT / LOINC / ICD bindings against the archetype's own `term_bindings` rubrics instead
 
 ## Step 8: The four serialisations
 

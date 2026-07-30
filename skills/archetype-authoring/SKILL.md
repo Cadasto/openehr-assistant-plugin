@@ -121,7 +121,7 @@ Use `guide_adl_idiom_lookup` for specific ADL constraint patterns:
 ### Terminology Section
 - Define all at-codes with clear, descriptive text
 - Bind to standard terminologies (SNOMED CT, LOINC, ICD-10) where appropriate
-- Use `terminology_resolve` to verify terminology codes
+- Use `terminology_resolve` to verify **openEHR** terminology codes only — it does not cover SNOMED CT / LOINC / ICD and errors on an unresolvable input; read external rubrics from the artefact's `term_bindings` instead
 - Ensure semantic equivalence, not approximation, in bindings
 
 ### Design for Reuse

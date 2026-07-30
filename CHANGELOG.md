@@ -15,6 +15,7 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 - Discovery: `hooks/session-start.sh` detects `.t.json` and `.optx`/`.optj`; the Cursor rule `openehr-context.mdc` globs cover `.adls`, `.t.json`, `.optx`/`.optj` and `.aql`.
 - Commands: `/template-from-form` gains a CGEM dataset-split step and a `## Dataset split (CGEM)` output section, applied before any template is sketched.
 - Validation: `scripts/validate.py` fails when an agent lists an MCP tool under one mount namespace but not the other.
+- Validation: `scripts/validate.py` flags a bare `guide_get("category/name")` positional call in component docs — only the `openehr://guides/<category>/<name>` URI form passes.
 
 ### Changed
 - MCP compatibility: pinned to `openehr-assistant-mcp` **v0.20.0** (guide/prompt refresh plus audit hardening); new-guide references sit in load-as-needed positions so a v0.19.0 server still works.
@@ -44,6 +45,9 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 - Commands: `/archetype-impact` no longer calls `.t.json` a web template — it is an AOM2 differential *source* template; the impact table now splits source from compiled references and says which `.opt` needs regenerating.
 - Commands/skills: stale guide names corrected — `archetypes/formatting` → `archetypes/reference-formatting` (`/archetype-fix-syntax`, `archetype-authoring`), `archetypes/idioms-cheatsheet` → `archetypes/adl-idioms-cheatsheet` (offline corpus index).
 - Guide references: `guide_get("<category>/<name>")` now uses the resolvable `openehr://guides/<category>/<name>` form across skills, commands and agents — the bare `category/name` string is not a valid URI and fails with `Invalid guide URI`.
+- Skills: the openEHR-only `terminology_resolve` caveat propagated to `archetype-authoring`, `template-authoring` and `composition-builder`; `/semantic-diff` Shared constraints carry it too.
+- Commands: `/openehr-explain` adds `ckm_archetype_search`/`ckm_template_search` to `allowed-tools` (the body instructs both searches) and its template heuristic covers `.t.json`/`.optx`/`.optj`.
+- References: `semantic-diff-rubric.md` switches to sibling mode on differing root concepts instead of refusing, matching `/semantic-diff` §B.
 
 ## [0.8.1] - 2026-06-18
 

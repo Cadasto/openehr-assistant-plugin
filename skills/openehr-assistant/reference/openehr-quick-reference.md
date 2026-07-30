@@ -162,7 +162,7 @@ Three levels of subject identification via PARTY_SELF:
   - Value sets can be reduced but not expanded
 - Template jobs: **composition** (fill slots), **element choice** (remove/mandate), **narrowing**, and **setting defaults**
 - **Defaults vs assumed values**: template defaults appear in the recorded data; archetype-level assumed values do not
-- **OET** (source) for authoring; **OPT** (operational) flattened for runtime (XML in ADL 1.4 practice; OPT2 allows ADL/XML/JSON/YAML); **web template** (JSON) is the vendor runtime projection driving UI and FLAT/STRUCTURED paths
+- **OET** and Archetype Designer **`.t.json`** (source layer — `.t.json` is AOM2 differential JSON, tool-managed, *not* a web template) for authoring; **OPT** (operational) flattened for runtime (XML in ADL 1.4 practice; OPT2 allows ADL/XML/JSON/YAML); **web template** (JSON) is the vendor runtime projection derived from the OPT, driving UI and FLAT/STRUCTURED paths
 - Templates bridge clinical models and UIs (rename elements, `hide_on_form` flags)
 
 > Full guides: `openehr://guides/templates/principles`, serialisation set: `openehr://guides/templates/serialization-formats`, `openehr://guides/templates/opt-structure`, `openehr://guides/templates/web-template`

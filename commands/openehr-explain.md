@@ -3,7 +3,9 @@ name: openehr-explain
 description: One-stop router that explains or looks up any openEHR thing — auto-detects an archetype, a template, an RM/AM/BASE type, an RM structural concept, an ADL idiom, an AQL query or keyword, or a terminology code (replaces /archetype-explain, /template-explain, /type-spec, /rm-structure, /adl-idiom, /terminology)
 argument-hint: "<archetype|template id-or-file | RM/AM type | RM structural concept | ADL idiom | AQL query/keyword | terminology code>"
 allowed-tools:
+  - mcp__openehr-assistant__ckm_archetype_search
   - mcp__openehr-assistant__ckm_archetype_get
+  - mcp__openehr-assistant__ckm_template_search
   - mcp__openehr-assistant__ckm_template_get
   - mcp__openehr-assistant__type_specification_search
   - mcp__openehr-assistant__type_specification_get
@@ -27,7 +29,7 @@ Pick exactly one kind using these heuristics (first match wins):
 
 - **Archetype** — an id like `openEHR-EHR-OBSERVATION.*` (any `openEHR-<RM>-<class>.<concept>.v#`),
   or a workspace path ending in `.adl`. (Other `.adl` references such as ADL2 are also archetypes.)
-- **Template** — an id ending in a template/OPT identifier, or a path ending in `.oet` / `.opt`.
+- **Template** — an id ending in a template/OPT identifier, or a path ending in `.oet` / `.t.json` / `.opt` / `.optx` / `.optj` (or a web-template JSON file).
 - **RM/AM/BASE type** — a single ALL-CAPS token in the openEHR type style: `DV_QUANTITY`,
   `COMPOSITION`, `OBSERVATION`, `ELEMENT`, `C_ATTRIBUTE`. Underscores and a leading `DV_`/`C_`
   are strong signals; no version, no path.
@@ -65,7 +67,7 @@ could be a type or a terminology rubric), ask **one** brief clarifying question,
 
 ### B. Template  (`ckm_template_get`)
 1. Load context: `guide_get("openehr://guides/templates/principles")`, `guide_get("openehr://guides/templates/rules")`. For a runtime artefact (`.opt` file, web-template JSON, or questions about FLAT path ids), also `guide_get("openehr://guides/templates/opt-structure")` / `guide_get("openehr://guides/templates/web-template")`.
-2. Retrieve with `ckm_template_get` (CKM CID) or `Read` (workspace `.oet`, `.t.json`, `.opt`/`.optx`/`.optj`, or a web-template JSON). For a CID, ask the preferred format first: OET (design-time, default) or OPT (operational). Name the layer you are explaining — **source** (OET / Archetype Designer `.t.json`: slots and overlays intact), **compiled** (OPT: constraints inlined), or **derived runtime** (web template: simplified, lossy, the FLAT/STRUCTURED path schema) — and load `guide_get("openehr://guides/templates/serialization-formats")` when the artefact is not an OET.
+2. Retrieve with `ckm_template_get` (CKM CID) or `Read` (workspace `.oet`, `.t.json`, `.opt`/`.optx`/`.optj`, or a web-template JSON). For a bare template name, run `ckm_template_search` first and take the CID from the hit. For a CID, ask the preferred format first: OET (design-time, default) or OPT (operational). Name the layer you are explaining — **source** (OET / Archetype Designer `.t.json`: slots and overlays intact), **compiled** (OPT: constraints inlined), or **derived runtime** (web template: simplified, lossy, the FLAT/STRUCTURED path schema) — and load `guide_get("openehr://guides/templates/serialization-formats")` when the artefact is not an OET.
 3. Retrieve referenced archetypes via `ckm_archetype_get` for deeper explanation; clarify RM types with `type_specification_get`.
 4. **Do NOT** suggest improvements, assume UI behavior beyond what is explicitly constrained, or add concepts not present.
 5. Output:
