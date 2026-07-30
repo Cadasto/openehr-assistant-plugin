@@ -20,24 +20,38 @@ The **openEHR Assistant Plugin** is an AI plugin by Cadasto B.V. that provides c
 
 The [openehr-assistant-mcp](https://github.com/cadasto/openehr-assistant-mcp) server provides:
 - **12 MCP tools**: CKM search/retrieval, guide access, terminology resolution, type specifications, ADL idiom lookup, curated examples search/retrieval
-- **15 MCP prompts**: Guided workflows for common tasks
+- **14 MCP prompts**: Guided workflows for common tasks, each taking validated arguments
 - **Resources**: Archetypes, templates, AQL, terminology, type specs, a guide registry spanning six categories (`archetypes/`, `templates/`, `aql/`, `simplified_formats/`, `specs/`, `howto/`), and the `openehr://examples/{kind}/{name}` namespace for curated worked examples (AQL, FLAT, STRUCTURED, reference `.adl` archetypes)
 
-This plugin is aligned with **openehr-assistant-mcp main as of PR #23** (post-v0.19.0 — PR #19's guide/prompt refresh adding the CGEM/OPT/web-template guides and the PROC/CNF/BMM3 spec digests, plus PR #23's stricter tool schemas and parameterized prompts; pin to the next tagged server release when it ships). When syncing or aligning plugin changes (skills, commands, allowed-tools, guide URIs), refer to that server’s [releases](https://github.com/cadasto/openehr-assistant-mcp/releases) and changelog so each plugin version remains compatible with a specific MCP server version.
+This plugin is aligned with **openehr-assistant-mcp v0.20.0** — the tagged release that folds in the guide refresh (CGEM/OPT/web-template guides, PROC/CNF/BMM3 spec digests) and the audit hardening (stricter tool schemas, relevance-scored `guide_search`, parameterized prompts, consolidated `ckm_explorer`). When syncing or aligning plugin changes (skills, commands, allowed-tools, guide URIs), refer to that server’s [releases](https://github.com/cadasto/openehr-assistant-mcp/releases) and changelog so each plugin version remains compatible with a specific MCP server version.
 
 MCP tool names in this plugin use the format: `mcp__openehr-assistant__<tool_name>`
 
 ### Calling conventions the server enforces
 
-Since PR #23 the server publishes closed input schemas (`additionalProperties: false`) and
-rejects the empty string for optional enum arguments. Two rules follow for anything written
-here, in skills, or in commands:
+Since v0.20.0 the server publishes closed input schemas (`additionalProperties: false`), rejects
+the empty string for optional enum arguments, and fails loudly rather than degrading silently.
+These rules follow for anything written here, in skills, or in commands:
 
 - **Omit an optional argument, or pass `null` — never `""`.** `kind`, `category`, `component`
   and friends are nullable enums; `""` is rejected with a JSON-RPC `-32602`.
 - **`guide_get` / `examples_get` take a canonical URI or an explicit `category`/`kind` + `name`.**
   Write `guide_get("openehr://guides/aql/syntax")`, not `guide_get("aql/syntax")` — the bare
   `category/name` string is not a resolvable URI and fails with `Invalid guide URI`.
+- **`ckm_archetype_get` needs a CID or a full archetype-id.** Pass the CID from
+  `ckm_archetype_search` (digits and dots, e.g. `1013.1.7850`) or an id containing `openEHR-`;
+  a concept or display name is rejected with an explicit "could not resolve … to a CID" error
+  (it used to be mangled into a doomed request reported as a missing archetype).
+  `ckm_template_get` takes the template CID.
+- **`terminology_resolve` covers openEHR terminology only and throws when it cannot resolve.**
+  Never route SNOMED CT / LOINC / ICD codes to it — read those rubrics from the artefact's own
+  `term_bindings` / `term_definitions`.
+- **Search tools return `{ items, total }`.** `total` counts matches *before* the `maxResults`
+  cap, so report it when presenting a capped list, and raise `maxResults` (1–50 for
+  `guide_search` / `ckm_*_search`, 1–30 for `examples_search`) to see more — out-of-range values
+  are **rejected, not clamped**.
+- **An empty `guide_search` envelope means "rephrase", not "no such guidance exists".**
+  Zero-score hits are dropped, and `taskType` only re-ranks — it never filters.
 
 ## Guide-First Principle
 
@@ -178,5 +192,6 @@ When adding or renaming components, update: **AGENTS.md** (component tables), **
 - **Subagents need the MCP server pre-approved or they silently lose CKM/guide access.** Agent frontmatter `tools:` grants the *capability*, but the host's permission policy must still allow the server. The repo's `.claude/settings.json` `permissions.allow` lists the `openehr-assistant` server (both the bundled `mcp__plugin_openehr-assistant_openehr-assistant` and `mcp__openehr-assistant` namespaces); users who hit "CKM denied in a subagent" should add the same to their project settings. `ckm-scout` / `spec-researcher` / `clinical-modeler` fail loud with `BLOCKED: …` and route the lookup back to the main session when this isn't in place.
 - **MCP tool parameters are named, not positional.** Skill/command examples use the readable `tool("value")` shorthand, but the real calls take the server's JSON params — e.g. `ckm_archetype_search` → `keyword`, `*_get` → `identifier`, `type_specification_get` → `name`. When unsure, the tool's loaded schema is authoritative; don't guess `{ query }`.
 - **Deferred MCP tool schemas load on first use.** In review/diff flows that call several MCP tools, reference the tools early so their schemas resolve before the first call (avoids first-call round-trips). This is partly a host concern.
+- **A self-hosted server advertising stale tools/prompts/guides is a server cache, not a plugin bug.** Since MCP v0.20.0 the discovery cache is namespaced by `APP_VERSION`; upgrading the server without bumping its version keeps the old capability ads. Clear it server-side (MCP repo `docs/development.md`). The hosted instance in `.mcp.json` is unaffected.
 - **The Cursor hook uses a workspace-relative command** (`bash hooks/session-start.sh`), *not* `${CLAUDE_PLUGIN_ROOT}` (a Claude-Code-only variable). Keep both hook configs in step; don't "fix" the Cursor one to use the variable.
 - **Lint rules have one source of truth: `guide_get("openehr://guides/archetypes/rules")`.** The `archetype-lint` skill keeps only a compact index; `skills/openehr-assistant/reference/lint-rules-complete.md` is the offline twin for the `clinical-modeler` agent. When the guide changes, update the offline twin — don't re-inline full rule text into the skill.

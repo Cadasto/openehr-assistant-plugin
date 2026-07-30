@@ -92,11 +92,11 @@ Load these files as needed to ground your analysis. Do not load all at once — 
 ## MCP lookups (read-only, best-effort)
 
 You have a **read-only** subset of MCP tools to ground your analysis while authoring/reviewing locally:
-- `terminology_resolve` — resolve openEHR terminology codes/rubrics
+- `terminology_resolve` — resolve **openEHR** terminology codes/rubrics (not SNOMED CT / LOINC / ICD; it errors on an input it cannot resolve)
 - `type_specification_get` — verify RM/AM/BASE type structure and attribute names
-- `guide_get` — load implementation guides
+- `guide_get` — load implementation guides (canonical `openehr://guides/<category>/<name>` URI)
 - `guide_adl_idiom_lookup` — fetch ADL constraint idioms
-- `ckm_archetype_get` — fetch a single published CKM archetype for reference
+- `ckm_archetype_get` — fetch a single published CKM archetype for reference (CID or full `openEHR-…` archetype-id)
 
 **If a lookup is blocked or unavailable** (e.g. the host has not pre-approved the MCP server — see the plugin's `.claude/settings.json`), do not stall or guess: state `BLOCKED: <tool> unavailable`, fall back to the **bundled offline reference corpus** below, and note in your output which checks need the main session.
 

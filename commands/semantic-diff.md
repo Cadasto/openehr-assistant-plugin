@@ -46,7 +46,7 @@ Compare the two artefacts and classify each change per the rubric (major / minor
 - At-codes (ids, terms, definitions): added / removed / repurposed / renamed.
 - Cardinality, occurrences, existence at each node.
 - Value constraints (data types, ranges, units).
-- Terminology bindings — when a binding differs, call `terminology_resolve` on both old and new codes and compare concept definitions to decide equivalence.
+- Terminology bindings — when a binding differs, call `terminology_resolve` on both old and new codes and compare concept definitions to decide equivalence. It resolves **openEHR** terminology only and errors on anything else, so for SNOMED CT / LOINC / ICD bindings compare the `term_bindings` entries and their `term_definitions` rubrics instead, and flag the pair for human review when equivalence is not evident.
 - Slot constraints.
 - Language-specific terms (track translations separately from semantic changes).
 

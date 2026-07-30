@@ -10,13 +10,16 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 ## [Unreleased]
 
 ### Changed
-- MCP compatibility: aligned with `openehr-assistant-mcp` main post-v0.19.0 (PR #19 guide/prompt refresh); new-guide references sit in load-as-needed positions so a v0.19.0 server still works.
+- MCP compatibility: pinned to `openehr-assistant-mcp` **v0.20.0** (guide/prompt refresh plus audit hardening); new-guide references sit in load-as-needed positions so a v0.19.0 server still works.
 - Guide URIs: adopted new guides — `templates/cgem-framework`, `templates/opt-structure`, `templates/web-template`, `specs/proc-*`, `specs/cnf-guide`, `specs/lang-bmm3` — across `openehr-assistant`, `template-authoring`, `archetype-authoring`, `composition-builder`, `/openehr-explain`, and the quick-reference guide index.
 - Skills: `template-authoring` adds defaults-vs-assumed-values (OET `default="…"`), the four template jobs, RM-attribute tightening as narrowing, and runtime-form (OPT/web-template) pointers; `aql-authoring` adds VERSION containment (`LATEST_VERSION`/`ALL_VERSIONS`), node/name predicates, MATCHES-vs-IN, and the spec-vs-engine function split; `composition-builder` adds `DV_ORDINAL`/`DV_PROPORTION`/`|other`/`|raw` suffixes, participations, and `ctx` server-side defaults; `archetype-authoring` adds the ADL 1.4 major-version-only id note and CGEM order-vs-record guidance; `archetype-lint` adds occurrences/existence-default and `VCOC` consistency notes and reframes validity codes as AOM2/tooling constructs.
 - Agents: `spec-researcher` component list extended with PROC and CNF.
 - Offline twins: `lint-rules-complete.md` (rule 5 defaults + `VCOC`, `ITEM_TREE.items {0..*}` false-positive note, validator-code appendix), `adl-syntax-cheatsheet.md` (defaults & consistency block), `aql-syntax-cheatsheet.md` (LIMIT/OFFSET, MATCHES-vs-IN, VERSION, function split), `rm-type-reference.md` (`PROPORTION_KIND` values), `openehr-quick-reference.md` (B1 HRID wording, template serialisation set, CGEM guide pointer, expanded guide index and specs coverage).
-- Docs: AGENTS.md / README guide-category tables and compatibility notes updated for the new guide set.
-- MCP compatibility: extended to `openehr-assistant-mcp` main as of PR #23 (stricter tool schemas, parameterized prompts); the plugin needs no call-site changes for it, and AGENTS.md now records the calling conventions the server enforces.
+- Docs: AGENTS.md / README guide-category tables, compatibility notes and badge pinned to v0.20.0; MCP prompt count 15 → 14 (`ckm_explorer` consolidation).
+- Docs: `docs/testing.md` and AGENTS.md Gotchas cover the `APP_VERSION`-namespaced server discovery cache; bundled archetype examples re-pinned to v0.20.0 (files unchanged).
+- Calling conventions: AGENTS.md records the v0.20.0 contracts — CID-or-archetype-id for `ckm_archetype_get`, openEHR-only `terminology_resolve`, `{ items, total }` search envelopes with out-of-range `maxResults` rejected, and an empty `guide_search` envelope meaning "rephrase".
+- Commands/agents: `/ckm-search` reports search `total` and retrieves by CID; `/openehr-explain` and `ckm-scout` state the `ckm_archetype_get` identifier rule; `ckm-scout` separates upstream CKM errors from `BLOCKED`.
+- Skills/commands: `/semantic-diff` (and its rubric) guard `terminology_resolve` to openEHR codes; `openehr-assistant` documents `guide_search` scoring/`total` and corrects the external-terminology advice; `clinical-modeler` MCP-lookup list carries the same limits.
 
 ### Fixed
 - Commands/skills: stale guide names corrected — `archetypes/formatting` → `archetypes/reference-formatting` (`/archetype-fix-syntax`, `archetype-authoring`), `archetypes/idioms-cheatsheet` → `archetypes/adl-idioms-cheatsheet` (offline corpus index).

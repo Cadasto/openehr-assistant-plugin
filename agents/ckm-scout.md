@@ -84,7 +84,7 @@ ckm_archetype_search("lung function test")
 
 ### 4. Detail-fetch top 3
 
-For the top 3 ranked candidates, call `ckm_archetype_get(<id>)` to retrieve the full ADL source. Read the description, purpose, and misuse sections — these reveal true intended use.
+For the top 3 ranked candidates, call `ckm_archetype_get(<CID from the search hit, or full archetype-id>)` to retrieve the full ADL source — a concept or display name is rejected. Read the description, purpose, and misuse sections — these reveal true intended use.
 
 ### 5. Recommendation
 
@@ -124,3 +124,5 @@ Apply these thresholds to the top-scoring candidate:
 ## When CKM access is blocked
 
 If `ckm_archetype_search`/`ckm_archetype_get` are denied or unavailable (the host has not pre-approved the MCP server — see the plugin's `.claude/settings.json` `permissions.allow`), do not guess or silently degrade. Return a single explicit status — `BLOCKED: no CKM access` — naming what was denied, and tell the dispatcher the supported fallback: **run the reuse survey inline in the main session**, where the same `ckm_*` tools are normally available. A blocked survey must read as a routing problem, never as "no reusable archetype exists."
+
+A CKM **upstream** failure is a different thing: the tool returns an error carrying the server's message (unreachable CKM, drifted response envelope, unresolvable identifier). Report that message verbatim as an upstream error — not as `BLOCKED`, and not as an empty reuse survey.

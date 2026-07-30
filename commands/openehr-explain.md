@@ -52,7 +52,7 @@ could be a type or a terminology rubric), ask **one** brief clarifying question,
 
 ### A. Archetype  (`ckm_archetype_get`)
 1. Load context: `guide_get("openehr://guides/archetypes/principles")`, `guide_get("openehr://guides/archetypes/structural-constraints")`, `guide_get("openehr://guides/archetypes/terminology")`.
-2. Retrieve with `ckm_archetype_get` (id) or `Read` (workspace `.adl`).
+2. Retrieve with `ckm_archetype_get` or `Read` (workspace `.adl`). The identifier must be a CKM CID (e.g. `1013.1.7850`) or a full archetype-id (`openEHR-EHR-…`) — for a bare concept name, run `ckm_archetype_search` first and take the CID from the hit.
 3. Clarify RM types with `type_specification_get`; note related archetypes referenced in slots.
 4. **Do NOT** suggest improvements, assume template/UI behavior, or add concepts not present.
 5. Output:
@@ -94,7 +94,7 @@ could be a type or a terminology rubric), ask **one** brief clarifying question,
 
 ### E. Terminology  (`terminology_resolve`)
 1. Load context: `guide_get("openehr://guides/archetypes/terminology")`.
-2. `terminology_resolve` for the code/rubric/description.
+2. `terminology_resolve` for the code/rubric/description — **openEHR terminology only**; it errors on anything it cannot resolve, so do not route SNOMED CT / LOINC / ICD codes to it (say so and read the rubric from the artefact's `term_bindings` instead).
 3. Distinguish **terminology groups** (concept-rubric pairs under an openEHR groupId) from **codesets** (standardized enumerations).
 4. Output:
    - Code string

@@ -55,6 +55,6 @@ Purpose: classify changes between two versions of an archetype or template to re
 
 ## Notes for the implementer
 
-- When uncertain whether a binding is "non-equivalent", call `terminology_resolve` on both old and new codes and compare concept definitions.
+- When uncertain whether a binding is "non-equivalent", call `terminology_resolve` on both old and new codes and compare concept definitions — **openEHR** terminology only (it errors on external codes); for SNOMED CT / LOINC / ICD bindings compare `term_bindings` against the local `term_definitions` rubrics and flag for human review.
 - When uncertain whether a text change alters clinical meaning, quote both versions and flag the change for human review — do not auto-classify as patch.
 - If the files are not the same archetype (different root concept id), refuse the diff and ask the user to confirm intent.

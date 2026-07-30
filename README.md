@@ -4,7 +4,7 @@
 [![Version](https://img.shields.io/badge/version-0.8.0-blue)](CHANGELOG.md)
 [![Claude Code](https://img.shields.io/badge/Claude_Code-plugin-D97757?logo=anthropic&logoColor=white)](https://claude.ai/code)
 [![Cursor](https://img.shields.io/badge/Cursor-plugin-000?logo=cursor&logoColor=white)](https://cursor.com)
-[![openehr-assistant-mcp](https://img.shields.io/badge/openehr--assistant--mcp-v0.19.0%2B-brightgreen)](https://github.com/cadasto/openehr-assistant-mcp)
+[![openehr-assistant-mcp](https://img.shields.io/badge/openehr--assistant--mcp-v0.20.0-brightgreen)](https://github.com/cadasto/openehr-assistant-mcp)
 [![openEHR](https://img.shields.io/badge/openEHR-compatible-009688)](https://openehr.org)
 [![Keep a Changelog](https://img.shields.io/badge/Keep%20a%20Changelog-1.1.0-E05735)](CHANGELOG.md)
 
@@ -117,13 +117,13 @@ Multi-step workflows (authoring, review, AQL, compositions) are driven by the **
 The [openehr-assistant-mcp](https://github.com/cadasto/openehr-assistant-mcp) server provides:
 
 - 12 MCP tools (CKM search, guide access, terminology, type specs, ADL idioms, curated examples)
-- 15 MCP prompts (guided clinical workflows)
+- 14 MCP prompts (guided clinical workflows, each taking validated arguments)
 - Implementation guides across six categories: `archetypes/`, `templates/`, `aql/`, `simplified_formats/`, `specs/` (openEHR specification digests tracking the `development` branch), and `howto/` (toolchain how-tos)
 - Curated worked examples at `openehr://examples/{kind}/{name}` — AQL, FLAT, STRUCTURED payloads, and CKM-published reference `.adl` archetypes
 
-**Compatibility:** This plugin version is built and tested against **openehr-assistant-mcp v0.19.0 plus the post-0.19.0 changes on `main`** — PR #19 (CGEM/OPT/web-template guides, PROC/CNF/BMM3 spec digests) and PR #23 (stricter tool schemas, parameterized prompts); see [releases](https://github.com/cadasto/openehr-assistant-mcp/releases). References to the new guides degrade gracefully against a v0.19.0 server (use `guide_search` fallbacks); pin to the next tagged server release when it ships.
+**Compatibility:** This plugin version is built and tested against **openehr-assistant-mcp v0.20.0** — the tagged release that folds in the guide refresh (CGEM/OPT/web-template guides, PROC/CNF/BMM3 spec digests) and the audit hardening (stricter tool schemas, relevance-scored `guide_search`, parameterized prompts, the two CKM explorer prompts merged into one `ckm_explorer`); see [releases](https://github.com/cadasto/openehr-assistant-mcp/releases).
 
-PR #23 is breaking for MCP clients that pass `""` for an optional enum argument, or that call `prompts/get` without arguments. This plugin does neither: it passes no empty-string enums, and the server's prompts are surfaced directly by the host as slash commands, so their arguments come from you rather than from the plugin. It therefore works against a v0.19.0 server and against post-#23 `main` alike. When updating the plugin, align with that server’s changelog so each plugin release stays compatible with a specific MCP server version.
+v0.20.0 is breaking for MCP clients that pass `""` for an optional enum argument, that call `prompts/get` without arguments, or that hand `ckm_archetype_get` something that is neither a CKM CID nor a full archetype-id. This plugin does none of those, and the server's prompts are surfaced directly by the host as slash commands, so their arguments come from you rather than from the plugin. References to the newer guides degrade gracefully against a v0.19.0 server (`guide_search` fallbacks), but pin v0.20.0 for the full guide set. When updating the plugin, align with that server’s changelog so each plugin release stays compatible with a specific MCP server version.
 
 Offline reference material in [`skills/openehr-assistant/reference/`](skills/openehr-assistant/reference/) includes a quick-reference (principles, rules, guide index), minimal ADL and AQL syntax cheatsheets, and an RM type reference (~30 commonly archetyped types with attributes for local lint rule 4 validation); see [AGENTS.md](AGENTS.md) (Syntax and grammar sources) for links to official specs and grammars.
 

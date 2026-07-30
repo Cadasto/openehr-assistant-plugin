@@ -52,8 +52,10 @@ For a compact offline summary of core principles, design rules, anti-patterns, R
 Before answering any openEHR question or starting modeling work, search and load relevant guides from the MCP server:
 
 1. Use `guide_search` to find relevant guides for the topic
-2. Use `guide_get` to load the full guide content
+2. Use `guide_get` to load the full guide content — pass a canonical `openehr://guides/<category>/<name>` URI, or `category` + `name`
 3. Base your answer on the guide content, not on general knowledge
+
+`guide_search` returns `{ items, total }` — `total` counts matches before the `maxResults` cap (default 10, max 50), so raise the cap when `total` is larger and the top hits look thin. Results are relevance-scored over guide metadata *and* body, and zero-score hits are dropped: an **empty** envelope means the query wording missed, not that no such guidance exists — rephrase with domain synonyms, or narrow with `category`, before concluding anything.
 
 Key guide categories:
 - `archetypes/` — archetype design principles, ADL syntax, constraints, anti-patterns
@@ -78,7 +80,7 @@ Use these tools to provide accurate answers:
 | `guide_adl_idiom_lookup` | Quick lookup of ADL constraint patterns |
 | `type_specification_search` | Search RM/AM/BASE/LANG type specifications (BMM-backed) |
 | `type_specification_get` | Get detailed type specification, including class-level attribute/function/invariant tables |
-| `terminology_resolve` | Resolve terminology codes, rubrics, and value sets |
+| `terminology_resolve` | Resolve **openEHR** terminology concept ids ↔ rubrics (optionally within a `groupId`); errors on an unresolvable input, and does not cover SNOMED CT / LOINC / ICD |
 | `examples_search` | Find curated worked examples (AQL queries, FLAT/STRUCTURED payloads, reference `.adl` archetypes) |
 | `examples_get` | Retrieve a specific example by URI (`openehr://examples/{kind}/{name}` — kinds: `aql`, `flat`, `structured`, `archetypes`) |
 
@@ -118,7 +120,7 @@ Apply the Narrowing Principle when constraining archetypes within templates:
 
 ### Terminology Binding
 
-Advise on binding to standard terminologies (SNOMED CT, LOINC, ICD-10) with semantic equivalence. Use `terminology_resolve` to validate codes. Ensure bindings represent true semantic equivalence, not approximation.
+Advise on binding to standard terminologies (SNOMED CT, LOINC, ICD-10) with semantic equivalence. Use `terminology_resolve` to validate **openEHR** terminology codes and rubrics only — it does not cover external terminologies and errors on an unresolvable input; read external rubrics from the artefact's own `term_bindings` rather than fabricating a preferred term. Ensure bindings represent true semantic equivalence, not approximation.
 
 ### Model Review
 
