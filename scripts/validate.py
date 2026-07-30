@@ -80,7 +80,7 @@ def validate_md_components(subdir: str, *, require_name: bool):
             err(f"{rel}: frontmatter name '{fm_name.group(1)}' != filename '{md.stem}'")
 
 
-def validate_agent_mcp_namespaces(plugin_name: str | None):
+def validate_agent_mcp_namespaces(plugin_name):
     """Agent ``tools:`` entries are matched literally against live tool ids, and the id of an
     MCP tool depends on how the server was mounted: ``mcp__<server>__<tool>`` for a project or
     user ``.mcp.json``, ``mcp__plugin_<plugin>_<server>__<tool>`` for a plugin's own bundled

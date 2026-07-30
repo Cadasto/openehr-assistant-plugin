@@ -94,13 +94,24 @@ Rules apply constraints to specific nodes by path.
 | `max` | Maximum occurrences | `max="0"` (exclude) |
 | `hide_on_form` | UI hint: hide structural node | `hide_on_form="true"` |
 | `clone` | Create named variant of repeated structure | `clone="true"` |
-| `default` | Pre-fill a value the use case fixes | `default="Phadiatop"` |
+| `default` | Pre-fill a value the use case fixes | `default="local::at0005::Phototherapy"` (coded), `default="true"` (boolean) |
 
 ### Set a default value
 
+The value form depends on the node's data type:
+
 ```xml
+<!-- Coded text: the local::<at-code>::<rubric> triplet, NOT a bare label -->
+<Rule path="/data[at0001]/events[at0002]/data[at0003]/items[at0004]" default="local::at0005::Phototherapy" />
+
+<!-- Boolean: the literal -->
+<Rule path="/data[at0001]/events[at0002]/data[at0003]/items[at0007]" default="true" />
+
+<!-- Free text: the literal string -->
 <Rule path="/data[at0001]/events[at0002]/data[at0003]/items[at0005]" default="Phadiatop" />
 ```
+
+A coded default that omits the `local::<at-code>::` prefix is the common mistake — the at-code is what makes it a `DV_CODED_TEXT` default rather than free text, and it must be an at-code the node's value set actually admits.
 
 A template **default** appears in the recorded data. Do not confuse it with an archetype **assumed value**, which does not. Use defaults where the use case fixes or strongly implies a single value (setting, patient position, a single-assay test name).
 
