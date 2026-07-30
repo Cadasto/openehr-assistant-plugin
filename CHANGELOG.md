@@ -40,6 +40,7 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 - Agents: descriptions tightened across all three (`ckm-scout` gains a not-for clause); `ckm-scout` failure-mode protocol condensed to three bullets.
 - Skills: `archetype-authoring` absorbs `/archetype-fix-syntax` as a fix-syntax mode (`references/fix-syntax.md`, Step 5b) — "fix ADL syntax / won't parse" intent now auto-triggers the skill; `archetype-lint` Step 5 routes fix application there.
 - Skills: `template-authoring` absorbs `/template-from-form` as a from-form mode (`references/template-from-form.md`, Step 6b) — form → CGEM split → template sketch, handing off to Step 8b for the OET.
+- Commands: `/semantic-diff` converted to a user-invocable skill — same `/semantic-diff` invocation, now also auto-triggers on compare/diff intent; the rubric moved from top-level `references/` into `skills/semantic-diff/references/`, removing the top-level `references/` directory.
 
 ### Removed
 - Commands: `/archetype-fix-syntax` and `/template-from-form` (folded into `archetype-authoring` / `template-authoring`, see Changed).

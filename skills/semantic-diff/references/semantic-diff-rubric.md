@@ -31,7 +31,7 @@ Purpose: classify changes between two versions of an archetype or template to re
 - Formatting / whitespace / comment changes.
 - Translation corrections.
 
-## Output layout (for the commands)
+## Output layout (for the skill)
 
 ```
 # <archetype-id or template-id>  <v_old> → <v_new>

@@ -10,7 +10,7 @@ The detailed companion to [AGENTS.md](../AGENTS.md) and [CONTRIBUTING.md](../CON
 ## Layout
 
 - `skills/<name>/SKILL.md` — one subdirectory per skill, YAML frontmatter + markdown body. Optional `references/` and `examples/` subdirectories for bulky supplementary content (e.g. `skills/openehr-assistant/reference/`, `…/examples/`).
-- `commands/<name>.md` — one file per slash command, YAML frontmatter + body. Shared command reference material lives in the top-level `references/` directory (e.g. `references/semantic-diff-rubric.md`), **not** under `commands/` — host validators treat every `commands/**/*.md` as a command, so a reference file there is mis-detected.
+- `commands/<name>.md` — one file per slash command, YAML frontmatter + body. Reference material never goes under `commands/` — host validators treat every `commands/**/*.md` as a command, so a reference file there is mis-detected; put it in the consuming skill's `references/` subdirectory instead (e.g. `skills/semantic-diff/references/semantic-diff-rubric.md`).
 - `agents/<name>.md` — one file per agent, YAML frontmatter + system prompt.
 - Keep both manifests (`.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`) in sync.
 

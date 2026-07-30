@@ -1,6 +1,15 @@
 ---
 name: semantic-diff
-description: Semantic diff between two openEHR artefacts — auto-detects archetype (ADL) vs template (OET, Archetype Designer `.t.json`, OPT, web template) and version vs sibling/cross-artefact comparison; reports added/removed at-codes or archetype includes, cardinality/occurrences/narrowing and terminology-binding changes, and either a version-bump verdict (patch/minor/major per rule G1) or a sibling compatibility/divergence report with a path-compatibility table.
+description: >
+  This skill should be used when the user asks to "diff two archetypes", "compare two
+  templates", "what changed between these two versions", "is this a patch, minor or major
+  bump?", "how compatible are these two artefacts?", or invokes `/semantic-diff`. Semantic
+  diff between two openEHR artefacts — auto-detects archetype (ADL) vs template (OET,
+  Archetype Designer `.t.json`, OPT, web template) and version vs sibling/cross-artefact
+  comparison; reports added/removed at-codes or archetype includes, cardinality/occurrences/
+  narrowing and terminology-binding changes, and either a version-bump verdict (patch/minor/
+  major per rule G1) or a sibling compatibility/divergence report with a path-compatibility
+  table.
 argument-hint: "<file-a> <file-b>"
 allowed-tools:
   - Read
@@ -13,15 +22,15 @@ allowed-tools:
   - mcp__openehr-assistant__ckm_template_get
 ---
 
-# /semantic-diff
+# Semantic Diff
 
-Compare two openEHR artefacts at the **semantic** level — not textual. Replaces `/archetype-diff` and `/template-diff`: it auto-detects whether the inputs are **archetypes** (ADL) or **templates** (OET, `.t.json`, OPT, web template), and whether the comparison is between two **versions** of the same concept or between **siblings / distinct concepts**, then produces the appropriate report.
+Compare two openEHR artefacts at the **semantic** level — not textual. Auto-detect whether the inputs are **archetypes** (ADL) or **templates** (OET, `.t.json`, OPT, web template), and whether the comparison is between two **versions** of the same concept or between **siblings / distinct concepts**, then produce the appropriate report.
 
 ## Instructions
 
 1. Parse **$ARGUMENTS** into `<file-a>` and `<file-b>`. If only one argument was given, ask the user for the second and stop.
 2. `Read` both files.
-3. `Read` the semantic-diff rubric at the **plugin root** — `${CLAUDE_PLUGIN_ROOT}/references/semantic-diff-rubric.md` (Claude Code), or `../references/semantic-diff-rubric.md` from this command, or Glob the installed `references/semantic-diff-rubric.md` (host-agnostic). Follow its classification rules exactly.
+3. `Read` the rubric bundled with this skill — [`references/semantic-diff-rubric.md`](references/semantic-diff-rubric.md). Follow its classification rules exactly.
 4. **Detect the artefact type** from the file content/extension:
    - **Archetype** — ADL source (`.adl`; `archetype (...)` header, `definition`, `term_definitions`). Load the archetype rules guide:
      ```
