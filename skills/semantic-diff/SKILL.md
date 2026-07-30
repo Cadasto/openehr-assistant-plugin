@@ -3,13 +3,11 @@ name: semantic-diff
 description: >
   This skill should be used when the user asks to "diff two archetypes", "compare two
   templates", "what changed between these two versions", "is this a patch, minor or major
-  bump?", "how compatible are these two artefacts?", or invokes `/semantic-diff`. Semantic
-  diff between two openEHR artefacts — auto-detects archetype (ADL) vs template (OET,
-  Archetype Designer `.t.json`, OPT, web template) and version vs sibling/cross-artefact
-  comparison; reports added/removed at-codes or archetype includes, cardinality/occurrences/
-  narrowing and terminology-binding changes, and either a version-bump verdict (patch/minor/
-  major per rule G1) or a sibling compatibility/divergence report with a path-compatibility
-  table.
+  bump?", "how compatible are these two artefacts?", or invokes `/semantic-diff`.
+  Auto-detects archetype vs template (any serialisation) and version vs sibling comparison,
+  then reports a version-bump verdict (rule G1) or a compatibility report with a
+  path-compatibility table. Not a textual/git diff; to review or fix a single artefact,
+  use the `archetype-authoring` or `template-authoring` skill.
 argument-hint: "<file-a> <file-b>"
 allowed-tools:
   - Read

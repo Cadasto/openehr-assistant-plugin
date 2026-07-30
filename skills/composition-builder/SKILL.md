@@ -5,7 +5,9 @@ description: >
   "validate a composition", "convert a composition", or "generate FLAT/STRUCTURED/CANONICAL format".
   Covers building openEHR compositions in all simplified formats and guiding their validation and
   format conversion (against a target template; there is no automated validator/converter tool).
-  Also handles quick format explanations and single-payload sketches directly.
+  Also handles quick format explanations and single-payload sketches directly. For designing the
+  template itself (OET/OPT), use `template-authoring`; this skill produces runtime data instances
+  against an existing template.
 argument-hint: "<task: build|validate|convert> <template-id> [format: flat|structured|canonical] [payload-path]"
 allowed-tools:
   - Read

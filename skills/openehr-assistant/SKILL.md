@@ -1,12 +1,15 @@
 ---
 name: openehr-assistant
 description: >
-  This skill should be used when the user mentions openEHR concepts (archetypes, templates,
-  AQL, ADL, CKM, RM types, compositions, OPT, terminology bindings, clinical modeling, CGEM /
-  composition categories) outside of a specific command context. Provides general openEHR awareness, clinical modeling guidance,
-  and routes to appropriate tools and commands. Not for focused tasks owned by a dedicated skill —
-  archetype authoring/linting, template authoring, composition building, AQL, or demographic
-  modeling — route those to the matching skill; this skill is the awareness and routing layer.
+  This skill should be used when a conversation touches openEHR outside a task owned by a
+  dedicated skill — e.g. "what is an archetype?", "how do openEHR templates work?", "which
+  composition category fits this data?", "find me a guide on X", "where do I start with
+  openEHR modeling?" — or names openEHR concepts (ADL, CKM, RM types, OPT, terminology
+  bindings, CGEM). Provides general openEHR awareness, guide browsing (`guide_search` /
+  `guide_get`), clinical modeling guidance, and tool/skill routing. Not for focused tasks
+  owned by a dedicated skill — archetype authoring/linting, template authoring, composition
+  building, AQL authoring, artefact diffing, or demographic modeling — route those to the
+  matching skill; this skill is the awareness and routing layer.
 user-invocable: false
 allowed-tools:
   - mcp__openehr-assistant__ckm_archetype_search
@@ -132,13 +135,15 @@ Use `type_specification_get` to verify RM type structures. Use `guide_adl_idiom_
 When users need deeper task-specific workflows, suggest the appropriate skill or command:
 
 - **Creating/editing archetypes** -> archetype-authoring skill
-- **Creating templates** -> template-authoring skill
+- **Validating / linting an archetype** (report only, no edits) -> archetype-lint skill (`/archetype-lint`)
+- **Creating templates** (including splitting a clinical form into templates) -> template-authoring skill
 - **Building compositions** -> composition-builder skill
 - **Writing AQL queries** -> aql-authoring skill
 - **Searching CKM** (archetypes or templates) -> `/ckm-search`
 - **Explaining or looking up** an archetype, template, RM/AM type, RM structural concept, ADL idiom, AQL query/keyword, or terminology code -> `/openehr-explain`
+- **Finding where an archetype is used** (workspace scan across templates, parent-archetype slots, AQL) -> `/archetype-impact`
 - **Browsing / finding an implementation guide** -> handle it here: `guide_search` to find it, `guide_get` to load it, then summarise (the guides are an agent-facing knowledge layer; no separate command needed)
-- **Comparing two artefacts** (version bump or sibling diff) -> `/semantic-diff`
+- **Comparing two artefacts** (version bump or sibling diff) -> semantic-diff skill (`/semantic-diff`)
 - **Fixing ADL syntax** ("won't parse / won't validate") -> `archetype-authoring` skill, fix-syntax mode
 - **Translating an archetype** (add a locale) -> archetype-authoring skill
 - **Demographic modeling** -> demographic-modeling skill

@@ -5,9 +5,8 @@ description: >
   "constrain archetypes into a template", "review a template", "categorise a dataset with CGEM",
   "should this be persistent, episodic or event?", "split this form across compositions",
   "sketch a template from this form / which archetypes does this form need",
-  or "work with OET / .t.json / OPT / web-template files". Covers creating openEHR templates, constraining archetypes,
-  reviewing designs, OET authoring, the form → template-sketch inverse workflow, and reading
-  the tool-generated serialisations (Archetype Designer `.t.json`, OPT, vendor web template).
+  or "work with OET / .t.json / OPT / web-template files" — OET authoring, constraint review,
+  the form → template-sketch inverse workflow, and reading the tool-generated serialisations.
   Use `/ckm-search` to find existing CKM templates and `/openehr-explain` to explain one; this
   skill is for authoring and constraining new OET designs.
 argument-hint: "<task: create|review|from-form> [template-id, use-case, or form text/path]"
