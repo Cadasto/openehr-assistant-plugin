@@ -41,11 +41,13 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 - Skills: `archetype-authoring` absorbs `/archetype-fix-syntax` as a fix-syntax mode (`references/fix-syntax.md`, Step 5b) — "fix ADL syntax / won't parse" intent now auto-triggers the skill; `archetype-lint` Step 5 routes fix application there.
 - Skills: `template-authoring` absorbs `/template-from-form` as a from-form mode (`references/template-from-form.md`, Step 6b) — form → CGEM split → template sketch, handing off to Step 8b for the OET.
 - Commands: `/semantic-diff` converted to a user-invocable skill — same `/semantic-diff` invocation, now also auto-triggers on compare/diff intent; the rubric moved from top-level `references/` into `skills/semantic-diff/references/`, removing the top-level `references/` directory.
+- Skills: QA pass over all eight — descriptions gain trigger phrases and boundary clauses (`openehr-assistant`, `composition-builder`, `demographic-modeling`, `semantic-diff`), `archetype-lint` Step 5 slimmed to a router, CGEM content deduplicated (the from-form reference and `openehr-assistant` defer to `template-authoring` Step 6), `aql-authoring` syntax crib trimmed to guide pointers, imperative wording throughout.
 
 ### Removed
 - Commands: `/archetype-fix-syntax` and `/template-from-form` (folded into `archetype-authoring` / `template-authoring`, see Changed).
 
 ### Fixed
+- Skills: `aql-authoring` pre-approves `ckm_archetype_search`/`ckm_template_search` (its Step 2 requires search); `composition-builder` Step 6 loads `simplified_formats/checklist` and gains `Edit`; `semantic-diff` handles natural-language invocation (empty `$ARGUMENTS`); `archetype-lint` gains `argument-hint`; `archetype-authoring` pre-approves `WebSearch`.
 - Offline twins: `lint-rules-complete.md` header no longer claims `clinical-modeler` has no MCP access — the twin is the fallback for its read-only lookups.
 - Agents: `ckm-scout`, `clinical-modeler` and `spec-researcher` list every MCP tool under both mount namespaces (`mcp__openehr-assistant__*` and `mcp__plugin_openehr-assistant_openehr-assistant__*`); under a bundled-plugin mount the bare-only form matched nothing, so `ckm-scout` was refused with `would be spawned with zero tools` and the other two ran without MCP access. `docs/install.md` documents the three mount shapes and the claude.ai-connector caveat.
 - Spec retrieval: the `.md` twin covers **most**, not every, spec page (0.20.0 `howto/spec-lookup` wording) — AGENTS.md, the quick-reference and `spec-researcher` now fall back to HTML on a 404 instead of concluding the document is missing.
