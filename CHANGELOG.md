@@ -36,7 +36,11 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 - CGEM: triggers added to the `template-authoring` and `openehr-assistant` descriptions ("categorise a dataset", "persistent, episodic or event", CGEM) so the framework is reachable without knowing it lives inside template authoring.
 - CGEM: all four category tables carry the `COMPOSITION.category` codes (431/451/433), the four-categories-three-codes caveat, the `451 episodic` support warning, and the non-normative freshEHR framing; `composition-builder` gains `episodic` and a CGEM pointer on `ctx/category`.
 
+- Agents: `clinical-modeler` body deduplicated — triggering-examples section removed, inline lint-rule glosses replaced by a by-number local-vs-MCP routing split (rule text lives in `lint-rules-complete.md`).
+- Agents: descriptions tightened across all three (`ckm-scout` gains a not-for clause); `ckm-scout` failure-mode protocol condensed to three bullets.
+
 ### Fixed
+- Offline twins: `lint-rules-complete.md` header no longer claims `clinical-modeler` has no MCP access — the twin is the fallback for its read-only lookups.
 - Agents: `ckm-scout`, `clinical-modeler` and `spec-researcher` list every MCP tool under both mount namespaces (`mcp__openehr-assistant__*` and `mcp__plugin_openehr-assistant_openehr-assistant__*`); under a bundled-plugin mount the bare-only form matched nothing, so `ckm-scout` was refused with `would be spawned with zero tools` and the other two ran without MCP access. `docs/install.md` documents the three mount shapes and the claude.ai-connector caveat.
 - Spec retrieval: the `.md` twin covers **most**, not every, spec page (0.20.0 `howto/spec-lookup` wording) — AGENTS.md, the quick-reference and `spec-researcher` now fall back to HTML on a 404 instead of concluding the document is missing.
 - Lint: partial `term_bindings` coverage is not a rule 17/18 violation — a binding need not cover every at-code (`archetypes/terminology`); recorded as a known false positive in `archetype-lint` and the offline twin.
