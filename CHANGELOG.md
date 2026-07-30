@@ -7,7 +7,9 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 - Keep a Changelog: https://keepachangelog.com/en/1.1.0/
 - Semantic Versioning: https://semver.org/spec/v2.0.0.html
 
-## [Unreleased]
+## [0.9.0] - 2026-07-30
+
+MCP **v0.20.0** alignment plus a **skills-first** surface consolidation. The plugin adopts the refreshed guide set and the server's enforced calling contracts, recognises all four template serialisations, promotes CGEM to a first-class design step, fixes agent MCP access under plugin mounts, and extends lint to 24 rules. The slash surface drops **6 → 3**: `/archetype-fix-syntax` and `/template-from-form` fold into their authoring skills, and `/semantic-diff` becomes a user-invocable skill (same invocation, now also auto-triggering). Removing/renaming commands is technically breaking; kept in the 0.x line (as with 0.8.0).
 
 ### Added
 - Lint: rules **23** (Prose ↔ Slot Consistency, guide rule D9) and **24** (Translation Accuracy, guide rule E7) — the two `archetypes/rules` entries the 22-rule set never covered; appended so existing numbering stays stable. Rule count 22 → 24 across skills, agents and docs.
