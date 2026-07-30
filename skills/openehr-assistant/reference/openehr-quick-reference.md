@@ -169,16 +169,20 @@ Three levels of subject identification via PARTY_SELF:
 
 ---
 
-## CGEM Framework (Template Scoping)
+## CGEM Framework (Dataset Splitting / Template Scoping)
 
-| Category | Data Nature | Composition Type |
-|----------|-------------|------------------|
-| **Global Background** | True regardless of context (allergies, CPR decision) | Longitudinal persistent |
-| **Contextual Situation** | Single source per care journey (staging, care plan) | Episodic persistent |
-| **Event Assessment** | Each submission is a new record (clinic visit, lab) | Event |
-| **Managed Response** | Formal order/fulfilment cycle (referral, prescription) | Instruction/Action |
+freshEHR's analysis method for splitting a dataset before modelling — a **design aid, not an openEHR specification**; it operationalises the spec's own temporal composition model.
 
-One form can read/write multiple compositions. Distinguish true managed workflows (Instruction/Action) from simple records.
+| Category | Data Nature | `COMPOSITION.category` | Versioning |
+|----------|-------------|------------------|---|
+| **Global Background** | True regardless of context, for life (allergies, problem list, CPR decision) | `persistent` (431) | one current version, updated in place |
+| **Contextual Situation** | Single source of truth per care journey / episode / condition (staging, care plan) | `episodic` (451) | one current version per journey; new journey → new instance |
+| **Event Assessment** | Each submission is a new record (clinic visit, lab, score) | `event` (433) | never overwritten; many over time |
+| **Managed Response** | Formal order/fulfilment cycle (referral, prescription) | **no category code** — usually `event` | order state tracked across ACTIONs via the ISM |
+
+- **Four categories, three codes** — Managed Response is not a `COMPOSITION.category`; it is an `event` (sometimes `persistent`) composition distinguished by INSTRUCTION/ACTION + the ISM.
+- **`451 episodic`** is normative but unevenly implemented — confirm platform support; `persistent` plus governance conventions is the common fallback.
+- One form can read/write **multiple** compositions across several categories; Global Background is often only *read*. Distinguish true managed workflows from simple records ("Referral date" is a record, not an order).
 
 > Full guide: `openehr://guides/templates/cgem-framework` (freshEHR CGEM — definitions, openEHR mapping table, caveats)
 

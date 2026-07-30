@@ -110,7 +110,7 @@ A deliberately small slash surface — multi-step workflows live in the **skills
 | `/openehr-explain` | Explain / look up **any** openEHR thing — archetype, template, RM/AM type, **RM structural concept**, ADL idiom, **AQL query/keyword**, or terminology code (auto-detects) — merges `/archetype-explain`, `/template-explain`, `/type-spec`, `/rm-structure`, `/adl-idiom`, `/terminology` |
 | `/semantic-diff` | Semantic diff of two artefacts — archetype or template, version-bump **or** sibling/cross-artefact mode with a path-compatibility table — merges `/archetype-diff` + `/template-diff` |
 | `/archetype-fix-syntax` | Fix ADL syntax |
-| `/template-from-form` | Map a clinical form to a template sketch (archetypes + narrowing) |
+| `/template-from-form` | Split a clinical form across compositions (CGEM categories) and sketch each template (archetypes + narrowing) |
 | `/archetype-impact` | Scan workspace for references to an archetype across templates (`.oet`/`.opt`/`.t.json`), parent `.adl` slots, and AQL |
 
 ### Agents (3)

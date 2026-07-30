@@ -105,7 +105,7 @@ Every composition requires context fields (`ctx/` in FLAT, `ctx` object in STRUC
 - **composer** (`ctx/composer_name`): Who created the data (name, optionally ID)
 - **language** (`ctx/language`): ISO 639-1 code (e.g., `en`, `nl`)
 - **territory** (`ctx/territory`): ISO 3166-1 code (e.g., `NL`, `US`)
-- **category**: `event` (point-in-time) or `persistent` (ongoing)
+- **category**: `event` (433 — point-in-time, a new composition per submission), `persistent` (431 — one lifelong current version, updated in place) or `episodic` (451 — one current version per care journey; normative but unevenly implemented, so confirm CDR support). This is where the template's CGEM category lands in data — see `guide_get("openehr://guides/templates/cgem-framework")` if the right value is unclear; it must match the template's declared category, not the payload's shape
 - **context**: `start_time` (`ctx/time`) and `setting` (e.g., `primary medical care`, `secondary medical care`)
 - **id_namespace** (`ctx/id_namespace`): Optional, for identification context
 - **id_scheme** (`ctx/id_scheme`): Optional, for identification scheme

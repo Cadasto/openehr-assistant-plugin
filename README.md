@@ -30,7 +30,7 @@ This plugin works with the [openEHR Assistant MCP Server](https://github.com/cad
 
 - **Guide-first workflows** — Skills and commands instruct the assistant to load relevant implementation guides from the MCP server before answering.
 - **Archetype authoring** — Create, edit, extend, and specialize clinical archetypes with lint rules and idiom lookup.
-- **Template design** — Build and constrain templates using the CGEM framework and narrowing principle.
+- **Template design** — Split a dataset across compositions with the CGEM framework (persistent / episodic / event), then build and constrain each template using the narrowing principle.
 - **Composition building** — Generate FLAT, STRUCTURED, and CANONICAL format instances.
 - **AQL queries** — Write, explain, and optimize Archetype Query Language queries.
 - **CKM discovery** — Search the Clinical Knowledge Manager for archetypes and templates.
@@ -97,7 +97,7 @@ Multi-step workflows (authoring, review, AQL, compositions) are driven by the **
 | `/openehr-explain <thing>` | Explain or look up any openEHR thing — archetype, template, RM/AM type, RM structural concept, ADL idiom, AQL query/keyword, or terminology code (auto-detects) |
 | `/semantic-diff <file-a> <file-b>` | Semantic diff of two artefacts (archetype or template); version-bump verdict or sibling/cross-artefact compatibility report |
 | `/archetype-fix-syntax <file>` | Fix ADL syntax errors preserving semantics |
-| `/template-from-form <form text or path>` | Map a clinical form to a template sketch (archetypes + narrowing) |
+| `/template-from-form <form text or path>` | Split a clinical form across compositions (CGEM) and sketch each template (archetypes + narrowing) |
 | `/archetype-impact <archetype-id>` | Scan workspace for references to an archetype (source templates `.oet`/`.t.json`, compiled `.opt`, parent `.adl` slots, AQL) |
 
 > Creating/editing/reviewing archetypes (incl. **rationale prose** and **translation**), linting, authoring templates, building compositions, writing AQL, and **browsing guides** are handled by the matching **skill** (no command needed) — just describe the task.

@@ -2,8 +2,8 @@
 name: openehr-assistant
 description: >
   This skill should be used when the user mentions openEHR concepts (archetypes, templates,
-  AQL, ADL, CKM, RM types, compositions, OPT, terminology bindings, clinical modeling) outside
-  of a specific command context. Provides general openEHR awareness, clinical modeling guidance,
+  AQL, ADL, CKM, RM types, compositions, OPT, terminology bindings, clinical modeling, CGEM /
+  composition categories) outside of a specific command context. Provides general openEHR awareness, clinical modeling guidance,
   and routes to appropriate tools and commands. Not for focused tasks owned by a dedicated skill —
   archetype authoring/linting, template authoring, composition building, AQL, or demographic
   modeling — route those to the matching skill; this skill is the awareness and routing layer.
@@ -90,14 +90,16 @@ The MCP server's own `instructions` carry conditional retrieval policies (Spec-L
 
 ### Template Design
 
-Select appropriate archetypes from CKM and combine them into COMPOSITION structures following the CGEM framework:
+Select appropriate archetypes from CKM and combine them into COMPOSITION structures. Before deciding *how many* templates a dataset needs, categorise it with **CGEM** (freshEHR's analysis method — a design aid, not an openEHR specification); load `guide_get("openehr://guides/templates/cgem-framework")` for the full framework:
 
-| Category | Description | Template Scope |
+| CGEM category | Description | `COMPOSITION.category` |
 |----------|-------------|---------------|
-| **Global Background** | Persistent patient data (allergies, diagnoses, demographics) | Persistent compositions |
-| **Contextual Situation** | Episodic context (reason for encounter, admission details) | Episode-level compositions |
-| **Event Assessment** | Point-in-time observations and evaluations | Event compositions |
-| **Managed Response** | Orders, plans, actions taken | Action/instruction compositions |
+| **Global Background** | True across all contexts for life; one current version updated in place (allergies, problem list, CPR decision) | `persistent` (431) |
+| **Contextual Situation** | Single source of truth for one care journey / episode / condition (staging summary, condition care plan) | `episodic` (451) |
+| **Event Assessment** | Discrete repeated recordings; each submission a new record (vitals at a visit, lab result) | `event` (433) |
+| **Managed Response** | Formal order/fulfilment cycle tracked to completion (referral, prescription) | **not a category code** — usually `event`, distinguished by INSTRUCTION/ACTION + ISM |
+
+Two caveats worth stating to users: four CGEM categories map onto **three** category codes, and `451 episodic` — though normative — is unevenly implemented, so confirm platform support before relying on it (`persistent` plus governance conventions is the common fallback). One form commonly reads/writes several compositions across several categories.
 
 ### Archetype Selection
 

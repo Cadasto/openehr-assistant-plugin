@@ -2,8 +2,9 @@
 name: template-authoring
 description: >
   This skill should be used when the user asks to "create a template", "design a template",
-  "constrain archetypes into a template", "review a template", or "work with OET / .t.json /
-  OPT / web-template files". Covers creating openEHR templates, constraining archetypes,
+  "constrain archetypes into a template", "review a template", "categorise a dataset with CGEM",
+  "should this be persistent, episodic or event?", "split this form across compositions",
+  or "work with OET / .t.json / OPT / web-template files". Covers creating openEHR templates, constraining archetypes,
   reviewing designs, OET authoring, and reading the tool-generated serialisations
   (Archetype Designer `.t.json`, OPT, vendor web template).
   Use `/ckm-search` to find existing CKM templates and `/openehr-explain` to explain one; this
@@ -100,14 +101,21 @@ Set a **default value** (OET: `default="..."` on a `<Rule>`) where the use case 
 
 ## Step 6: CGEM Framework
 
-Use the CGEM framework (freshEHR) to guide how clinical data splits across templates — for the full framework (definitions, openEHR mapping table, caveats) load `guide_get("openehr://guides/templates/cgem-framework")`:
+Use CGEM (freshEHR's analysis method — a design aid, **not** an openEHR specification) to decide how a dataset splits across templates, and to set each template's composition category. Load `guide_get("openehr://guides/templates/cgem-framework")` for the definitions, mapping table and caveats:
 
-| Category | Description | Template Scope |
-|----------|-------------|---------------|
-| **Global Background** | Persistent patient data (allergies, diagnoses, demographics) | Persistent compositions |
-| **Contextual Situation** | Episodic context (reason for encounter, admission details) | Episode-level compositions |
-| **Event Assessment** | Point-in-time observations and evaluations | Event compositions |
-| **Managed Response** | Orders, plans, actions taken | Action/instruction compositions |
+| CGEM category | Data nature | `COMPOSITION.category` | Versioning behaviour |
+|----------|-------------|---------------|---|
+| **Global Background** | True across all contexts for the patient's whole life (allergies, problem list, CPR/ReSPECT decision, current medications) | `persistent` (431) | One current version per patient, updated in place |
+| **Contextual Situation** | Single source of truth for one care journey / episode / condition (diagnosis-and-staging summary, condition care plan) | `episodic` (451) | One current version per journey; a new journey creates a new instance |
+| **Event Assessment** | Discrete, repeated recordings at a point in time (vitals at a visit, lab result, assessment score) | `event` (433) | New composition per submission; never overwritten |
+| **Managed Response** | Formal order/fulfilment cycle tracked from request to completion (referral, prescription, investigation request) | **not a category code** — usually `event` (sometimes `persistent`) | Order state tracked across ACTIONs via the ISM |
+
+Applying it: inventory the datapoints → categorise each C/G/E/M → group same-category datapoints into candidate templates → set each template's category to match → decide reuse (Global Background is usually already modelled and often only *read* by the form; Event templates are prime reuse candidates) → confirm Managed Response items genuinely need INSTRUCTION/ACTION + ISM and downgrade the rest to simple records.
+
+Three things to state explicitly when you report a split:
+- **Four CGEM categories, three category codes** — Managed Response is not a `COMPOSITION.category`; it is an `event` (or `persistent`) composition distinguished by its INSTRUCTION/ACTION entries and the ISM.
+- **`451 episodic` is normative but unevenly implemented** — confirm the target platform supports it; `persistent` plus governance conventions is the common fallback.
+- **One form commonly spans several compositions** across several categories, so a single form rarely means a single template.
 
 ## Step 7: Terminology in Templates
 

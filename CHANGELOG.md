@@ -23,6 +23,9 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 
 - Template serialisations: OET, Archetype Designer `.t.json`, OPT (`.opt`/`.optx`/`.optj`) and vendor web template are now named as four artefacts at three layers across AGENTS.md, README, `template-authoring` (Step 8), `openehr-assistant`, `/openehr-explain`, `/semantic-diff` and `clinical-modeler`.
 - Discovery: `hooks/session-start.sh` detects `.t.json` and `.optx`/`.optj`; the Cursor rule `openehr-context.mdc` globs cover `.adls`, `.t.json`, `.optx`/`.optj` and `.aql`.
+- CGEM: `/template-from-form` splits the dataset across compositions (new `## Dataset split (CGEM)` step and output section) before sketching any template, and now actually loads `templates/cgem-framework`.
+- CGEM: triggers added to `template-authoring` and `openehr-assistant` descriptions ("categorise a dataset", "persistent, episodic or event", CGEM) so the framework is reachable without knowing it lives inside template authoring.
+- CGEM: all four category tables now carry the `COMPOSITION.category` codes (431/451/433), the four-categories-three-codes caveat, the `451 episodic` support warning, and the non-normative freshEHR framing; `composition-builder` gains `episodic` and a CGEM pointer on `ctx/category`.
 
 ### Fixed
 - Commands: `/archetype-impact` no longer calls `.t.json` a web template — it is an AOM2 differential *source* template; the impact table now splits source from compiled references and says which `.opt` needs regenerating.

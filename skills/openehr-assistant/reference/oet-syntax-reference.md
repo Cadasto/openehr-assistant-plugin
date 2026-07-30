@@ -226,10 +226,10 @@ Use `quantityConstraint` to restrict to facility-specific units and safe magnitu
 Place `<Items>` elements for each archetype that should fill a slot. Close unused slots with `max="0"` on the slot path.
 
 ### Composition type
-Choose based on CGEM:
-- **Event** — each submission is a new record (encounters, lab results)
-- **Persistent** — single maintained instance (problem list, allergies)
-- **Episodic** — scoped to a care period (admission, care plan)
+Choose based on CGEM (four categories, three codes — a Managed Response order template is normally `event`, distinguished by INSTRUCTION/ACTION + ISM rather than by its category):
+- **Event** (433) — each submission is a new record (encounters, lab results) ← Event Assessment
+- **Persistent** (431) — single maintained instance (problem list, allergies) ← Global Background
+- **Episodic** (451) — scoped to a care period (admission, care plan) ← Contextual Situation; unevenly implemented, confirm CDR support
 
 ---
 
