@@ -16,8 +16,8 @@ The detailed companion to [AGENTS.md](../AGENTS.md) and [CONTRIBUTING.md](../CON
 
 ## Choosing skill vs command vs agent
 
-- **Command** — a thin, single-interaction wrapper around MCP tools for a focused task. Use `$ARGUMENTS` for input and `argument-hint` in frontmatter. Keep instructions concise; the command should complete in one turn.
-- **Skill** — a multi-step, context-rich workflow that may span several turns and load multiple guides. Mark `auto-invocable` / `user-invocable` as appropriate.
+- **Skill** (the default for new functionality) — any multi-step or context-rich workflow. Both hosts have unified commands and skills: a skill is `/`-invocable like a command, takes `argument-hint` / `$ARGUMENTS`, *and* auto-triggers from natural language and can carry bulky material in `references/`. Mark `auto-invocable` / `user-invocable` as appropriate.
+- **Command** — reserved for a thin, single-interaction wrapper around MCP tools (a lookup or scan that completes in one turn, needs no supporting files, and should not auto-trigger). A command that grows steps or needs a reference file is a skill — fold it in, as with `/archetype-fix-syntax` → `archetype-authoring` and `/semantic-diff` → the `semantic-diff` skill.
 - **Agent** — a context-isolated subagent for heavy or parallel work (e.g. `ckm-scout`, `spec-researcher`) so the main session's context stays clean.
 
 ## The `description` field (the trigger)

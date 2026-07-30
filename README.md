@@ -98,13 +98,13 @@ Multi-step workflows (authoring, review, AQL, compositions) are driven by the **
 | `/openehr-explain <thing>` | Explain or look up any openEHR thing — archetype, template, RM/AM type, RM structural concept, ADL idiom, AQL query/keyword, or terminology code (auto-detects) |
 | `/archetype-impact <archetype-id>` | Scan workspace for references to an archetype (source templates `.oet`/`.t.json`, compiled `.opt`, parent `.adl` slots, AQL) |
 
-> Creating/editing/reviewing archetypes (incl. **rationale prose** and **translation**), linting, authoring templates, building compositions, writing AQL, and **browsing guides** are handled by the matching **skill** (no command needed) — just describe the task.
+> Creating/editing/reviewing archetypes (incl. **rationale prose**, **translation**, and **ADL syntax fixing**), linting, authoring templates (incl. the **form → template sketch**), building compositions, writing AQL, **diffing two artefacts**, and **browsing guides** are handled by the matching **skill** (no command needed) — just describe the task.
 
 ### Agents
 
 | Agent | Description |
 |-------|-------------|
-| `clinical-modeler` | Local clinical-model file analyst (read/write/review/edit `.adl`/`.oet`/`.opt`). Writes locally; has read-only MCP lookups (terminology, type specs, guides, single CKM fetch) with offline fallback |
+| `clinical-modeler` | Local clinical-model file analyst (read/write/review/edit `.adl`/`.oet`/`.t.json`/`.opt`). Writes locally; has read-only MCP lookups (terminology, type specs, guides, single CKM fetch) with offline fallback |
 | `ckm-scout` | CKM reuse-search specialist — parallel searches, ranked recommendation |
 | `spec-researcher` | Spec research specialist using llms.txt/.md twin methodology |
 

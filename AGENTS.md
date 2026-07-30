@@ -161,8 +161,8 @@ Then verify a command (`/ckm-search blood pressure`) and skill auto-triggering a
 - Contributor reference, plans, specs, and design docs go in **`docs/`**
 - All markdown files use YAML frontmatter for metadata
 - `allowed-tools` (skills/commands) pre-approves MCP tools to avoid permission prompts; **agents use `tools:`** instead — `allowed-tools:` in an agent file is ignored and the agent silently inherits all tools
-- Skills: use `auto-invocable` / `user-invocable` in frontmatter as needed; follow Guide-First (load MCP guides before acting)
-- Commands: use `argument-hint` in frontmatter and `$ARGUMENTS` in body for user input; keep instructions concise for single-interaction completion
+- Skills: use `auto-invocable` / `user-invocable` in frontmatter as needed; `argument-hint` and `$ARGUMENTS` work here too (skills are `/`-invocable); follow Guide-First (load MCP guides before acting)
+- Commands: use `argument-hint` in frontmatter and `$ARGUMENTS` in body for user input; keep instructions concise for single-interaction completion. Prefer a skill for anything multi-step — commands are thin one-shots (see [docs/authoring.md](docs/authoring.md))
 
 ### Documentation Sync
 When adding or renaming components, update: **AGENTS.md** (component tables), **README.md** (tables), and **hooks/session-start.sh** (the "Available: /command1, ..." list). Cursor uses the same skills/commands/agents paths; no separate Cursor-only list is required.

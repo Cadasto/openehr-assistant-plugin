@@ -77,7 +77,7 @@ Key conventions:
 - Skills go in `skills/<name>/SKILL.md` with YAML frontmatter.
 - Commands go in `commands/<name>.md` with YAML frontmatter.
 - Agents go in `agents/<name>.md` with YAML frontmatter.
-- All components use `allowed-tools` in frontmatter to pre-approve MCP tools.
+- Skills and commands pre-approve MCP tools with `allowed-tools`; **agents use `tools:` instead**, listing each MCP tool under both mount namespaces (see AGENTS.md → Gotchas).
 - MCP tool names follow the format `mcp__openehr-assistant__<tool_name>`.
 
 ## Repository archives (.gitattributes)
@@ -108,7 +108,7 @@ Skills are multi-step, context-rich workflows. When adding a skill:
 - Use progressive disclosure: mandatory steps first, then detailed guidance.
 
 ### Commands
-Commands are thin wrappers around MCP tools for quick, focused tasks. When adding a command:
+Commands are thin wrappers around MCP tools for quick, focused tasks. **Prefer a skill for new functionality** — skills auto-trigger, are equally `/`-invocable, and can carry `references/`; reserve a command for a one-shot that completes in a single interaction and should never auto-trigger (see [docs/authoring.md](docs/authoring.md)). When adding a command:
 - Keep instructions concise — commands should complete in one interaction.
 - Use `$ARGUMENTS` to capture user input.
 - Include `argument-hint` in frontmatter to guide users.
@@ -116,7 +116,7 @@ Commands are thin wrappers around MCP tools for quick, focused tasks. When addin
 ### Agents
 Agents are specialized subagents for complex domain tasks. When adding an agent:
 - Write a clear system prompt explaining the agent's expertise.
-- List all MCP tools the agent may need in `allowed-tools`.
+- List the tools the agent needs in **`tools:`** (not `allowed-tools`), with each MCP tool under both mount namespaces — `scripts/validate.py` enforces the pairing.
 
 ### Hooks
 Hooks respond to Claude Code events. When modifying hooks:
@@ -148,7 +148,7 @@ When aligning this plugin with a new **[openehr-assistant-mcp](https://github.co
 
 ### 4. Bundled archetype examples (offline corpus)
 
-The `skills/openehr-assistant/examples/` directory bundles the 7 gold-standard CKM archetypes for the offline `clinical-modeler` agent (which has no MCP access). The same files are published by `openehr-assistant-mcp` under `resources/examples/archetypes/`.
+The `skills/openehr-assistant/examples/` directory bundles the 7 gold-standard CKM archetypes as the `clinical-modeler` agent's offline fallback (its read-only MCP lookups may be blocked or unavailable). The same files are published by `openehr-assistant-mcp` under `resources/examples/archetypes/`.
 
 After updating the version pointer in step 1:
 
@@ -168,12 +168,12 @@ claude plugin add /path/to/openehr-assistant-plugin
 
 Verify components work:
 ```
-/archetype-search blood pressure        # Test discovery command
-/guide AQL syntax                        # Test guide browsing
-/type-spec DV_QUANTITY                   # Test type lookup
+/ckm-search blood pressure               # Test CKM discovery command
+/openehr-explain DV_QUANTITY             # Test type / archetype / terminology lookup
+/semantic-diff old.adl new.adl           # Test a user-invocable skill via its slash form
 ```
 
-Test skill auto-triggering by mentioning openEHR concepts in conversation without using a command.
+Guide browsing has no command — ask in natural language ("show me the AQL syntax guide") and the `openehr-assistant` skill loads it. Test skill auto-triggering by mentioning openEHR concepts in conversation without using a command (e.g. "this archetype won't parse" → `archetype-authoring`).
 
 
 ## Commit messages and pull requests

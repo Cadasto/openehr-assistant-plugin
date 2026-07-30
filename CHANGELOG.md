@@ -43,6 +43,9 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 - Commands: `/semantic-diff` converted to a user-invocable skill — same `/semantic-diff` invocation, now also auto-triggers on compare/diff intent; the rubric moved from top-level `references/` into `skills/semantic-diff/references/`, removing the top-level `references/` directory.
 - Skills: QA pass over all eight — descriptions gain trigger phrases and boundary clauses (`openehr-assistant`, `composition-builder`, `demographic-modeling`, `semantic-diff`), `archetype-lint` Step 5 slimmed to a router, CGEM content deduplicated (the from-form reference and `openehr-assistant` defer to `template-authoring` Step 6), `aql-authoring` syntax crib trimmed to guide pointers, imperative wording throughout.
 
+- Docs: `CONTRIBUTING.md` refreshed — verification snippet uses current invocations (`/ckm-search`, `/openehr-explain`, `/semantic-diff`), agents corrected to `tools:` (not `allowed-tools`), `clinical-modeler` MCP note fixed.
+- Docs: `docs/authoring.md` and AGENTS.md record the skills-preferred policy (commands reserved for thin one-shots); `docs/testing.md` exercises `/semantic-diff` as a skill; README adds `.t.json` to `clinical-modeler` and lists the newly skill-absorbed tasks.
+
 ### Removed
 - Commands: `/archetype-fix-syntax` and `/template-from-form` (folded into `archetype-authoring` / `template-authoring`, see Changed).
 
