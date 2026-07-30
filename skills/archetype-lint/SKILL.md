@@ -75,6 +75,7 @@ For rule 4, verify attribute names against the RM with `type_specification_get` 
 - **`ITEM_TREE.items {0..*}` is idiomatic** — the established CKM convention for container attributes (e.g. the published `ecg_result.v1`). Do **not** flag it under rule 9 / structural-constraints when at least one contained ELEMENT is mandatory; reserve a finding for genuinely empty or all-optional containers. Flagging idiomatic `items {0..*}` is noise.
 - **Unstated `occurrences`/`existence` are not violations** — ADL 1.4 defaults both to `{1..1}` when unstated. For rule 5, also check mutual consistency: the sum of sibling occurrences ranges must fit inside the container's cardinality interval (validator-tooling check `VCOC`).
 - **Validity codes are tooling constructs** — mnemonics like `VARID`/`VCOC`/`VUNT` come from AOM2 and validator tooling (ADL Workbench, `archie`, CKM), not from ADL 1.4 spec text. Cite them as tool-output aids, never as "ADL 1.4 validity rules".
+- **Partial terminology coverage is valid** — a `term_bindings` section need not bind every internal at-code (ADL 1.4, Term_bindings). Do **not** report unbound codes as a rule 17/18 violation; bindings are optional-but-recommended, so incomplete coverage is at most an INFO observation.
 
 ## Step 4: Generate Report
 

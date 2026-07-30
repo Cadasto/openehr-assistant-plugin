@@ -8,17 +8,21 @@
 
 Matches ADL 1.4 archetype structure (see openEHR ADL 1.4 spec, archetype overview figure):
 
-1. **`archetype`** — version line and archetype id
-2. **`specialise` / `specialize`** (optional)
+1. **`archetype`** — version line and archetype id; may carry a `controlled` / `uncontrolled` flag after the version. A `controlled` archetype should include a `revision_history` section; an `uncontrolled` one may omit it
+2. **`specialise` / `specialize`** (optional) — the single specialisation parent's id (no multiple inheritance; both spellings are valid). Legacy ADL 1.4 practice derived a child id by appending a hyphenated segment to the parent concept (`…OBSERVATION.haematology-cbc.v1`); under the current Identification spec that hyphen no longer carries specialisation semantics
 3. **`concept`**
 4. **`language`**
 5. **`description`** (optional)
 6. **`definition`** — cADL constraint tree
 7. **`invariant`** (optional) — top-level assertions
 8. **`ontology`** — term definitions, constraint definitions (`ac` codes), term bindings (external terminology is wired here; not a separate top-level `terminology` section in standard ADL 1.4)
-9. **`revision_history`** (optional)
+9. **`revision_history`** (optional) — monotonically-growing audit of revisions at the end of the archetype; expected when the header carries `controlled`
 
 Sections must appear in this order. Every node in the definition must have a corresponding at-code in the ontology.
+
+The `invariant` section holds first-order predicate-logic assertions across nodes (cross-node relationships, formulae, conditional constraints), e.g. `validity: /speed[at0002]/kilometres/magnitude = /speed[at0004]/miles/magnitude * 1.6`. In ADL 1.4 invariants exist *only* at this top level (in AOM terms they attach to a `C_COMPLEX_OBJECT`, serialized at archetype level); ADL 2 replaces the section with `rules`.
+
+**Defaults:** unstated `occurrences` and `existence` both default to `{1..1}`.
 
 ---
 

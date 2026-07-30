@@ -72,7 +72,7 @@ The dispatcher provides:
 guide_get("openehr://guides/howto/spec-lookup")
 ```
 
-Keep its rules in mind: llms.txt resolves component/doc names; `.md` twins are the cheapest textual source; class tables live in HTML or BMM (not Markdown); `development` branch is the tracking target.
+Keep its rules in mind: llms.txt resolves component/doc names; `.md` twins are the cheapest textual source and cover **most** — not all — spec pages, so a 404 means "fetch the HTML page", never "no such document"; class tables live in HTML or BMM (not Markdown); `development` branch is the tracking target.
 
 ### 2. Classify the question
 
@@ -82,7 +82,7 @@ Keep its rules in mind: llms.txt resolves component/doc names; `.md` twins are t
   ```
   WebFetch("https://specifications.openehr.org/releases/RM/development/ehr.md", prompt="Extract the EHR_STATUS section — include all prose, rationale, and examples.")
   ```
-  Use `development` URLs unless the user explicitly asks for a fixed release tag.
+  Use `development` URLs unless the user explicitly asks for a fixed release tag. If the `.md` twin 404s, refetch the same path as `.html` — twin coverage is high but not universal.
 
 ### 3. Fetch structured metadata (when applicable)
 

@@ -207,6 +207,8 @@ Archetypes are terminology-neutral. External code systems are bound, not embedde
 **Violation:** Hardcoded SNOMED code without proper binding section.
 **Fix:** Add proper `term_bindings` section with terminology reference.
 
+**Not a violation:** partial binding coverage. A binding need not cover every internal at-code (ADL 1.4, Term_bindings) — bindings are optional-but-recommended, so unbound codes are at most an INFO observation, never a rule 17/18 finding.
+
 ---
 
 ### Rule 18 — Semantic Binding Accuracy
