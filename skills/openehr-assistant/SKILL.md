@@ -2,8 +2,8 @@
 name: openehr-assistant
 description: >
   This skill should be used when the user mentions openEHR concepts (archetypes, templates,
-  AQL, ADL, CKM, RM types, compositions, OPT, terminology bindings, clinical modeling) outside
-  of a specific command context. Provides general openEHR awareness, clinical modeling guidance,
+  AQL, ADL, CKM, RM types, compositions, OPT, terminology bindings, clinical modeling, CGEM /
+  composition categories) outside of a specific command context. Provides general openEHR awareness, clinical modeling guidance,
   and routes to appropriate tools and commands. Not for focused tasks owned by a dedicated skill —
   archetype authoring/linting, template authoring, composition building, AQL, or demographic
   modeling — route those to the matching skill; this skill is the awareness and routing layer.
@@ -34,7 +34,7 @@ An openEHR-aware assistant and clinical modeling specialist. When a conversation
 
 openEHR is a vendor-neutral open standard for electronic health records. Key concepts:
 - **Archetypes**: Reusable clinical content definitions in ADL format
-- **Templates**: Use-case-specific constraint sets combining archetypes (OET/OPT)
+- **Templates**: Use-case-specific constraint sets combining archetypes, in four serialisations — source (`.oet`, Archetype Designer `.t.json`) → compiled **OPT** → derived vendor **web template** (the FLAT/STRUCTURED path schema); only OET is hand-authorable, and `.t.json` is a source template, not a web template
 - **Compositions**: Runtime clinical data instances conforming to templates
 - **Reference Model (RM)**: Core data types and structures (COMPOSITION, OBSERVATION, EVALUATION, INSTRUCTION, ACTION, CLUSTER, ELEMENT, etc.)
 - **AQL**: Archetype Query Language for querying clinical data repositories
@@ -52,15 +52,17 @@ For a compact offline summary of core principles, design rules, anti-patterns, R
 Before answering any openEHR question or starting modeling work, search and load relevant guides from the MCP server:
 
 1. Use `guide_search` to find relevant guides for the topic
-2. Use `guide_get` to load the full guide content
+2. Use `guide_get` to load the full guide content — pass a canonical `openehr://guides/<category>/<name>` URI, or `category` + `name`
 3. Base your answer on the guide content, not on general knowledge
+
+`guide_search` returns `{ items, total }` — `total` counts matches before the `maxResults` cap (default 10, max 50), so raise the cap when `total` is larger and the top hits look thin. Results are relevance-scored over guide metadata *and* body, and zero-score hits are dropped: an **empty** envelope means the query wording missed, not that no such guidance exists — rephrase with domain synonyms, or narrow with `category`, before concluding anything.
 
 Key guide categories:
 - `archetypes/` — archetype design principles, ADL syntax, constraints, anti-patterns
-- `templates/` — template design, OET syntax, CGEM framework
-- `aql/` — query syntax, patterns, optimization
+- `templates/` — template design, OET syntax, CGEM framework (`cgem-framework`), and the serialisation set (`serialization-formats` map, `opt-structure`, `web-template`)
+- `aql/` — query syntax, patterns, optimization (incl. VERSION/versioning queries)
 - `simplified_formats/` — FLAT, STRUCTURED, CANONICAL composition formats
-- `specs/` — openEHR specification digests (RM, AM, AM2, BASE, QUERY, TERM, LANG, CDS, SM, ITS-REST); these digests track the `development` branch of the openEHR specifications and replace the legacy `rm/` category
+- `specs/` — openEHR specification digests (RM, AM, AM2, BASE, QUERY, TERM, LANG incl. BMM3, CDS, PROC, CNF, SM, ITS-REST); these digests track the `development` branch of the openEHR specifications and replace the legacy `rm/` category
 - `howto/` — toolchain how-tos (e.g. `spec-lookup` for efficient external spec retrieval via `llms.txt` and Markdown twin URLs)
 
 ## MCP Tool Reference
@@ -78,7 +80,7 @@ Use these tools to provide accurate answers:
 | `guide_adl_idiom_lookup` | Quick lookup of ADL constraint patterns |
 | `type_specification_search` | Search RM/AM/BASE/LANG type specifications (BMM-backed) |
 | `type_specification_get` | Get detailed type specification, including class-level attribute/function/invariant tables |
-| `terminology_resolve` | Resolve terminology codes, rubrics, and value sets |
+| `terminology_resolve` | Resolve **openEHR** terminology concept ids ↔ rubrics (optionally within a `groupId`); errors on an unresolvable input, and does not cover SNOMED CT / LOINC / ICD |
 | `examples_search` | Find curated worked examples (AQL queries, FLAT/STRUCTURED payloads, reference `.adl` archetypes) |
 | `examples_get` | Retrieve a specific example by URI (`openehr://examples/{kind}/{name}` — kinds: `aql`, `flat`, `structured`, `archetypes`) |
 
@@ -88,14 +90,16 @@ The MCP server's own `instructions` carry conditional retrieval policies (Spec-L
 
 ### Template Design
 
-Select appropriate archetypes from CKM and combine them into COMPOSITION structures following the CGEM framework:
+Select appropriate archetypes from CKM and combine them into COMPOSITION structures. Before deciding *how many* templates a dataset needs, categorise it with **CGEM** (freshEHR's analysis method — a design aid, not an openEHR specification); load `guide_get("openehr://guides/templates/cgem-framework")` for the full framework:
 
-| Category | Description | Template Scope |
+| CGEM category | Description | `COMPOSITION.category` |
 |----------|-------------|---------------|
-| **Global Background** | Persistent patient data (allergies, diagnoses, demographics) | Persistent compositions |
-| **Contextual Situation** | Episodic context (reason for encounter, admission details) | Episode-level compositions |
-| **Event Assessment** | Point-in-time observations and evaluations | Event compositions |
-| **Managed Response** | Orders, plans, actions taken | Action/instruction compositions |
+| **Global Background** | True across all contexts for life; one current version updated in place (allergies, problem list, CPR decision) | `persistent` (431) |
+| **Contextual Situation** | Single source of truth for one care journey / episode / condition (staging summary, condition care plan) | `episodic` (451) |
+| **Event Assessment** | Discrete repeated recordings; each submission a new record (vitals at a visit, lab result) | `event` (433) |
+| **Managed Response** | Formal order/fulfilment cycle tracked to completion (referral, prescription) | **not a category code** — usually `event`, distinguished by INSTRUCTION/ACTION + ISM |
+
+Two caveats worth stating to users: four CGEM categories map onto **three** category codes, and `451 episodic` — though normative — is unevenly implemented, so confirm platform support before relying on it (`persistent` plus governance conventions is the common fallback). One form commonly reads/writes several compositions across several categories.
 
 ### Archetype Selection
 
@@ -118,7 +122,7 @@ Apply the Narrowing Principle when constraining archetypes within templates:
 
 ### Terminology Binding
 
-Advise on binding to standard terminologies (SNOMED CT, LOINC, ICD-10) with semantic equivalence. Use `terminology_resolve` to validate codes. Ensure bindings represent true semantic equivalence, not approximation.
+Advise on binding to standard terminologies (SNOMED CT, LOINC, ICD-10) with semantic equivalence. Use `terminology_resolve` to validate **openEHR** terminology codes and rubrics only — it does not cover external terminologies and errors on an unresolvable input; read external rubrics from the artefact's own `term_bindings` rather than fabricating a preferred term. Ensure bindings represent true semantic equivalence, not approximation.
 
 ### Model Review
 
@@ -128,7 +132,7 @@ When reviewing clinical models, verify:
 - Narrowing principle respected in templates
 - Terminology bindings are semantically correct
 - CGEM framework applied for template scoping
-- No anti-patterns present (load `guide_get("archetypes/anti-patterns")`)
+- No anti-patterns present (load `guide_get("openehr://guides/archetypes/anti-patterns")`)
 
 Use `type_specification_get` to verify RM type structures. Use `guide_adl_idiom_lookup` for correct ADL constraint patterns.
 
@@ -147,6 +151,8 @@ When users need deeper task-specific workflows, suggest the appropriate skill or
 - **Fixing syntax** -> `/archetype-fix-syntax`
 - **Translating an archetype** (add a locale) -> archetype-authoring skill
 - **Demographic modeling** -> demographic-modeling skill
-- **Platform / REST service integration** -> consult `guide_get("specs/sm-openehr_platform")` and `guide_get("specs/its-rest-api")`
+- **Platform / REST service integration** -> consult `guide_get("openehr://guides/specs/sm-openehr_platform")` and `guide_get("openehr://guides/specs/its-rest-api")`
+- **Process automation / CDS / guidelines** (Task Planning, Decision Language, GDL2) -> consult `guide_get("openehr://guides/specs/proc-overview")` first, then `openehr://guides/specs/proc-task_planning`, `openehr://guides/specs/proc-decision_language`, `openehr://guides/specs/cds-GDL2`
+- **Conformance / certification questions** -> consult `guide_get("openehr://guides/specs/cnf-guide")`
 - **Deep spec research** (precise attribute/function/invariant questions; cross-document reconciliation) -> dispatch the `spec-researcher` agent
 - **Curated worked examples** (AQL queries, FLAT/STRUCTURED payloads, reference archetypes) -> `examples_search` / `examples_get` MCP tools; resources at `openehr://examples/{kind}/{name}`

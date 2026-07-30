@@ -8,11 +8,11 @@ Full review pipeline for an archetype (absorbs the former `/archetype-review` co
 - If the examples corpus holds the same archetype id, `examples_get` it and compare `uid`/revision to spot drift from the gold-standard.
 
 ## 2. Lint
-Apply the 22 normative lint rules — load `guide_get("archetypes/rules")` for the definitions (the `archetype-lint` skill runs this standalone). Also load:
+Apply the 24 normative lint rules — load `guide_get("openehr://guides/archetypes/rules")` for the definitions (the `archetype-lint` skill runs this standalone). Also load:
 
 ```
-guide_get("archetypes/checklist")
-guide_get("archetypes/anti-patterns")
+guide_get("openehr://guides/archetypes/checklist")
+guide_get("openehr://guides/archetypes/anti-patterns")
 ```
 
 Use `type_specification_get` to verify RM attribute names (rule 4). Output PASS/FAIL plus a violations table (severity, rule, explanation, suggested fix).

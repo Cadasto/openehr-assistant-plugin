@@ -24,7 +24,7 @@
 |------|----------|---------|
 | **A1** | ERROR | One coherent concept per archetype |
 | **A2** | ERROR | Do not combine unrelated concepts |
-| **B1** | ERROR | ID follows `openEHR-<DOMAIN>-<RM_TYPE>.<concept>.v<VERSION>` |
+| **B1** | ERROR | ID follows `<rm_publisher>-<rm_closure>-<rm_class>.<concept>.v<version>`; ADL 1.4 source uses major version only (`.v1`) — `v1.0.0` is the physical HRID (AM Identification / CKM metadata) |
 | **C1** | ERROR | Use RM structures as intended |
 | **C2** | WARNING | Cardinalities justified by clinical reality, not UI convenience |
 | **C3** | WARNING | Maximise optionality in archetypes; restriction belongs in templates |
@@ -160,23 +160,31 @@ Three levels of subject identification via PARTY_SELF:
   - Mandatory stays mandatory
   - Optional can become mandatory or excluded (`max=0`)
   - Value sets can be reduced but not expanded
-- **OET** (source) for authoring; **OPT** (operational) flattened XML for runtime
+- Template jobs: **composition** (fill slots), **element choice** (remove/mandate), **narrowing**, and **setting defaults**
+- **Defaults vs assumed values**: template defaults appear in the recorded data; archetype-level assumed values do not
+- **OET** and Archetype Designer **`.t.json`** (source layer — `.t.json` is AOM2 differential JSON, tool-managed, *not* a web template) for authoring; **OPT** (operational) flattened for runtime (XML in ADL 1.4 practice; OPT2 allows ADL/XML/JSON/YAML); **web template** (JSON) is the vendor runtime projection derived from the OPT, driving UI and FLAT/STRUCTURED paths
 - Templates bridge clinical models and UIs (rename elements, `hide_on_form` flags)
 
-> Full guide: `openehr://guides/templates/principles`
+> Full guides: `openehr://guides/templates/principles`, serialisation set: `openehr://guides/templates/serialization-formats`, `openehr://guides/templates/opt-structure`, `openehr://guides/templates/web-template`
 
 ---
 
-## CGEM Framework (Template Scoping)
+## CGEM Framework (Dataset Splitting / Template Scoping)
 
-| Category | Data Nature | Composition Type |
-|----------|-------------|------------------|
-| **Global Background** | True regardless of context (allergies, CPR decision) | Longitudinal persistent |
-| **Contextual Situation** | Single source per care journey (staging, care plan) | Episodic persistent |
-| **Event Assessment** | Each submission is a new record (clinic visit, lab) | Event |
-| **Managed Response** | Formal order/fulfilment cycle (referral, prescription) | Instruction/Action |
+freshEHR's analysis method for splitting a dataset before modelling — a **design aid, not an openEHR specification**; it operationalises the spec's own temporal composition model.
 
-One form can read/write multiple compositions. Distinguish true managed workflows (Instruction/Action) from simple records.
+| Category | Data Nature | `COMPOSITION.category` | Versioning |
+|----------|-------------|------------------|---|
+| **Global Background** | True regardless of context, for life (allergies, problem list, CPR decision) | `persistent` (431) | one current version, updated in place |
+| **Contextual Situation** | Single source of truth per care journey / episode / condition (staging, care plan) | `episodic` (451) | one current version per journey; new journey → new instance |
+| **Event Assessment** | Each submission is a new record (clinic visit, lab, score) | `event` (433) | never overwritten; many over time |
+| **Managed Response** | Formal order/fulfilment cycle (referral, prescription) | **no category code** — usually `event` | order state tracked across ACTIONs via the ISM |
+
+- **Four categories, three codes** — Managed Response is not a `COMPOSITION.category`; it is an `event` (sometimes `persistent`) composition distinguished by INSTRUCTION/ACTION + the ISM.
+- **`451 episodic`** is normative but unevenly implemented — confirm platform support; `persistent` plus governance conventions is the common fallback.
+- One form can read/write **multiple** compositions across several categories; Global Background is often only *read*. Distinguish true managed workflows from simple records ("Referral date" is a record, not an order).
+
+> Full guide: `openehr://guides/templates/cgem-framework` (freshEHR CGEM — definitions, openEHR mapping table, caveats)
 
 ---
 
@@ -209,8 +217,8 @@ When guides conflict, apply this priority (highest first):
 
 Minimal offline syntax reminders (full detail: MCP guides or AGENTS.md):
 
-- **ADL**: [adl-syntax-cheatsheet.md](adl-syntax-cheatsheet.md) — ADL 1.4 section order; use `guide_get("archetypes/adl-syntax")` or AGENTS.md for spec/grammar links.
-- **AQL**: [aql-syntax-cheatsheet.md](aql-syntax-cheatsheet.md) — SELECT/FROM/WHERE structure; use `guide_get("aql/syntax")` or AGENTS.md for spec/grammar links.
+- **ADL**: [adl-syntax-cheatsheet.md](adl-syntax-cheatsheet.md) — ADL 1.4 section order; use `guide_get("openehr://guides/archetypes/adl-syntax")` or AGENTS.md for spec/grammar links.
+- **AQL**: [aql-syntax-cheatsheet.md](aql-syntax-cheatsheet.md) — SELECT/FROM/WHERE structure; use `guide_get("openehr://guides/aql/syntax")` or AGENTS.md for spec/grammar links.
 
 ---
 
@@ -220,7 +228,7 @@ Minimal offline syntax reminders (full detail: MCP guides or AGENTS.md):
 | Guide | URI |
 |-------|-----|
 | Principles | `openehr://guides/archetypes/principles` |
-| Rules (22 normative) | `openehr://guides/archetypes/rules` |
+| Design Rules (rule sets A–K) | `openehr://guides/archetypes/rules` |
 | ADL 1.4 Syntax | `openehr://guides/archetypes/adl-syntax` |
 | ADL Idioms Cheatsheet | `openehr://guides/archetypes/adl-idioms-cheatsheet` |
 | Structural Constraints | `openehr://guides/archetypes/structural-constraints` |
@@ -235,8 +243,12 @@ Minimal offline syntax reminders (full detail: MCP guides or AGENTS.md):
 |-------|-----|
 | Principles | `openehr://guides/templates/principles` |
 | Rules | `openehr://guides/templates/rules` |
+| CGEM Framework | `openehr://guides/templates/cgem-framework` |
 | OET Syntax | `openehr://guides/templates/oet-syntax` |
 | OET Idioms | `openehr://guides/templates/oet-idioms-cheatsheet` |
+| Serialization Formats | `openehr://guides/templates/serialization-formats` |
+| OPT Structure | `openehr://guides/templates/opt-structure` |
+| Web Template | `openehr://guides/templates/web-template` |
 | Checklist | `openehr://guides/templates/checklist` |
 
 ### AQL
@@ -262,7 +274,7 @@ Minimal offline syntax reminders (full detail: MCP guides or AGENTS.md):
 | Demographic Model | `openehr://guides/specs/rm-demographic` |
 | Platform Services | `openehr://guides/specs/sm-openehr_platform` |
 
-The MCP server exposes additional spec digests under `openehr://guides/specs/` covering AM (ADL1.4, AOM1.4, Overview, Identification), AM2 (ADL2, AOM2, OPT2), BASE, QUERY (AQL), TERM, LANG, CDS (GDL2), SM, and ITS-REST. Digests track the openEHR **development** branch.
+The MCP server exposes additional spec digests under `openehr://guides/specs/` covering AM (ADL1.4, AOM1.4, Overview, Identification), AM2 (ADL2, AOM2, OPT2), BASE, QUERY (AQL), TERM, LANG (incl. BMM, BMM3, EL, ODIN), CDS (GDL2), PROC (overview, task planning, decision language), CNF (conformance guide), SM, and ITS-REST. Digests track the openEHR **development** branch.
 
 ### OpenAPI REST Schemas
 
@@ -289,7 +301,7 @@ When MCP access is available, prefer routed retrieval over direct HTTP fetches:
 1. **Spec overview questions** → `guide_get(category="specs", name="<component>-<doc>")` (250–900 word digests tracking the `development` branch).
 2. **Class-level attribute / function / invariant detail** → `type_specification_get("<TYPE_NAME>")` (BMM-backed, exhaustive).
 3. **Worked examples** (AQL, FLAT, STRUCTURED, reference `.adl` archetypes) → `examples_search(kind=...)` / `examples_get("openehr://examples/<kind>/<name>")`.
-4. **Efficient external spec retrieval** → `guide_get("howto/spec-lookup")`; it documents the `llms.txt` site index, the `.md` twin URL pattern (every `*.html` spec page has a `.md` counterpart — prose only, not per-class tables), and the `/api/{components,classes,releases}.json` endpoints.
+4. **Efficient external spec retrieval** → `guide_get("openehr://guides/howto/spec-lookup")`; it documents the `llms.txt` site index, the `.md` twin URL pattern (**most** `*.html` spec pages have a `.md` counterpart — prose only, not per-class tables; fall back to HTML when a twin 404s), and the `/api/{components,classes,releases}.json` endpoints.
 
 This plugin tracks `releases/XX/development/` for external spec URLs unless the user explicitly asks for a fixed release tag.
 

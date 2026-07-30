@@ -80,6 +80,66 @@ def validate_md_components(subdir: str, *, require_name: bool):
             err(f"{rel}: frontmatter name '{fm_name.group(1)}' != filename '{md.stem}'")
 
 
+def validate_agent_mcp_namespaces(plugin_name):
+    """Agent ``tools:`` entries are matched literally against live tool ids, and the id of an
+    MCP tool depends on how the server was mounted: ``mcp__<server>__<tool>`` for a project or
+    user ``.mcp.json``, ``mcp__plugin_<plugin>_<server>__<tool>`` for a plugin's own bundled
+    ``.mcp.json``. A non-matching entry is dropped silently, and an agent whose whole ``tools:``
+    list resolves to nothing is refused ("would be spawned with zero tools"). So every MCP tool
+    an agent needs must be listed under both namespaces; this check enforces that pairing.
+    (Skills/commands use ``allowed-tools``, which only pre-approves permissions — a miss there
+    costs a prompt, not access — so it is deliberately not checked here.)"""
+    agents_dir = ROOT / "agents"
+    if not agents_dir.is_dir() or not plugin_name:
+        return
+    mcp_config = ROOT / ".mcp.json"
+    if not mcp_config.is_file():
+        return
+    data = load_json(mcp_config, "MCP config") or {}
+    servers = list((data.get("mcpServers") or {}).keys())
+    if not servers:
+        return
+
+    for md in sorted(agents_dir.glob("*.md")):
+        rel = md.relative_to(ROOT)
+        m = re.match(r"\A---\n(.*?)\n---\n", md.read_text(), re.DOTALL)
+        if not m:
+            continue
+        entries = set(re.findall(r"^\s*-\s*(mcp__\S+)", m.group(1), re.MULTILINE))
+        for server in servers:
+            bare_prefix = f"mcp__{server}__"
+            scoped_prefix = f"mcp__plugin_{plugin_name}_{server}__"
+            bare = {e[len(bare_prefix):] for e in entries if e.startswith(bare_prefix)}
+            scoped = {e[len(scoped_prefix):] for e in entries if e.startswith(scoped_prefix)}
+            for tool in sorted(bare - scoped):
+                err(f"{rel}: tools lists '{bare_prefix}{tool}' without the plugin-mount form "
+                    f"'{scoped_prefix}{tool}' (agent loses MCP access under a bundled-plugin mount)")
+            for tool in sorted(scoped - bare):
+                err(f"{rel}: tools lists '{scoped_prefix}{tool}' without the plain-mount form "
+                    f"'{bare_prefix}{tool}' (agent loses MCP access under a project/user .mcp.json)")
+
+
+BARE_GUIDE_GET_RE = re.compile(r'guide_get\(\s*"(?!openehr://)')
+
+
+def validate_guide_get_uris():
+    """``guide_get`` takes a canonical ``openehr://guides/...`` URI (or explicit
+    ``category``/``name`` arguments); a bare ``guide_get("category/name")`` string lands in
+    the ``uri`` parameter and is rejected by the server (``Invalid guide URI``). Flag any
+    copy-pasteable positional call that is not URI-form. CHANGELOG.md is not scanned (it
+    records the historical bad form)."""
+    for base in ("skills", "commands", "agents", "references", "rules", "docs"):
+        comp_dir = ROOT / base
+        if not comp_dir.is_dir():
+            continue
+        for doc in sorted(p for ext in ("*.md", "*.mdc") for p in comp_dir.rglob(ext)):
+            rel = doc.relative_to(ROOT)
+            for lineno, line in enumerate(doc.read_text().splitlines(), 1):
+                if BARE_GUIDE_GET_RE.search(line):
+                    err(f'{rel}:{lineno}: bare guide_get("category/name") — use the '
+                        f'resolvable guide_get("openehr://guides/<category>/<name>") form')
+
+
 def validate_manifest_paths(manifest: dict, label: str):
     for field in MANIFEST_PATH_FIELDS:
         value = manifest.get(field)
@@ -141,6 +201,8 @@ def main():
     validate_skills()
     validate_md_components("agents", require_name=True)
     validate_md_components("commands", require_name=False)
+    validate_agent_mcp_namespaces(manifests.get(".claude-plugin", {}).get("name"))
+    validate_guide_get_uris()
 
 
 if __name__ == "__main__":
@@ -150,4 +212,5 @@ if __name__ == "__main__":
         for e in errors:
             print(f"  - {e}")
         sys.exit(1)
-    print("OK: manifests, dual-host parity, MCP config, component paths, skills, agents, and commands are valid")
+    print("OK: manifests, dual-host parity, MCP config, component paths, skills, agents, "
+          "agent MCP namespace pairing, commands, and guide_get URI forms are valid")

@@ -4,7 +4,7 @@
 [![Version](https://img.shields.io/badge/version-0.8.0-blue)](CHANGELOG.md)
 [![Claude Code](https://img.shields.io/badge/Claude_Code-plugin-D97757?logo=anthropic&logoColor=white)](https://claude.ai/code)
 [![Cursor](https://img.shields.io/badge/Cursor-plugin-000?logo=cursor&logoColor=white)](https://cursor.com)
-[![openehr-assistant-mcp](https://img.shields.io/badge/openehr--assistant--mcp-v0.19.0-brightgreen)](https://github.com/cadasto/openehr-assistant-mcp)
+[![openehr-assistant-mcp](https://img.shields.io/badge/openehr--assistant--mcp-v0.20.0-brightgreen)](https://github.com/cadasto/openehr-assistant-mcp)
 [![openEHR](https://img.shields.io/badge/openEHR-compatible-009688)](https://openehr.org)
 [![Keep a Changelog](https://img.shields.io/badge/Keep%20a%20Changelog-1.1.0-E05735)](CHANGELOG.md)
 
@@ -30,7 +30,7 @@ This plugin works with the [openEHR Assistant MCP Server](https://github.com/cad
 
 - **Guide-first workflows** — Skills and commands instruct the assistant to load relevant implementation guides from the MCP server before answering.
 - **Archetype authoring** — Create, edit, extend, and specialize clinical archetypes with lint rules and idiom lookup.
-- **Template design** — Build and constrain templates using the CGEM framework and narrowing principle.
+- **Template design** — Split a dataset across compositions with the CGEM framework (persistent / episodic / event), then build and constrain each template using the narrowing principle.
 - **Composition building** — Generate FLAT, STRUCTURED, and CANONICAL format instances.
 - **AQL queries** — Write, explain, and optimize Archetype Query Language queries.
 - **CKM discovery** — Search the Clinical Knowledge Manager for archetypes and templates.
@@ -80,7 +80,7 @@ Environment variables (e.g. `CKM_API_BASE_URL`) and Docker/stdio details are doc
 | Skill | Trigger | Description |
 |-------|---------|-------------|
 | `archetype-authoring` | Creating/editing/reviewing/translating archetypes | Authoring, review & remediate, rationale prose, translation, CKM-import — guide-first |
-| `archetype-lint` | Reviewing/validating archetypes | 22 normative lint rules with STRICT/PERMISSIVE modes |
+| `archetype-lint` | Reviewing/validating archetypes | 24 normative lint rules with STRICT/PERMISSIVE modes |
 | `template-authoring` | Creating/reviewing templates | Template design with CGEM framework and narrowing principle |
 | `composition-builder` | Building compositions | FLAT/STRUCTURED/CANONICAL format generation |
 | `aql-authoring` | Writing AQL queries | Query authoring, explanation, and optimization |
@@ -97,8 +97,8 @@ Multi-step workflows (authoring, review, AQL, compositions) are driven by the **
 | `/openehr-explain <thing>` | Explain or look up any openEHR thing — archetype, template, RM/AM type, RM structural concept, ADL idiom, AQL query/keyword, or terminology code (auto-detects) |
 | `/semantic-diff <file-a> <file-b>` | Semantic diff of two artefacts (archetype or template); version-bump verdict or sibling/cross-artefact compatibility report |
 | `/archetype-fix-syntax <file>` | Fix ADL syntax errors preserving semantics |
-| `/template-from-form <form text or path>` | Map a clinical form to a template sketch (archetypes + narrowing) |
-| `/archetype-impact <archetype-id>` | Scan workspace for references to an archetype (templates incl. `.t.json`, parent `.adl` slots, AQL) |
+| `/template-from-form <form text or path>` | Split a clinical form across compositions (CGEM) and sketch each template (archetypes + narrowing) |
+| `/archetype-impact <archetype-id>` | Scan workspace for references to an archetype (source templates `.oet`/`.t.json`, compiled `.opt`, parent `.adl` slots, AQL) |
 
 > Creating/editing/reviewing archetypes (incl. **rationale prose** and **translation**), linting, authoring templates, building compositions, writing AQL, and **browsing guides** are handled by the matching **skill** (no command needed) — just describe the task.
 
@@ -117,11 +117,13 @@ Multi-step workflows (authoring, review, AQL, compositions) are driven by the **
 The [openehr-assistant-mcp](https://github.com/cadasto/openehr-assistant-mcp) server provides:
 
 - 12 MCP tools (CKM search, guide access, terminology, type specs, ADL idioms, curated examples)
-- 15 MCP prompts (guided clinical workflows)
+- 14 MCP prompts (guided clinical workflows, each taking validated arguments)
 - Implementation guides across six categories: `archetypes/`, `templates/`, `aql/`, `simplified_formats/`, `specs/` (openEHR specification digests tracking the `development` branch), and `howto/` (toolchain how-tos)
 - Curated worked examples at `openehr://examples/{kind}/{name}` — AQL, FLAT, STRUCTURED payloads, and CKM-published reference `.adl` archetypes
 
-**Compatibility:** This plugin version is built and tested against **openehr-assistant-mcp v0.19.0** ([releases](https://github.com/cadasto/openehr-assistant-mcp/releases)). When updating the plugin, align with that server’s changelog so each plugin release stays compatible with a specific MCP server version.
+**Compatibility:** This plugin version is built and tested against **openehr-assistant-mcp v0.20.0** — the tagged release that folds in the guide refresh (CGEM/OPT/web-template guides, PROC/CNF/BMM3 spec digests) and the audit hardening (stricter tool schemas, relevance-scored `guide_search`, parameterized prompts, the two CKM explorer prompts merged into one `ckm_explorer`); see [releases](https://github.com/cadasto/openehr-assistant-mcp/releases).
+
+v0.20.0 is breaking for MCP clients that pass `""` for an optional enum argument, that call `prompts/get` without arguments, or that hand `ckm_archetype_get` something that is neither a CKM CID nor a full archetype-id. This plugin does none of those, and the server's prompts are surfaced directly by the host as slash commands, so their arguments come from you rather than from the plugin. References to the newer guides degrade gracefully against a v0.19.0 server (`guide_search` fallbacks), but pin v0.20.0 for the full guide set. When updating the plugin, align with that server’s changelog so each plugin release stays compatible with a specific MCP server version.
 
 Offline reference material in [`skills/openehr-assistant/reference/`](skills/openehr-assistant/reference/) includes a quick-reference (principles, rules, guide index), minimal ADL and AQL syntax cheatsheets, and an RM type reference (~30 commonly archetyped types with attributes for local lint rule 4 validation); see [AGENTS.md](AGENTS.md) (Syntax and grammar sources) for links to official specs and grammars.
 

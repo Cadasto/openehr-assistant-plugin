@@ -9,6 +9,46 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 
 ## [Unreleased]
 
+### Added
+- Lint: rules **23** (Prose ↔ Slot Consistency, guide rule D9) and **24** (Translation Accuracy, guide rule E7) — the two `archetypes/rules` entries the 22-rule set never covered; appended so existing numbering stays stable. Rule count 22 → 24 across skills, agents and docs.
+- Reuse: the `openehr-content` GitHub topic recorded as a secondary, **un-governed** discovery channel after CKM — in `archetype-authoring`, `template-authoring`, `ckm-scout`'s NEW verdict, and AGENTS.md domain context.
+- Discovery: `hooks/session-start.sh` detects `.t.json` and `.optx`/`.optj`; the Cursor rule `openehr-context.mdc` globs cover `.adls`, `.t.json`, `.optx`/`.optj` and `.aql`.
+- Commands: `/template-from-form` gains a CGEM dataset-split step and a `## Dataset split (CGEM)` output section, applied before any template is sketched.
+- Validation: `scripts/validate.py` fails when an agent lists an MCP tool under one mount namespace but not the other.
+- Validation: `scripts/validate.py` flags a bare `guide_get("category/name")` positional call in component docs — only the `openehr://guides/<category>/<name>` URI form passes.
+
+### Changed
+- MCP compatibility: pinned to `openehr-assistant-mcp` **v0.20.0** (guide/prompt refresh plus audit hardening); new-guide references sit in load-as-needed positions so a v0.19.0 server still works.
+- Guide URIs: adopted new guides — `templates/cgem-framework`, `templates/opt-structure`, `templates/web-template`, `specs/proc-*`, `specs/cnf-guide`, `specs/lang-bmm3` — across `openehr-assistant`, `template-authoring`, `archetype-authoring`, `composition-builder`, `/openehr-explain`, and the quick-reference guide index.
+- Skills: `template-authoring` adds defaults-vs-assumed-values (OET `default="…"`), the four template jobs, RM-attribute tightening as narrowing, and runtime-form (OPT/web-template) pointers.
+- Skills: `aql-authoring` adds VERSION containment (`LATEST_VERSION`/`ALL_VERSIONS`), node/name predicates, MATCHES-vs-IN, and the spec-vs-engine function split.
+- Skills: `composition-builder` adds `DV_ORDINAL`/`DV_PROPORTION`/`|other`/`|raw` suffixes, participations, and `ctx` server-side defaults.
+- Skills: `archetype-authoring` adds the ADL 1.4 major-version-only id note and CGEM order-vs-record guidance; `archetype-lint` adds occurrences/existence-default and `VCOC` consistency notes and reframes validity codes as AOM2/tooling constructs.
+- Agents: `spec-researcher` component list extended with PROC and CNF.
+- Offline twins: `lint-rules-complete.md` (rule 5 defaults + `VCOC`, `ITEM_TREE.items {0..*}` false-positive note, validator-code appendix), `adl-syntax-cheatsheet.md` (defaults & consistency block), `aql-syntax-cheatsheet.md` (LIMIT/OFFSET, MATCHES-vs-IN, VERSION, function split).
+- Offline twins: `rm-type-reference.md` (`PROPORTION_KIND` values), `openehr-quick-reference.md` (B1 HRID wording, template serialisation set, CGEM section with category codes and caveats, expanded guide index and specs coverage), `oet-syntax-reference.md` (category codes on the CGEM choice).
+- Docs: AGENTS.md / README guide-category tables, compatibility notes and badge pinned to v0.20.0; MCP prompt count 15 → 14 (`ckm_explorer` consolidation).
+- Docs: `docs/testing.md` and AGENTS.md Gotchas cover the `APP_VERSION`-namespaced server discovery cache; bundled archetype examples re-pinned to v0.20.0 (files unchanged).
+- Calling conventions: AGENTS.md records the v0.20.0 contracts — CID-or-archetype-id for `ckm_archetype_get`, openEHR-only `terminology_resolve`, `{ items, total }` search envelopes with out-of-range `maxResults` rejected, and an empty `guide_search` envelope meaning "rephrase".
+- Commands/agents: `/ckm-search` reports search `total` and retrieves by CID; `/openehr-explain` and `ckm-scout` state the `ckm_archetype_get` identifier rule; `ckm-scout` separates upstream CKM errors from `BLOCKED`.
+- Skills/commands: `/semantic-diff` (and its rubric) guard `terminology_resolve` to openEHR codes; `openehr-assistant` documents `guide_search` scoring/`total` and corrects the external-terminology advice; `clinical-modeler` MCP-lookup list carries the same limits.
+- Template serialisations: OET, Archetype Designer `.t.json`, OPT (`.opt`/`.optx`/`.optj`) and vendor web template are now named as four artefacts at three layers across AGENTS.md, README, `template-authoring` (Step 8), `openehr-assistant`, `/openehr-explain`, `/semantic-diff` and `clinical-modeler`.
+- CGEM: triggers added to the `template-authoring` and `openehr-assistant` descriptions ("categorise a dataset", "persistent, episodic or event", CGEM) so the framework is reachable without knowing it lives inside template authoring.
+- CGEM: all four category tables carry the `COMPOSITION.category` codes (431/451/433), the four-categories-three-codes caveat, the `451 episodic` support warning, and the non-normative freshEHR framing; `composition-builder` gains `episodic` and a CGEM pointer on `ctx/category`.
+
+### Fixed
+- Agents: `ckm-scout`, `clinical-modeler` and `spec-researcher` list every MCP tool under both mount namespaces (`mcp__openehr-assistant__*` and `mcp__plugin_openehr-assistant_openehr-assistant__*`); under a bundled-plugin mount the bare-only form matched nothing, so `ckm-scout` was refused with `would be spawned with zero tools` and the other two ran without MCP access. `docs/install.md` documents the three mount shapes and the claude.ai-connector caveat.
+- Spec retrieval: the `.md` twin covers **most**, not every, spec page (0.20.0 `howto/spec-lookup` wording) — AGENTS.md, the quick-reference and `spec-researcher` now fall back to HTML on a 404 instead of concluding the document is missing.
+- Lint: partial `term_bindings` coverage is not a rule 17/18 violation — a binding need not cover every at-code (`archetypes/terminology`); recorded as a known false positive in `archetype-lint` and the offline twin.
+- Offline twins: the three files the July sync missed — `adl-idioms-reference.md` (ADL 1.4 occurrences/existence defaults + `VCOC`), `adl-syntax-reference.md` (`controlled`/`uncontrolled` flag, `specialise` hyphen note, `invariant` section semantics), `oet-syntax-reference.md` (`default="…"`, `countConstraint`, `includedTypes` values, MD5-CAM never-hand-write rule).
+- Commands: `/template-from-form` loads `templates/cgem-framework` — the step named the guide but never fetched it.
+- Commands: `/archetype-impact` no longer calls `.t.json` a web template — it is an AOM2 differential *source* template; the impact table now splits source from compiled references and says which `.opt` needs regenerating.
+- Commands/skills: stale guide names corrected — `archetypes/formatting` → `archetypes/reference-formatting` (`/archetype-fix-syntax`, `archetype-authoring`), `archetypes/idioms-cheatsheet` → `archetypes/adl-idioms-cheatsheet` (offline corpus index).
+- Guide references: `guide_get("<category>/<name>")` now uses the resolvable `openehr://guides/<category>/<name>` form across skills, commands and agents — the bare `category/name` string is not a valid URI and fails with `Invalid guide URI`.
+- Skills: the openEHR-only `terminology_resolve` caveat propagated to `archetype-authoring`, `template-authoring` and `composition-builder`; `/semantic-diff` Shared constraints carry it too.
+- Commands: `/openehr-explain` adds `ckm_archetype_search`/`ckm_template_search` to `allowed-tools` (the body instructs both searches) and its template heuristic covers `.t.json`/`.optx`/`.optj`.
+- References: `semantic-diff-rubric.md` switches to sibling mode on differing root concepts instead of refusing, matching `/semantic-diff` §B.
+
 ## [0.8.1] - 2026-06-18
 
 ### Fixed

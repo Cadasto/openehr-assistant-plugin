@@ -1,8 +1,8 @@
-# Complete Archetype Lint Rules (22 Rules)
+# Complete Archetype Lint Rules (24 Rules)
 
-**Purpose:** Offline reference for all 22 normative archetype lint rules with severity, description, and violation/fix examples. Use when reviewing or linting local archetype files.
+**Purpose:** Offline reference for all 24 normative archetype lint rules with severity, description, and violation/fix examples. Use when reviewing or linting local archetype files.
 
-> **Offline twin.** This file mirrors the canonical `guide_get("archetypes/rules")` guide for the `clinical-modeler` agent, which has no MCP access. In the main session, the loaded guide is authoritative — prefer it over this copy, and keep this file in sync when the guide changes.
+> **Offline twin.** This file mirrors the canonical `guide_get("openehr://guides/archetypes/rules")` guide for the `clinical-modeler` agent, which has no MCP access. In the main session, the loaded guide is authoritative — prefer it over this copy, and keep this file in sync when the guide changes.
 
 ---
 
@@ -72,7 +72,7 @@ data matches {
 - **occurrences** — object nodes only (how many times an object may appear)
 - **cardinality** — multi-valued container attributes only (how many children allowed)
 
-Never interchange them.
+Never interchange them. ADL 1.4 defaults when unstated: `occurrences` = `{1..1}`, `existence` = `{1..1}`; `{0}`/`{0..0}` prohibits a node/attribute. They must also be **mutually consistent**: the interval (sum of sibling occurrences minima)..(sum of sibling occurrences maxima) must fit inside the container's cardinality interval (validator-tooling check `VCOC`).
 
 **Violation:**
 ```adl
@@ -126,6 +126,8 @@ ELEMENT occurrences matches {1..1}
 No clinical justification for mandatory.
 
 **Fix:** Change to `0..1` (optional) or document why mandatory.
+
+> **Known false positive:** `ITEM_TREE.items {0..*}` is the idiomatic CKM convention for container attributes (e.g. the published `ecg_result.v1`) when at least one contained ELEMENT is mandatory. Flag only genuinely empty or all-optional containers.
 
 ---
 
@@ -205,6 +207,8 @@ Archetypes are terminology-neutral. External code systems are bound, not embedde
 **Violation:** Hardcoded SNOMED code without proper binding section.
 **Fix:** Add proper `term_bindings` section with terminology reference.
 
+**Not a violation:** partial binding coverage. A binding need not cover every internal at-code (ADL 1.4, Term_bindings) — bindings are optional-but-recommended, so unbound codes are at most an INFO observation, never a rule 17/18 finding.
+
 ---
 
 ### Rule 18 — Semantic Binding Accuracy
@@ -248,13 +252,35 @@ Deprecated nodes should be retained and explicitly marked, not deleted.
 
 ---
 
+## Documentation Consistency Rules (WARNING)
+
+### Rule 23 — Prose ↔ Slot Consistency
+Guide rule **D9**. `use` / `misuse` / `comment` prose that names an archetype id must be admitted by some slot's `include` regex. Prose promising content the definition cannot hold misleads implementers and template authors.
+
+**Violation:** `use:` text says "use for … including `openEHR-EHR-CLUSTER.exertion.v1`", but no slot `include` matches that id — or worse, a slot `exclude` forbids it.
+**Fix:** widen the slot `include` to admit the named archetype, or correct the prose to describe what the definition actually allows. Report WARNING when a slot actively excludes the named id.
+
+---
+
+### Rule 24 — Translation Accuracy
+Guide rule **E7**. Non-English `term_definitions` must carry genuine target-language rubrics. This is a rubric defect distinct from rule 17/18 (which govern *bindings*) and from E5 semantics — the computable structure can be perfectly valid while the translation is unusable.
+
+**Violation:** `*(en)` placeholder stubs left in a translated `term_definitions` block; a label copy-pasted from the wrong node; an untranslated English rubric under a non-English language key.
+**Fix:** supply the clinically correct target-language term, or remove the incomplete language section rather than ship placeholder text. Flag uncertain terms for clinician review instead of guessing.
+
+---
+
 ## Severity Summary
 
 | Severity | Rules |
 |----------|-------|
 | **ERROR** | 1, 2, 3, 4, 5, 6, 7, 8, 15, 16, 20, 21 |
-| **WARNING** | 9, 10, 11, 12, 13, 14, 17, 18, 22 |
+| **WARNING** | 9, 10, 11, 12, 13, 14, 17, 18, 22, 23, 24 |
 | **INFO** | 19 |
+
+## Validator Tooling Codes (recognise in tool output)
+
+Mnemonic validity codes (`VARID`, `VARCN`, `VARDF`, `VARON`, `VARDT`, `VATDF`, `VACDF`, `VDFAI`, `VDFPT`, `VCOC`, `VUNT`) come from **AOM2 / validator tooling** (ADL Workbench, `archie`, CKM) — they are **not** ADL 1.4 spec-normative text. Useful mappings: `VATDF`/`VACDF` ≈ rules 8/16, `VARDT` ≈ rule 3, `VCOC` ≈ rule 5 consistency, `VUNT` = a `use_node` reference's stated RM type must be the same as, or a supertype of, the target node's type.
 
 ## Lint Output Format
 

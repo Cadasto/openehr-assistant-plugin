@@ -29,9 +29,9 @@ allowed-tools:
 Before building any composition, load the authoritative guides:
 
 ```
-guide_get("simplified_formats/principles")
-guide_get("simplified_formats/rules")
-guide_get("simplified_formats/idioms-cheatsheet")
+guide_get("openehr://guides/simplified_formats/principles")
+guide_get("openehr://guides/simplified_formats/rules")
+guide_get("openehr://guides/simplified_formats/idioms-cheatsheet")
 ```
 
 ### Consult worked examples (when applicable)
@@ -65,7 +65,9 @@ Pipe-delimited paths with value suffixes. Best for simple integrations and form 
 }
 ```
 
-Key suffixes: `|magnitude`, `|unit`, `|code`, `|value`, `|terminology`, `|name`
+Key suffixes: `|magnitude`, `|unit` (DV_QUANTITY); `|code`, `|value`, `|terminology` (DV_CODED_TEXT — `|value`/`|terminology` required only for external terminologies); `|code`, `|value`, `|ordinal` (DV_ORDINAL); `|numerator`, `|denominator`, `|type` (DV_PROPORTION — `|type` is a `PROPORTION_KIND` integer; magnitude is output-only); `|other` (free-text branch of an **open** value set, `listOpen: true` — mutually exclusive with `|code`/`|value`/`|terminology`); `|name`; `|raw` (embed canonical RM JSON with `_type`)
+
+FLAT path segment ids come from the **web template** derived from the target OPT — for the id-normalisation and level-removal rules load `guide_get("openehr://guides/templates/web-template")` alongside the simplified-formats guides.
 
 ### STRUCTURED Format
 Nested JSON mirroring the archetype hierarchy. Best for complex UIs and programmatic construction.
@@ -103,10 +105,13 @@ Every composition requires context fields (`ctx/` in FLAT, `ctx` object in STRUC
 - **composer** (`ctx/composer_name`): Who created the data (name, optionally ID)
 - **language** (`ctx/language`): ISO 639-1 code (e.g., `en`, `nl`)
 - **territory** (`ctx/territory`): ISO 3166-1 code (e.g., `NL`, `US`)
-- **category**: `event` (point-in-time) or `persistent` (ongoing)
+- **category**: `event` (433 — point-in-time, a new composition per submission), `persistent` (431 — one lifelong current version, updated in place) or `episodic` (451 — one current version per care journey; normative but unevenly implemented, so confirm CDR support). This is where the template's CGEM category lands in data — see `guide_get("openehr://guides/templates/cgem-framework")` if the right value is unclear; it must match the template's declared category, not the payload's shape
 - **context**: `start_time` (`ctx/time`) and `setting` (e.g., `primary medical care`, `secondary medical care`)
 - **id_namespace** (`ctx/id_namespace`): Optional, for identification context
 - **id_scheme** (`ctx/id_scheme`): Optional, for identification scheme
+- **participations** (`ctx/participation_name:0`, `ctx/participation_function:0`, `ctx/participation_mode:0`, `ctx/participation_id:0`, …): Optional defaults for `EVENT_CONTEXT.participations` / `ENTRY.other_participations`
+
+`ctx` values are **defaults for the RM tree** (e.g. `ctx/time` feeds `context/start_time`, `history.origin`, `ACTION.time`). Server-side defaults when omitted: `ctx/time` → now(); `ctx/setting` → "other care"; ENTRY `subject` → `PARTY_SELF`; `history.origin` → earliest event time; `ACTIVITY.action_archetype_id` → `/.*/`.
 
 ## Step 5: RM Data Types
 
@@ -134,7 +139,8 @@ Before finalizing a composition, verify:
 - [ ] All required fields are present (check template constraints)
 - [ ] Cardinality constraints are met (min/max occurrences)
 - [ ] `_type` annotations are correct (CANONICAL format)
-- [ ] Terminology codes are valid (use `terminology_resolve` if needed)
+- [ ] Terminology codes are valid (use `terminology_resolve` for **openEHR** codes only — it errors on external codes; check SNOMED CT / LOINC / ICD against the template's own bindings)
 - [ ] Date/time values are valid ISO 8601
 - [ ] Quantity units match archetype constraints
+- [ ] `|other` used only on open (`listOpen: true`) coded leaves, never combined with `|code`/`|value`/`|terminology`
 - [ ] Composition metadata is complete (composer, language, territory, category)

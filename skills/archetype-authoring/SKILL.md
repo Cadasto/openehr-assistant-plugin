@@ -39,16 +39,16 @@ When guides conflict, apply this priority (highest first):
 Before any archetype work, load the authoritative guides:
 
 ```
-guide_get("archetypes/principles")
-guide_get("archetypes/rules")
-guide_get("archetypes/adl-syntax")
+guide_get("openehr://guides/archetypes/principles")
+guide_get("openehr://guides/archetypes/rules")
+guide_get("openehr://guides/archetypes/adl-syntax")
 ```
 
 Load additional guides as needed:
-- `guide_get("archetypes/structural-constraints")` — for cardinality, occurrences, existence rules
-- `guide_get("archetypes/terminology")` — for terminology binding patterns
-- `guide_get("archetypes/anti-patterns")` — to avoid common mistakes
-- `guide_get("archetypes/formatting")` — for ADL formatting conventions
+- `guide_get("openehr://guides/archetypes/structural-constraints")` — for cardinality, occurrences, existence rules
+- `guide_get("openehr://guides/archetypes/terminology")` — for terminology binding patterns
+- `guide_get("openehr://guides/archetypes/anti-patterns")` — to avoid common mistakes
+- `guide_get("openehr://guides/archetypes/reference-formatting")` — for ADL formatting conventions
 
 ## Step 2: Research Before Creating
 
@@ -59,6 +59,8 @@ ckm_archetype_search("<concept>")
 ```
 
 **Reuse-first principle**: If a suitable archetype exists, use it. Only create new archetypes when no existing archetype covers the concept. If a close match exists, consider specialization instead.
+
+**If CKM has nothing**, check the secondary channel before concluding "new": GitHub repositories tagged with the **`openehr-content`** topic (`topic:openehr-content`) publish project-level archetypes and templates outside CKM. These are **un-governed leads** — no editorial review, no dependable `lifecycle_state` — so use them as prior art and style reference, cite the repo and commit, and never call such a find "published". Requires web access, so run it in the main session (`WebSearch`/`gh`), not in `ckm-scout`.
 
 **For deep reuse surveys** (unfamiliar domain, or the first few hits look marginal), dispatch the `ckm-scout` agent instead of running searches inline. It runs 3 parallel phrasings, ranks candidates, and returns a reuse/specialize/new recommendation — keeping CKM search noise out of this skill's context.
 
@@ -95,12 +97,16 @@ Choose the correct Reference Model entry type:
 
 Use `type_specification_get` to verify RM type structure when uncertain.
 
+**Order vs record**: reserve INSTRUCTION/ACTION for genuine order/fulfilment lifecycles (CGEM "Managed Response"); model one-off assessments and simple records as OBSERVATION/EVALUATION ("Event Assessment"). Do not combine orders and observations in one archetype — see `guide_get("openehr://guides/templates/cgem-framework")`.
+
 ### Identifier Scheme
 Follow the pattern: `openEHR-EHR-<RM_TYPE>.<concept>.v<VERSION>`
 
 Examples:
 - `openEHR-EHR-OBSERVATION.blood_pressure.v2`
 - `openEHR-EHR-CLUSTER.anatomical_location.v1`
+
+ADL 1.4 source ids carry the **major version only** (`.v1`, `.v2`); the full 3-part semver form (`.v1.0.0`) is the *physical* HRID from the AM Identification spec, used in ADL 2 and CKM revision metadata — do not put it in an ADL 1.4 `archetype` header.
 
 ## Step 4: ADL Authoring
 
@@ -115,7 +121,7 @@ Use `guide_adl_idiom_lookup` for specific ADL constraint patterns:
 ### Terminology Section
 - Define all at-codes with clear, descriptive text
 - Bind to standard terminologies (SNOMED CT, LOINC, ICD-10) where appropriate
-- Use `terminology_resolve` to verify terminology codes
+- Use `terminology_resolve` to verify **openEHR** terminology codes only — it does not cover SNOMED CT / LOINC / ICD and errors on an unresolvable input; read external rubrics from the artefact's `term_bindings` instead
 - Ensure semantic equivalence, not approximation, in bindings
 
 ### Design for Reuse

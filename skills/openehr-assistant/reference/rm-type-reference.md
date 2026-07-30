@@ -508,7 +508,7 @@ _(Inherits all attributes from EVENT\<T>)_
 |-----------|------|------|-------------|
 | numerator | Real | 1..1 | Numerator of ratio |
 | denominator | Real | 1..1 | Denominator of ratio |
-| type | Integer | 1..1 | Proportion kind (ratio, unitary, percent, fraction, integer_fraction) |
+| type | Integer | 1..1 | Proportion kind per `PROPORTION_KIND` (0 ratio, 1 unitary, 2 percent, 3 fraction, 4 integer_fraction) |
 | precision | Integer | 0..1 | Decimal places for numerator/denominator |
 
 ---

@@ -11,6 +11,10 @@
 - Leaves constrain DV_* types and should never be semantically empty
 - Canonical form: `<rm_attribute> matches { <constraint> }`
 
+**ADL 1.4 defaults:** unstated `occurrences` = `{1..1}`; unstated `existence` = `{1..1}`. An omitted multiplicity is therefore *mandatory, exactly one* — not "unspecified", and not a defect.
+
+**Consistency rule:** the interval (sum of sibling occurrences minima)..(sum of sibling occurrences maxima) must fit inside the container's cardinality interval (validator-tooling check `VCOC`).
+
 ---
 
 ## 1. Root Node

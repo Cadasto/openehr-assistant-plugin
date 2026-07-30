@@ -2,8 +2,11 @@
 name: template-authoring
 description: >
   This skill should be used when the user asks to "create a template", "design a template",
-  "constrain archetypes into a template", "review a template", or "work with OET/OPT files".
-  Covers creating openEHR templates, constraining archetypes, reviewing designs, and OET/OPT authoring.
+  "constrain archetypes into a template", "review a template", "categorise a dataset with CGEM",
+  "should this be persistent, episodic or event?", "split this form across compositions",
+  or "work with OET / .t.json / OPT / web-template files". Covers creating openEHR templates, constraining archetypes,
+  reviewing designs, OET authoring, and reading the tool-generated serialisations
+  (Archetype Designer `.t.json`, OPT, vendor web template).
   Use `/ckm-search` to find existing CKM templates and `/openehr-explain` to explain one; this
   skill is for authoring and constraining new OET designs.
 argument-hint: "<task: create|review> [template-id or use-case]"
@@ -38,13 +41,15 @@ When guides conflict, apply this priority (highest first):
 Before any template work, load the authoritative guides:
 
 ```
-guide_get("templates/principles")
-guide_get("templates/rules")
+guide_get("openehr://guides/templates/principles")
+guide_get("openehr://guides/templates/rules")
 ```
 
 Load additional guides as needed:
-- `guide_get("templates/oet-syntax")` — OET authoring syntax
-- `guide_get("templates/oet-idioms-cheatsheet")` — common OET patterns
+- `guide_get("openehr://guides/templates/oet-syntax")` — OET authoring syntax
+- `guide_get("openehr://guides/templates/oet-idioms-cheatsheet")` — common OET patterns
+- `guide_get("openehr://guides/templates/cgem-framework")` — full CGEM dataset-splitting framework (Step 6)
+- `guide_get("openehr://guides/templates/opt-structure")` / `guide_get("openehr://guides/templates/web-template")` — runtime forms (OPT, web template) when discussing deployment or FLAT/STRUCTURED paths
 
 ## Step 2: Research Before Creating
 
@@ -59,6 +64,8 @@ If creating a new template, search for archetypes to include:
 ```
 ckm_archetype_search("<concept>")
 ```
+
+**When CKM comes up empty**, published-on-GitHub project content is a secondary channel — repositories tagged with the **`openehr-content`** topic (search `topic:openehr-content`, ~14 repos: freshEHR, Apperta-CKM projects, regional programmes, individual modellers). CKM holds relatively few templates, so this is more often useful for templates than for archetypes. Treat what you find as **leads, not governed artefacts**: unlike CKM there is no editorial review, no reliable `lifecycle_state`, and no integrity guarantee, so cite the repo and commit you looked at, never present a find as "published". This needs web access (`WebSearch`/`WebFetch`/`gh`), which this skill does not hold — ask the main session to run the search.
 
 ## Step 3: Use-Case Specificity
 
@@ -87,37 +94,58 @@ Templates constrain archetypes — they NEVER expand:
 - **Optional can be excluded**: Set `max=0` to hide fields
 - **Value sets only narrow**: Can restrict coded text options, never add new ones
 - **Cardinality only narrows**: Can reduce max occurrences, never increase beyond archetype definition
+- **Tightening unconstrained RM attributes is allowed**: constraining an RM attribute the archetype left open is still narrowing
+
+A template's four jobs (Archetype Technology Overview): **composition** (fill slots), **element choice** (remove/mandate/leave optional), **narrowing**, and **setting defaults**.
+
+### Defaults vs assumed values
+Set a **default value** (OET: `default="..."` on a `<Rule>`) where the use case fixes or strongly implies a single value (e.g. setting, patient position). Defaults **appear in the recorded data**; archetype-level *assumed values* are semantic fallbacks for omitted optional items and do **not** appear in the data — never confuse the two.
 
 ## Step 6: CGEM Framework
 
-Use the CGEM framework to guide how clinical data splits across templates:
+Use CGEM (freshEHR's analysis method — a design aid, **not** an openEHR specification) to decide how a dataset splits across templates, and to set each template's composition category. Load `guide_get("openehr://guides/templates/cgem-framework")` for the definitions, mapping table and caveats:
 
-| Category | Description | Template Scope |
-|----------|-------------|---------------|
-| **Global Background** | Persistent patient data (allergies, diagnoses, demographics) | Persistent compositions |
-| **Contextual Situation** | Episodic context (reason for encounter, admission details) | Episode-level compositions |
-| **Event Assessment** | Point-in-time observations and evaluations | Event compositions |
-| **Managed Response** | Orders, plans, actions taken | Action/instruction compositions |
+| CGEM category | Data nature | `COMPOSITION.category` | Versioning behaviour |
+|----------|-------------|---------------|---|
+| **Global Background** | True across all contexts for the patient's whole life (allergies, problem list, CPR/ReSPECT decision, current medications) | `persistent` (431) | One current version per patient, updated in place |
+| **Contextual Situation** | Single source of truth for one care journey / episode / condition (diagnosis-and-staging summary, condition care plan) | `episodic` (451) | One current version per journey; a new journey creates a new instance |
+| **Event Assessment** | Discrete, repeated recordings at a point in time (vitals at a visit, lab result, assessment score) | `event` (433) | New composition per submission; never overwritten |
+| **Managed Response** | Formal order/fulfilment cycle tracked from request to completion (referral, prescription, investigation request) | **not a category code** — usually `event` (sometimes `persistent`) | Order state tracked across ACTIONs via the ISM |
+
+Applying it: inventory the datapoints → categorise each C/G/E/M → group same-category datapoints into candidate templates → set each template's category to match → decide reuse (Global Background is usually already modelled and often only *read* by the form; Event templates are prime reuse candidates) → confirm Managed Response items genuinely need INSTRUCTION/ACTION + ISM and downgrade the rest to simple records.
+
+Three things to state explicitly when you report a split:
+- **Four CGEM categories, three category codes** — Managed Response is not a `COMPOSITION.category`; it is an `event` (or `persistent`) composition distinguished by its INSTRUCTION/ACTION entries and the ISM.
+- **`451 episodic` is normative but unevenly implemented** — confirm the target platform supports it; `persistent` plus governance conventions is the common fallback.
+- **One form commonly spans several compositions** across several categories, so a single form rarely means a single template.
 
 ## Step 7: Terminology in Templates
 
 - Prefer DV_CODED_TEXT over free text where possible
 - Constrain value sets to the local clinical context
-- Use `terminology_resolve` to verify terminology bindings inherited from archetypes
+- Use `terminology_resolve` to verify **openEHR** terminology bindings inherited from archetypes — openEHR terminology only; it errors on external codes, so check SNOMED CT / LOINC / ICD bindings against the archetype's own `term_bindings` rubrics instead
 
-## Step 8: OET vs OPT
+## Step 8: The four serialisations
 
-| Format | Purpose |
-|--------|---------|
-| **OET** | Authoring format — human-editable XML for template design |
-| **OPT** | Operational Template — flattened XML for runtime deployment |
-| **ADL-Designer `.t.json`** | ADL-Designer's differential template JSON (tool-generated) |
-| **Web Template** | Flattened JSON representation for modern UI development |
+One design intent, four serialisations at three layers — **not** interchangeable, and only OET is hand-authorable:
 
-For when each format is hand-authorable vs tool-generated and what checksums each carries, load `guide_get("templates/serialization-formats")`. Reference syntax guides:
+| Format | Layer | Purpose |
+|--------|-------|---------|
+| **OET** (`.oet`) | source | Authoring format — human-editable XML referencing archetypes plus narrowing. The artefact you version |
+| **Archetype Designer `.t.json`** | source | AOM2 **differential** template JSON (`@type: TEMPLATE`, `parentArchetypeId`, `differential: true`, `templateOverlays`) — the JSON analogue of OET, from Better's Archetype Designer ("Export Fileset"). Tool-managed: read and review it, but make design edits in the tool or in an OET |
+| **OPT** (`.opt`/`.optx`/`.optj`) | compiled | Operational Template — flattened, self-contained runtime artefact the CDR validates against (XML in ADL 1.4 practice; OPT2 adds ADL/XML/JSON, and raw vs profiled variants). Generated, never hand-authored |
+| **Web Template** (JSON) | derived runtime | Better/EHRbase simplified projection **of the OPT** for UI generation; its node ids define the FLAT/STRUCTURED path schema. Derived, lossy, never authored |
+
 ```
-guide_get("templates/oet-syntax")
-guide_get("templates/oet-idioms-cheatsheet")
+OET (or .t.json) + archetypes  ──►  OPT  ──►  web template
+```
+
+**`.t.json` is not a web template** — it sits at the *source* layer with slots intact, while a web template is flattened runtime JSON with `aqlPath`/`inputs`. Both come from Better, at opposite ends of the pipeline; "the Better template" is ambiguous, so always name which one.
+
+For when each format is hand-authorable vs tool-generated and what checksums each carries, load `guide_get("openehr://guides/templates/serialization-formats")`; for the runtime forms in depth, `guide_get("openehr://guides/templates/opt-structure")` and `guide_get("openehr://guides/templates/web-template")`. Reference syntax guides:
+```
+guide_get("openehr://guides/templates/oet-syntax")
+guide_get("openehr://guides/templates/oet-idioms-cheatsheet")
 ```
 
 ## Step 8b: Emit the OET
@@ -126,7 +154,7 @@ Produce a real, slot-correct OET — not just a design sketch. (`/template-from-
 
 1. Root `<template>` with a root **COMPOSITION** archetype reference and a fresh `<id>` (see UID note below).
 2. A `<Content>` entry per included archetype, nested to mirror the COMPOSITION → SECTION → ENTRY → CLUSTER structure.
-3. `<Rule path="…">` elements for each narrowing constraint (`min`/`max`, `limitToList`, unit hardening, `hide_on_form`, label overrides) — respecting the narrowing principle (Step 5).
+3. `<Rule path="…">` elements for each narrowing constraint (`min`/`max`, `limitToList`, unit hardening, `hide_on_form`, label overrides, `default="…"` for use-case-fixed values) — respecting the narrowing principle (Step 5).
 4. A trailing `<Context>` if the design needs composition context (e.g. `/context/setting` fixed to a code).
 
 There is **no automated OET/OPT validator** available, so validate manually against the loaded `templates/oet-syntax` guide and the Step 9 checklist; state any constraint you could not confirm rather than asserting validity.
@@ -136,7 +164,7 @@ There is **no automated OET/OPT validator** available, so validate manually agai
 Run through the quality checklist:
 
 ```
-guide_get("templates/checklist")
+guide_get("openehr://guides/templates/checklist")
 ```
 
 Verify:
@@ -147,6 +175,7 @@ Verify:
 - [ ] Excluded fields set to max=0
 - [ ] Terminology constraints appropriate for context
 - [ ] Value sets verified (quantity constraints, unit hardening, "limit to list" coded text)
+- [ ] Defaults set where the use case fixes a single value (setting, patient position); no assumed-value confusion
 - [ ] Annotations and UI hints appropriate (hide_on_form, contextual label overrides)
 - [ ] Valid OET syntax
 

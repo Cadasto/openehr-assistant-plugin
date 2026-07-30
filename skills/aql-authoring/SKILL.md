@@ -27,9 +27,9 @@ allowed-tools:
 Before writing or reviewing any AQL query, load the authoritative guides:
 
 ```
-guide_get("aql/principles")
-guide_get("aql/syntax")
-guide_get("aql/idioms-cheatsheet")
+guide_get("openehr://guides/aql/principles")
+guide_get("openehr://guides/aql/syntax")
+guide_get("openehr://guides/aql/idioms-cheatsheet")
 ```
 
 ### Consult worked examples (when applicable)
@@ -80,6 +80,25 @@ Filter by patient:
 FROM EHR e[ehr_id/value = $ehr_id]
 ```
 
+### Node Predicates (sibling disambiguation)
+When one archetype node repeats as multiple named runtime siblings, add the name to the node predicate (spec-defined shortcuts):
+```
+items[at0001, 'Systolic']                 -- name/value shortcut
+items[at0001 and name/value='Systolic']   -- explicit form
+items[at0001, $nameValue]                 -- parameterized
+```
+
+### Version-Aware Queries (VERSION in FROM)
+```sql
+FROM EHR e
+  CONTAINS VERSION v[LATEST_VERSION]
+    CONTAINS COMPOSITION c
+```
+Always state `[LATEST_VERSION]` or `[ALL_VERSIONS]` explicitly — the no-predicate default is not defined by the spec (implementations commonly return latest only). These constructs are **grammar-level only** (semantics not in spec prose); verify engine support. Common projections: `v/uid/value`, `v/preceding_version_uid/value`, `v/commit_audit/time_committed/value`, `v/commit_audit/change_type`, `v/lifecycle_state/defining_code/code_string`.
+
+### Operators
+`MATCHES` with a `{…}` value list is spec-normative (items are OR-ed; parameters allowed) — prefer it for code-set filters; `IN` is **not** in the spec (engine extension). `LIKE` patterns must match the entire value (`'*…*'` for substring; wildcards `?`/`*`).
+
 ### Parameterized Queries
 Use `$parameter` syntax for reusable queries:
 ```sql
@@ -118,6 +137,9 @@ FROM EHR e
 GROUP BY e/ehr_id/value
 ```
 
+### Functions — spec vs engine
+Spec-normative aggregates: `COUNT`, `MIN`, `MAX`, `SUM`, `AVG` (`COUNT`/`MIN`/`MAX` are the safest across engines). The spec also defines core single-row functions (string `LENGTH`/`CONTAINS`/`POSITION`/`SUBSTRING`/`CONCAT`/`CONCAT_WS`; numeric `ABS`/`MOD`/`CEIL`/`FLOOR`/`ROUND`; date/time `CURRENT_DATE`/`CURRENT_TIME`/`CURRENT_DATE_TIME` (alias `NOW`)/`CURRENT_TIMEZONE`; plus `TERMINOLOGY(...)`), but engine coverage varies — verify before relying on them. **Any other function is an engine extension.**
+
 ## Step 5: Optimization
 
 - Use specific archetype node IDs in containment (avoid unqualified `CONTAINS OBSERVATION o`)
@@ -132,7 +154,7 @@ GROUP BY e/ehr_id/value
 Run through the AQL checklist:
 
 ```
-guide_get("aql/checklist")
+guide_get("openehr://guides/aql/checklist")
 ```
 
 Verify:
@@ -141,4 +163,6 @@ Verify:
 - [ ] Proper use of aliases for readability
 - [ ] Parameters used for variable values
 - [ ] Results ordered meaningfully
+- [ ] `MATCHES {…}` used instead of engine-only `IN`; functions beyond COUNT/MIN/MAX verified against the target engine
+- [ ] VERSION containments (if any) state `[LATEST_VERSION]` / `[ALL_VERSIONS]` explicitly
 - [ ] Query is optimized for the CDR

@@ -3,7 +3,7 @@ name: archetype-lint
 description: >
   This skill should be used when the user asks to "lint an archetype", "validate an archetype",
   "check archetype compliance", "review archetype quality", or "run archetype rules". Applies
-  22 normative lint rules with ERROR/WARNING/INFO severity. Supports STRICT and PERMISSIVE modes.
+  24 normative lint rules with ERROR/WARNING/INFO severity. Supports STRICT and PERMISSIVE modes.
   Reports violations only — it does not modify files; to lint *and* remediate, use the
   `archetype-authoring` skill. Auto-invoked on lint/validate intent, and also directly invocable
   as `/archetype-lint <file or id> [strict]`.
@@ -19,15 +19,15 @@ allowed-tools:
 
 # Archetype Lint
 
-An openEHR archetype linting engine. Evaluate archetypes against 22 normative rules. Classify each violation as ERROR, WARNING, or INFO. ERROR means the archetype is invalid or unsafe.
+An openEHR archetype linting engine. Evaluate archetypes against 24 normative rules. Classify each violation as ERROR, WARNING, or INFO. ERROR means the archetype is invalid or unsafe.
 
 ## Step 1: Load Guides (MANDATORY)
 
 ```
-guide_get("archetypes/rules")
-guide_get("archetypes/structural-constraints")
-guide_get("archetypes/anti-patterns")
-guide_get("archetypes/terminology")
+guide_get("openehr://guides/archetypes/rules")
+guide_get("openehr://guides/archetypes/structural-constraints")
+guide_get("openehr://guides/archetypes/anti-patterns")
+guide_get("openehr://guides/archetypes/terminology")
 ```
 
 ## Step 2: Determine Mode
@@ -65,6 +65,8 @@ The **normative rule definitions live in the `archetypes/rules` guide loaded in 
 | 20 | Identity vs Role Separation | ERROR | Demographic |
 | 21 | Patch Version Discipline | ERROR | Versioning |
 | 22 | Deprecation Handling | WARNING | Versioning |
+| 23 | Prose ↔ Slot Consistency | WARNING | Documentation (guide rule D9) |
+| 24 | Translation Accuracy | WARNING | Documentation (guide rule E7) |
 
 For rule 4, verify attribute names against the RM with `type_specification_get` when uncertain.
 
@@ -73,6 +75,9 @@ For rule 4, verify attribute names against the RM with `type_specification_get` 
 ### Avoid known false positives
 
 - **`ITEM_TREE.items {0..*}` is idiomatic** — the established CKM convention for container attributes (e.g. the published `ecg_result.v1`). Do **not** flag it under rule 9 / structural-constraints when at least one contained ELEMENT is mandatory; reserve a finding for genuinely empty or all-optional containers. Flagging idiomatic `items {0..*}` is noise.
+- **Unstated `occurrences`/`existence` are not violations** — ADL 1.4 defaults both to `{1..1}` when unstated. For rule 5, also check mutual consistency: the sum of sibling occurrences ranges must fit inside the container's cardinality interval (validator-tooling check `VCOC`).
+- **Validity codes are tooling constructs** — mnemonics like `VARID`/`VCOC`/`VUNT` come from AOM2 and validator tooling (ADL Workbench, `archie`, CKM), not from ADL 1.4 spec text. Cite them as tool-output aids, never as "ADL 1.4 validity rules".
+- **Partial terminology coverage is valid** — a `term_bindings` section need not bind every internal at-code (ADL 1.4, Term_bindings). Do **not** report unbound codes as a rule 17/18 violation; bindings are optional-but-recommended, so incomplete coverage is at most an INFO observation.
 
 ## Step 4: Generate Report
 

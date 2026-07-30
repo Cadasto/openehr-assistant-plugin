@@ -37,8 +37,15 @@ description: >
 model: inherit
 color: green
 tools:
+  # Each MCP tool is listed under both mount namespaces: the bare form applies when the
+  # server is registered in a project/user .mcp.json, the plugin-scoped form when it is
+  # mounted from this plugin's bundled .mcp.json. Entries that match no live tool are
+  # dropped, so listing both is what makes MCP access mount-independent. Keep the two
+  # lists in step — scripts/validate.py enforces the pairing.
   - mcp__openehr-assistant__ckm_archetype_search
   - mcp__openehr-assistant__ckm_archetype_get
+  - mcp__plugin_openehr-assistant_openehr-assistant__ckm_archetype_search
+  - mcp__plugin_openehr-assistant_openehr-assistant__ckm_archetype_get
 ---
 
 # CKM Scout
@@ -84,7 +91,7 @@ ckm_archetype_search("lung function test")
 
 ### 4. Detail-fetch top 3
 
-For the top 3 ranked candidates, call `ckm_archetype_get(<id>)` to retrieve the full ADL source. Read the description, purpose, and misuse sections — these reveal true intended use.
+For the top 3 ranked candidates, call `ckm_archetype_get(<CID from the search hit, or full archetype-id>)` to retrieve the full ADL source — a concept or display name is rejected. Read the description, purpose, and misuse sections — these reveal true intended use.
 
 ### 5. Recommendation
 
@@ -115,6 +122,8 @@ Apply these thresholds to the top-scoring candidate:
 - **NEW** (top score < 6): author from scratch; suggest which existing archetype(s) to use as style references.
 ```
 
+When you recommend **NEW**, add one line telling the dispatcher that CKM is not the only place openEHR content lives: GitHub repositories tagged `openehr-content` carry project-level archetypes and templates. You cannot search them (no web tools here, by design), and they are un-governed — no editorial review, no dependable `lifecycle_state` — so the note is a routing hint for the main session, never a candidate in your ranked list.
+
 ## Boundaries
 
 - Do NOT write archetype ADL. Your output is analysis only. The dispatcher's `archetype-authoring` skill handles authoring.
@@ -124,3 +133,7 @@ Apply these thresholds to the top-scoring candidate:
 ## When CKM access is blocked
 
 If `ckm_archetype_search`/`ckm_archetype_get` are denied or unavailable (the host has not pre-approved the MCP server — see the plugin's `.claude/settings.json` `permissions.allow`), do not guess or silently degrade. Return a single explicit status — `BLOCKED: no CKM access` — naming what was denied, and tell the dispatcher the supported fallback: **run the reuse survey inline in the main session**, where the same `ckm_*` tools are normally available. A blocked survey must read as a routing problem, never as "no reusable archetype exists."
+
+If you never got to run at all — the host refused the spawn with `would be spawned with zero tools` — the MCP server is mounted under a namespace this agent's `tools:` does not list (a claude.ai connector, or a renamed server key). That is a wiring problem for the dispatcher to report, with the same fallback: run the survey inline. See `docs/install.md` → "Mount shape matters for the agents".
+
+A CKM **upstream** failure is a different thing: the tool returns an error carrying the server's message (unreachable CKM, drifted response envelope, unresolvable identifier). Report that message verbatim as an upstream error — not as `BLOCKED`, and not as an empty reuse survey.
