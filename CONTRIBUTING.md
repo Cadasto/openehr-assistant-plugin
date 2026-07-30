@@ -196,7 +196,7 @@ A [pull request template](.github/PULL_REQUEST_TEMPLATE.md) prefills this checkl
 ## Branching, issues, and release notes
 - Default branch: `main`
 - Create feature branches from `main`: `feature/short-description` or `fix/short-description`
-- We follow SemVer for releases and maintain a `CHANGELOG.md` (Keep a Changelog format).
+- We follow SemVer for releases and maintain a `CHANGELOG.md` (Keep a Changelog format). Tags and GitHub release titles are exactly `vX.Y.Z`; CHANGELOG headings stay bare `X.Y.Z` (see [docs/versioning.md](docs/versioning.md)).
 
 
 ## Versioning

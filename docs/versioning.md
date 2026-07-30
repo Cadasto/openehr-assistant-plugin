@@ -1,6 +1,8 @@
 # Versioning and Releases
 
-This plugin is versioned with [semver](https://semver.org), adapted to skill/command/agent content:
+This plugin is versioned with [semver](https://semver.org), adapted to skill/command/agent content.
+
+**Naming:** git tags and GitHub release titles are exactly `vX.Y.Z` — annotated tags, no bare `X.Y.Z` form, no descriptive suffix in the release title (the theme belongs in the CHANGELOG section, which doubles as the release notes). CHANGELOG headings stay bare `## [X.Y.Z] - YYYY-MM-DD` per Keep a Changelog.
 
 | Bump | When |
 |------|------|
@@ -15,6 +17,7 @@ This plugin is versioned with [semver](https://semver.org), adapted to skill/com
 3. Fold the accumulated `## [Unreleased]` notes into a dated `## [X.Y.Z]` section in [CHANGELOG.md](../CHANGELOG.md) (Keep a Changelog format — see [AGENTS.md](../AGENTS.md#changelog-style)).
 4. Commit (`chore(release): vX.Y.Z`) and tag: `git tag -a vX.Y.Z -m "openEHR Assistant Plugin vX.Y.Z"`.
 5. Push commits and the tag: `git push origin main --follow-tags`.
+6. Create the GitHub release from the tag, titled exactly `vX.Y.Z`, with the new CHANGELOG section as the notes body (e.g. `gh release create vX.Y.Z --title "vX.Y.Z" --notes-file <extracted-section>`).
 
 ## MCP compatibility
 

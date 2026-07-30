@@ -169,6 +169,7 @@ When adding or renaming components, update: **AGENTS.md** (component tables), **
 
 ### Versioning
 - Plugin version (and, for consistency, description and author) must be kept in sync in **both** `.claude-plugin/plugin.json` and `.cursor-plugin/plugin.json`. Follow Semantic Versioning; update both manifests and **CHANGELOG.md** (Keep a Changelog format) when releasing.
+- **Release naming:** git tags and GitHub release titles are exactly **`vX.Y.Z`** (annotated tag; no bare `X.Y.Z`, no descriptive suffix in the title). The release *theme* belongs in the CHANGELOG — its version section becomes the release notes — and CHANGELOG headings stay **bare** `## [X.Y.Z] - YYYY-MM-DD` per Keep a Changelog; only the tag and release title carry the `v`.
 
 ### CHANGELOG style
 - Entries go under `## [Unreleased]` while work is in flight and get folded into the next `## [X.Y.Z] - YYYY-MM-DD` section at release.
