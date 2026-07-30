@@ -40,7 +40,7 @@ Add this repository as a plugin (Cursor **Settings → Plugins**, via Git URL or
 
 ## MCP wiring
 
-Unlike the maintainer plugin, this plugin **bundles a `.mcp.json`** so it works out of the box: it points at the hosted openEHR Assistant MCP server (`streamable-http`). Skill / command / agent `allowed-tools` reference `mcp__openehr-assistant__*` tools resolved from that server.
+Unlike the maintainer plugin, this plugin **bundles a `.mcp.json`** so it works out of the box: it points at the hosted openEHR Assistant MCP server (`streamable-http`). Skill / command `allowed-tools` and agent `tools:` entries reference `mcp__openehr-assistant__*` tools resolved from that server.
 
 To use a **local or `stdio`** MCP server instead, override the bundled config in your host. For server installation, transports, and client-specific configuration, see the [openehr-assistant-mcp — Quick Start](https://github.com/cadasto/openehr-assistant-mcp#quick-start) and [AGENTS.md](../AGENTS.md#repository-layout).
 

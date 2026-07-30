@@ -42,7 +42,7 @@ When the user asks for a query to adapt, or when the clinical question matches a
 
 AQL queries operate on archetypes. Before writing a query:
 
-1. State assumptions about deployed templates/archetypes — verify path endpoints and RM types against the deployed template, not display labels
+1. State assumptions about deployed templates/archetypes — verify path endpoints and RM types against the deployed template, not display labels; when a deployed template is named, fetch it (`ckm_template_search` → `ckm_template_get`) rather than guessing paths
 2. Identify which archetypes contain the required data (`ckm_archetype_search` when the archetype id is not yet known)
 3. Load the archetype to understand its path structure:
    ```

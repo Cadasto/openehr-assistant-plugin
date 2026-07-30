@@ -19,6 +19,7 @@ Install from your working copy (see [install.md](install.md)), then exercise the
   ```
   /ckm-search blood pressure               # CKM discovery (archetypes or templates)
   /openehr-explain DV_QUANTITY             # type / archetype / RM-concept / idiom / terminology lookup
+  /archetype-impact openEHR-EHR-OBSERVATION.blood_pressure.v2   # workspace impact scan
   ```
 
   Guide browsing has no command — ask in natural language ("show me the AQL syntax guide") and the auto-invoked `openehr-assistant` skill loads it via `guide_search` / `guide_get`.

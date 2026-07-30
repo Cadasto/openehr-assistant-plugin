@@ -120,7 +120,7 @@ Three things to state explicitly in any split report:
 
 ## Step 6b: Template from a form (inverse workflow)
 
-When the starting point is a clinical form to implement rather than a template design, **load [`references/template-from-form.md`](references/template-from-form.md)** and follow it: parse the form into a field inventory, run the CGEM dataset split (Step 6) *first*, then sketch each implied template — archetypes to aggregate, RM entry type per field group, narrowing notes. The output is a design sketch, never OET XML; once the user confirms the sketch, continue at Step 8b to emit the file.
+When the starting point is a clinical form to implement rather than a template design, **load [`references/template-from-form.md`](references/template-from-form.md)** and follow it: parse the form into a field inventory, run the CGEM dataset split (Step 6) *first*, then sketch each implied template — archetypes to aggregate, RM entry type per field group, narrowing notes. Step 1's mandatory guide loads still apply in this mode (plus the CGEM guide — the reference covers it). The output is a design sketch, never OET XML; once the user confirms the sketch, continue at Step 8b to emit the file.
 
 ## Step 7: Terminology in Templates
 

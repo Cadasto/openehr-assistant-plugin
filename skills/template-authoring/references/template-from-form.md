@@ -7,7 +7,7 @@ Inverse clinical-modelling workflow: start from a form the user wants to impleme
 1. Interpret the form description as either:
    - A path to a file (`.md`, `.txt`, `.html`) containing the form description — then `Read` it.
    - An inline text description — use directly.
-2. Load the CGEM guide (Step 1 of the main skill already loaded `templates/principles` and `templates/rules`):
+2. Load the CGEM guide — and, if this mode was entered directly without running Step 1 of the main skill, load its mandatory guides too (`templates/principles`, `templates/rules`):
    ```
    guide_get("openehr://guides/templates/cgem-framework")
    ```
