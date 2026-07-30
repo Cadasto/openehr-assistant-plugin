@@ -39,9 +39,10 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 - Agents: `clinical-modeler` body deduplicated — triggering-examples section removed, inline lint-rule glosses replaced by a by-number local-vs-MCP routing split (rule text lives in `lint-rules-complete.md`).
 - Agents: descriptions tightened across all three (`ckm-scout` gains a not-for clause); `ckm-scout` failure-mode protocol condensed to three bullets.
 - Skills: `archetype-authoring` absorbs `/archetype-fix-syntax` as a fix-syntax mode (`references/fix-syntax.md`, Step 5b) — "fix ADL syntax / won't parse" intent now auto-triggers the skill; `archetype-lint` Step 5 routes fix application there.
+- Skills: `template-authoring` absorbs `/template-from-form` as a from-form mode (`references/template-from-form.md`, Step 6b) — form → CGEM split → template sketch, handing off to Step 8b for the OET.
 
 ### Removed
-- Commands: `/archetype-fix-syntax` (folded into `archetype-authoring`, see Changed).
+- Commands: `/archetype-fix-syntax` and `/template-from-form` (folded into `archetype-authoring` / `template-authoring`, see Changed).
 
 ### Fixed
 - Offline twins: `lint-rules-complete.md` header no longer claims `clinical-modeler` has no MCP access — the twin is the fallback for its read-only lookups.

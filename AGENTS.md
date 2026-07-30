@@ -98,20 +98,19 @@ For spec overview questions ("what does the EHR IM define?", "summarise ADL2"), 
 | `openehr-assistant` | Auto-invoked openEHR awareness, clinical modeling, **guide browsing** (`guide_search`/`guide_get`), and tool routing |
 | `archetype-authoring` | Create, edit, extend, specialize archetypes; CKM-import for reuse; **review & remediate** pipeline (absorbs `/archetype-review`); **rationale prose** (absorbs `/archetype-rationale`); **translate / add a locale** (absorbs `/archetype-translate`); **fix ADL syntax** (absorbs `/archetype-fix-syntax`) |
 | `archetype-lint` | Auto-invoked archetype validation with 24 normative lint rules (STRICT/PERMISSIVE) |
-| `template-authoring` | Create and constrain templates (OET/OPT) |
+| `template-authoring` | Create and constrain templates (OET/OPT); **form → template sketch** with CGEM split (absorbs `/template-from-form`) |
 | `composition-builder` | Build compositions (FLAT/STRUCTURED/CANONICAL) |
 | `aql-authoring` | Write, explain, optimize AQL queries |
 | `demographic-modeling` | Design demographic models (PARTY hierarchy, roles, relationships, identity patterns) |
 
-### Commands (5)
-A deliberately small slash surface — multi-step workflows live in the **skills** (which auto-trigger and are also `/`-invocable); commands are explicit one-shots. Former commands were merged (search/explain/lookups/diffs) or folded into skills (`/aql-designer`→`aql-authoring`, `/format-data`→`composition-builder`, `/archetype-review` + `/archetype-rationale` + `/archetype-translate` + `/archetype-fix-syntax`→`archetype-authoring`, `/rm-structure`→`/openehr-explain`, `/guide` + `/archetype-lint`→ the `openehr-assistant` and `archetype-lint` skills). Note: `/archetype-lint` still works — it resolves to the user-invocable `archetype-lint` skill.
+### Commands (4)
+A deliberately small slash surface — multi-step workflows live in the **skills** (which auto-trigger and are also `/`-invocable); commands are explicit one-shots. Former commands were merged (search/explain/lookups/diffs) or folded into skills (`/aql-designer`→`aql-authoring`, `/format-data`→`composition-builder`, `/archetype-review` + `/archetype-rationale` + `/archetype-translate` + `/archetype-fix-syntax`→`archetype-authoring`, `/template-from-form`→`template-authoring`, `/rm-structure`→`/openehr-explain`, `/guide` + `/archetype-lint`→ the `openehr-assistant` and `archetype-lint` skills). Note: `/archetype-lint` still works — it resolves to the user-invocable `archetype-lint` skill.
 
 | Command | Purpose |
 |---------|---------|
 | `/ckm-search` | Find CKM **archetypes or templates** (`[archetype\|template] <query>`; optional `rmClass` filter) — merges `/archetype-search` + `/template-search` |
 | `/openehr-explain` | Explain / look up **any** openEHR thing — archetype, template, RM/AM type, **RM structural concept**, ADL idiom, **AQL query/keyword**, or terminology code (auto-detects) — merges `/archetype-explain`, `/template-explain`, `/type-spec`, `/rm-structure`, `/adl-idiom`, `/terminology` |
 | `/semantic-diff` | Semantic diff of two artefacts — archetype or template, version-bump **or** sibling/cross-artefact mode with a path-compatibility table — merges `/archetype-diff` + `/template-diff` |
-| `/template-from-form` | Split a clinical form across compositions (CGEM categories) and sketch each template (archetypes + narrowing) |
 | `/archetype-impact` | Scan workspace for references to an archetype across templates (`.oet`/`.opt`/`.t.json`), parent `.adl` slots, and AQL |
 
 ### Agents (3)

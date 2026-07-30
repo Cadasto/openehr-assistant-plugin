@@ -1,21 +1,10 @@
----
-name: template-from-form
-description: Given a clinical form description (text or file), split it across compositions with the CGEM framework (Global Background / Contextual Situation / Event Assessment / Managed Response → persistent / episodic / event), then sketch each template — the archetypes to aggregate, the RM entry type per field group, and narrowing notes per archetype. Output is a design sketch, not valid OET XML.
-argument-hint: "<form description text OR path to form description file>"
-allowed-tools:
-  - Read
-  - mcp__openehr-assistant__ckm_archetype_search
-  - mcp__openehr-assistant__ckm_template_search
-  - mcp__openehr-assistant__guide_get
----
+# Template from Form (inverse workflow)
 
-# /template-from-form
+Inverse clinical-modelling workflow: start from a form the user wants to implement and work backwards to a template design — the set of archetypes to include and the narrowing to apply per archetype. **Output is a design sketch, not valid OET XML**; turning a confirmed sketch into an OET is Step 8b of the main skill.
 
-Inverse clinical-modelling workflow: start from a form the user wants to implement and work backwards to a template design — the set of archetypes to include and the narrowing to apply per archetype.
+## Workflow
 
-## Instructions
-
-1. Interpret **$ARGUMENTS** as either:
+1. Interpret the form description as either:
    - A path to a file (`.md`, `.txt`, `.html`) containing the form description — then `Read` it.
    - An inline text description — use directly.
 2. Load the template-authoring and CGEM guides:
@@ -24,7 +13,7 @@ Inverse clinical-modelling workflow: start from a form the user wants to impleme
    guide_get("openehr://guides/templates/rules")
    guide_get("openehr://guides/templates/cgem-framework")
    ```
-3. Parse the form into a structured field list. For each form field, capture: label, data type (free text / coded / quantity / date / boolean), cardinality (single / repeating), mandatoriness. Surface this inventory as a `## Parsed form inventory` section in your output so the user can verify interpretation before committing to a template.
+3. Parse the form into a structured field list. For each form field, capture: label, data type (free text / coded / quantity / date / boolean), cardinality (single / repeating), mandatoriness. Surface this inventory as a `## Parsed form inventory` section in the output so the user can verify interpretation before committing to a template.
 4. **Split the dataset before sketching any template.** A form is a screen, not a composition — classify each field (or field group) into one CGEM category, then group same-category fields into candidate compositions. Report this as a `## Dataset split (CGEM)` section:
 
    | CGEM category | Data nature | `COMPOSITION.category` | Candidate template |
@@ -60,7 +49,7 @@ Inverse clinical-modelling workflow: start from a form the user wants to impleme
    ```
    ckm_template_search("<form purpose>")
    ```
-7. For each proposed archetype, identify the at-code path each form field maps to — if you can infer it from standard CKM archetypes. If not, flag the field as needing design input.
+7. For each proposed archetype, identify the at-code path each form field maps to — if it can be inferred from standard CKM archetypes. If not, flag the field as needing design input.
 
 ## Output format
 
@@ -106,7 +95,7 @@ Maps:
 
 ## Next steps
 
-- Refine the template with the `template-authoring` skill.
+- Turn the confirmed sketch into an OET (Step 8b of this skill).
 - For gap fields, dispatch `ckm-scout` for deeper reuse search before authoring new archetypes.
 ```
 
@@ -114,6 +103,6 @@ Maps:
 
 - Do NOT invent CKM archetype IDs. Only cite archetypes returned by `ckm_archetype_search`.
 - Do NOT force a one-form-one-template answer. If the CGEM split says three compositions, sketch the one the user is authoring and name the others with their category and reuse status.
-- Do NOT produce OET XML. This command outputs a design sketch; OET authoring is the `template-authoring` skill's job.
-- The word "composition" in openEHR denotes a runtime data instance (a `COMPOSITION` RM object), not a design-time aggregation of archetypes. This command's output is a **template** — a design-time constraint set that, once instantiated, will produce compositions.
+- Do NOT produce OET XML in this mode. The output is a design sketch; emitting the OET is Step 8b, after the user confirms the design.
+- The word "composition" in openEHR denotes a runtime data instance (a `COMPOSITION` RM object), not a design-time aggregation of archetypes. This mode's output is a **template** — a design-time constraint set that, once instantiated, will produce compositions.
 - If the form is incomplete (missing data types, cardinality, field labels), ask up to 3 clarifying questions before sketching.

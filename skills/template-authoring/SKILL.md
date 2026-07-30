@@ -4,12 +4,13 @@ description: >
   This skill should be used when the user asks to "create a template", "design a template",
   "constrain archetypes into a template", "review a template", "categorise a dataset with CGEM",
   "should this be persistent, episodic or event?", "split this form across compositions",
+  "sketch a template from this form / which archetypes does this form need",
   or "work with OET / .t.json / OPT / web-template files". Covers creating openEHR templates, constraining archetypes,
-  reviewing designs, OET authoring, and reading the tool-generated serialisations
-  (Archetype Designer `.t.json`, OPT, vendor web template).
+  reviewing designs, OET authoring, the form → template-sketch inverse workflow, and reading
+  the tool-generated serialisations (Archetype Designer `.t.json`, OPT, vendor web template).
   Use `/ckm-search` to find existing CKM templates and `/openehr-explain` to explain one; this
   skill is for authoring and constraining new OET designs.
-argument-hint: "<task: create|review> [template-id or use-case]"
+argument-hint: "<task: create|review|from-form> [template-id, use-case, or form text/path]"
 allowed-tools:
   - Read
   - Glob
@@ -119,6 +120,10 @@ Three things to state explicitly when you report a split:
 - **`451 episodic` is normative but unevenly implemented** — confirm the target platform supports it; `persistent` plus governance conventions is the common fallback.
 - **One form commonly spans several compositions** across several categories, so a single form rarely means a single template.
 
+## Step 6b: Template from a form (inverse workflow)
+
+When the starting point is a clinical form to implement rather than a template design, **load [`references/template-from-form.md`](references/template-from-form.md)** and follow it: parse the form into a field inventory, run the CGEM dataset split (Step 6) *first*, then sketch each implied template — archetypes to aggregate, RM entry type per field group, narrowing notes. The output is a design sketch, never OET XML; once the user confirms the sketch, continue at Step 8b to emit the file.
+
 ## Step 7: Terminology in Templates
 
 - Prefer DV_CODED_TEXT over free text where possible
@@ -150,7 +155,7 @@ guide_get("openehr://guides/templates/oet-idioms-cheatsheet")
 
 ## Step 8b: Emit the OET
 
-Produce a real, slot-correct OET — not just a design sketch. (`/template-from-form` produces the sketch; this skill turns a confirmed design into the file.) Following `templates/oet-syntax`:
+Produce a real, slot-correct OET — not just a design sketch. (The from-form mode in Step 6b produces the sketch; this step turns a confirmed design into the file.) Following `templates/oet-syntax`:
 
 1. Root `<template>` with a root **COMPOSITION** archetype reference and a fresh `<id>` (see UID note below).
 2. A `<Content>` entry per included archetype, nested to mirror the COMPOSITION → SECTION → ENTRY → CLUSTER structure.
