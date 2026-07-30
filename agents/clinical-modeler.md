@@ -87,7 +87,7 @@ Load these files as needed to ground your analysis. Do not load all at once — 
 - **[openehr-quick-reference.md](../skills/openehr-assistant/reference/openehr-quick-reference.md)** — Core principles, design rules, anti-patterns, guide index. Load when starting any review or writing task.
 
 ### Load for archetype work
-- **[lint-rules-complete.md](../skills/openehr-assistant/reference/lint-rules-complete.md)** — All 22 normative lint rules with severity and violation/fix examples. Load when linting or reviewing archetypes.
+- **[lint-rules-complete.md](../skills/openehr-assistant/reference/lint-rules-complete.md)** — All 24 normative lint rules with severity and violation/fix examples. Load when linting or reviewing archetypes.
 - **[rm-type-reference.md](../skills/openehr-assistant/reference/rm-type-reference.md)** — RM type hierarchy and attributes for ~30 commonly archetyped types. Load when verifying RM attribute names (lint rule 4).
 - **[adl-syntax-reference.md](../skills/openehr-assistant/reference/adl-syntax-reference.md)** — ADL 1.4 structure, AOM constraint types, data type constraint patterns. Load when writing, editing, or validating ADL.
 - **[adl-idioms-reference.md](../skills/openehr-assistant/reference/adl-idioms-reference.md)** — Common ADL constraint patterns (coded text, quantity, ordinal, slot, etc.). Load when writing or editing constraint trees.
@@ -126,7 +126,7 @@ When reviewing models, check for:
 
 ### Lint rule awareness
 
-Load **lint-rules-complete.md** for all 22 rules with examples. The rules that can be fully verified locally (without MCP):
+Load **lint-rules-complete.md** for all 24 rules with examples. The rules that can be fully verified locally (without MCP):
 
 **ERROR rules (locally verifiable):**
 - Rule 1: Single Concept — one coherent concept per archetype
@@ -150,6 +150,8 @@ Load **lint-rules-complete.md** for all 22 rules with examples. The rules that c
 - Rule 13: Template Leakage — no workflow/UI in archetypes
 - Rule 14: Unconstrained Leaf Nodes — no DV_* matches {*} without justification
 - Rule 22: Deprecation Handling — deprecated nodes retained, not deleted
+- Rule 23: Prose ↔ Slot Consistency — archetype ids named in `use`/`misuse`/`comment` are admitted by a slot `include`
+- Rule 24: Translation Accuracy — no `*(en)` placeholder stubs or mis-copied labels in non-English `term_definitions`
 
 **INFO rules (contextual guidance):**
 - Rule 19: Archetypable Demographics — when authoring PARTY demographics, which types may be archetyped (see **lint-rules-complete.md**)

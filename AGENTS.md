@@ -95,7 +95,7 @@ For spec overview questions ("what does the EHR IM define?", "summarise ADL2"), 
 |-------|---------|
 | `openehr-assistant` | Auto-invoked openEHR awareness, clinical modeling, **guide browsing** (`guide_search`/`guide_get`), and tool routing |
 | `archetype-authoring` | Create, edit, extend, specialize archetypes; CKM-import for reuse; **review & remediate** pipeline (absorbs `/archetype-review`); **rationale prose** (absorbs `/archetype-rationale`); **translate / add a locale** (absorbs `/archetype-translate`) |
-| `archetype-lint` | Auto-invoked archetype validation with 22 normative lint rules (STRICT/PERMISSIVE) |
+| `archetype-lint` | Auto-invoked archetype validation with 24 normative lint rules (STRICT/PERMISSIVE) |
 | `template-authoring` | Create and constrain templates (OET/OPT) |
 | `composition-builder` | Build compositions (FLAT/STRUCTURED/CANONICAL) |
 | `aql-authoring` | Write, explain, optimize AQL queries |

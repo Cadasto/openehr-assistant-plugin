@@ -80,7 +80,7 @@ Environment variables (e.g. `CKM_API_BASE_URL`) and Docker/stdio details are doc
 | Skill | Trigger | Description |
 |-------|---------|-------------|
 | `archetype-authoring` | Creating/editing/reviewing/translating archetypes | Authoring, review & remediate, rationale prose, translation, CKM-import — guide-first |
-| `archetype-lint` | Reviewing/validating archetypes | 22 normative lint rules with STRICT/PERMISSIVE modes |
+| `archetype-lint` | Reviewing/validating archetypes | 24 normative lint rules with STRICT/PERMISSIVE modes |
 | `template-authoring` | Creating/reviewing templates | Template design with CGEM framework and narrowing principle |
 | `composition-builder` | Building compositions | FLAT/STRUCTURED/CANONICAL format generation |
 | `aql-authoring` | Writing AQL queries | Query authoring, explanation, and optimization |

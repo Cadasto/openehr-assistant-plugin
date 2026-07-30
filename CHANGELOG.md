@@ -10,6 +10,7 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 ## [Unreleased]
 
 ### Added
+- Lint: rules **23** (Prose ↔ Slot Consistency, guide rule D9) and **24** (Translation Accuracy, guide rule E7) — the two `archetypes/rules` entries the 22-rule set never covered; appended so existing numbering stays stable. Rule count 22 → 24 across skills, agents and docs.
 - Discovery: `hooks/session-start.sh` detects `.t.json` and `.optx`/`.optj`; the Cursor rule `openehr-context.mdc` globs cover `.adls`, `.t.json`, `.optx`/`.optj` and `.aql`.
 - Commands: `/template-from-form` gains a CGEM dataset-split step and a `## Dataset split (CGEM)` output section, applied before any template is sketched.
 - Validation: `scripts/validate.py` fails when an agent lists an MCP tool under one mount namespace but not the other.

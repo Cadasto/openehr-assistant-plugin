@@ -8,6 +8,7 @@ Add or translate per-language text in an archetype's `ontology.term_definitions`
 4. Insert the new locale **at the top of its block** (anchor on the block opener + its first child; ADL is **tab**-indented, not spaces) in three places: `language.translations`, `description.details`, and `ontology.term_definitions`.
 5. Verify (machine-checkable — base the "done" claim on it):
    - **at-code parity** — source vs target term counts match (e.g. `en vs nl: 69 = 69`);
+   - **no placeholder or mis-copied rubrics** (lint rule 24 / guide rule E7) — no `*(en)` stubs, no rubric left in the source language, no label copy-pasted from a neighbouring node; parity counts pass while the text is still unusable, so check the text, not only the count;
    - **delimiter balance** — every `<` opened is closed across the inserted blocks;
    - **untouched invariants** — no change to at-codes, occurrences/cardinalities, units, value sets, or `term_bindings` (a translation edits text only);
    - **lint** — run the lint pass (see `review-remediate.md`) and surface its summary; failures block "done".

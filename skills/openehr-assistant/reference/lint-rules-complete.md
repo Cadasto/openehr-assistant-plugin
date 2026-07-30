@@ -1,6 +1,6 @@
-# Complete Archetype Lint Rules (22 Rules)
+# Complete Archetype Lint Rules (24 Rules)
 
-**Purpose:** Offline reference for all 22 normative archetype lint rules with severity, description, and violation/fix examples. Use when reviewing or linting local archetype files.
+**Purpose:** Offline reference for all 24 normative archetype lint rules with severity, description, and violation/fix examples. Use when reviewing or linting local archetype files.
 
 > **Offline twin.** This file mirrors the canonical `guide_get("openehr://guides/archetypes/rules")` guide for the `clinical-modeler` agent, which has no MCP access. In the main session, the loaded guide is authoritative — prefer it over this copy, and keep this file in sync when the guide changes.
 
@@ -252,12 +252,30 @@ Deprecated nodes should be retained and explicitly marked, not deleted.
 
 ---
 
+## Documentation Consistency Rules (WARNING)
+
+### Rule 23 — Prose ↔ Slot Consistency
+Guide rule **D9**. `use` / `misuse` / `comment` prose that names an archetype id must be admitted by some slot's `include` regex. Prose promising content the definition cannot hold misleads implementers and template authors.
+
+**Violation:** `use:` text says "use for … including `openEHR-EHR-CLUSTER.exertion.v1`", but no slot `include` matches that id — or worse, a slot `exclude` forbids it.
+**Fix:** widen the slot `include` to admit the named archetype, or correct the prose to describe what the definition actually allows. Report WARNING when a slot actively excludes the named id.
+
+---
+
+### Rule 24 — Translation Accuracy
+Guide rule **E7**. Non-English `term_definitions` must carry genuine target-language rubrics. This is a rubric defect distinct from rule 17/18 (which govern *bindings*) and from E5 semantics — the computable structure can be perfectly valid while the translation is unusable.
+
+**Violation:** `*(en)` placeholder stubs left in a translated `term_definitions` block; a label copy-pasted from the wrong node; an untranslated English rubric under a non-English language key.
+**Fix:** supply the clinically correct target-language term, or remove the incomplete language section rather than ship placeholder text. Flag uncertain terms for clinician review instead of guessing.
+
+---
+
 ## Severity Summary
 
 | Severity | Rules |
 |----------|-------|
 | **ERROR** | 1, 2, 3, 4, 5, 6, 7, 8, 15, 16, 20, 21 |
-| **WARNING** | 9, 10, 11, 12, 13, 14, 17, 18, 22 |
+| **WARNING** | 9, 10, 11, 12, 13, 14, 17, 18, 22, 23, 24 |
 | **INFO** | 19 |
 
 ## Validator Tooling Codes (recognise in tool output)

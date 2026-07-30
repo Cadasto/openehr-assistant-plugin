@@ -17,4 +17,4 @@
 | `aql-syntax-cheatsheet.md` | A minimal AQL syntax check is needed offline | `guide_get("openehr://guides/aql/syntax")` |
 | `oet-syntax-reference.md` | OET/template syntax detail is needed offline | `guide_get("openehr://guides/templates/oet-syntax")` |
 | `rm-type-reference.md` | Validating RM attribute names (lint rule 4) offline | `type_specification_get` (BMM-backed) |
-| `lint-rules-complete.md` | The full 22 lint-rule definitions are needed offline | `guide_get("openehr://guides/archetypes/rules")` |
+| `lint-rules-complete.md` | The full 24 lint-rule definitions are needed offline | `guide_get("openehr://guides/archetypes/rules")` |

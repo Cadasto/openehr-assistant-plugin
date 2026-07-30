@@ -3,7 +3,7 @@ name: archetype-lint
 description: >
   This skill should be used when the user asks to "lint an archetype", "validate an archetype",
   "check archetype compliance", "review archetype quality", or "run archetype rules". Applies
-  22 normative lint rules with ERROR/WARNING/INFO severity. Supports STRICT and PERMISSIVE modes.
+  24 normative lint rules with ERROR/WARNING/INFO severity. Supports STRICT and PERMISSIVE modes.
   Reports violations only — it does not modify files; to lint *and* remediate, use the
   `archetype-authoring` skill. Auto-invoked on lint/validate intent, and also directly invocable
   as `/archetype-lint <file or id> [strict]`.
@@ -19,7 +19,7 @@ allowed-tools:
 
 # Archetype Lint
 
-An openEHR archetype linting engine. Evaluate archetypes against 22 normative rules. Classify each violation as ERROR, WARNING, or INFO. ERROR means the archetype is invalid or unsafe.
+An openEHR archetype linting engine. Evaluate archetypes against 24 normative rules. Classify each violation as ERROR, WARNING, or INFO. ERROR means the archetype is invalid or unsafe.
 
 ## Step 1: Load Guides (MANDATORY)
 
@@ -65,6 +65,8 @@ The **normative rule definitions live in the `archetypes/rules` guide loaded in 
 | 20 | Identity vs Role Separation | ERROR | Demographic |
 | 21 | Patch Version Discipline | ERROR | Versioning |
 | 22 | Deprecation Handling | WARNING | Versioning |
+| 23 | Prose ↔ Slot Consistency | WARNING | Documentation (guide rule D9) |
+| 24 | Translation Accuracy | WARNING | Documentation (guide rule E7) |
 
 For rule 4, verify attribute names against the RM with `type_specification_get` when uncertain.
 
