@@ -2,11 +2,12 @@
 name: archetype-authoring
 description: >
   This skill should be used when the user asks to "create", "edit", "specialize",
-  "review / remediate", "write the rationale for", or "translate / localise" an openEHR
-  archetype, or to import a CKM archetype into the workspace for reuse. It covers the full
+  "review / remediate", "write the rationale for", "translate / localise", or "fix the ADL
+  syntax of" an openEHR archetype (including "this archetype won't parse / won't validate"),
+  or to import a CKM archetype into the workspace for reuse. It covers the full
   author → review (lint → fix → re-lint) → rationale → translate lifecycle. To merely explain
   an existing archetype with no edits, use `/openehr-explain` instead.
-argument-hint: "<task: create|edit|specialize|review|rationale|translate|import> [archetype-id or concept]"
+argument-hint: "<task: create|edit|specialize|review|rationale|translate|import|fix-syntax> [archetype-id or concept]"
 allowed-tools:
   - Read
   - Glob
@@ -139,6 +140,10 @@ When modifying existing archetypes:
 - **Path stability**: Never rename or remove existing paths in minor versions
 - **Backwards compatibility**: Additions are safe; removals require major version bump
 - **Deprecation over removal**: Mark elements as deprecated before removing in next major version
+
+## Step 5b: Fix ADL syntax (syntax-only remediation)
+
+When the ask is to repair an archetype that won't parse or validate structurally — rather than to change what it models — **load [`references/fix-syntax.md`](references/fix-syntax.md)** and follow it exactly. It fixes syntax while preserving clinical semantics (five prohibited actions), and reports semantic findings instead of fixing them. Skip Steps 2–4 in this mode; the guides in Step 1 still apply.
 
 ## Step 6: Specialization
 

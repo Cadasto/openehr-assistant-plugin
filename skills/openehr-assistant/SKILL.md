@@ -148,7 +148,7 @@ When users need deeper task-specific workflows, suggest the appropriate skill or
 - **Explaining or looking up** an archetype, template, RM/AM type, RM structural concept, ADL idiom, AQL query/keyword, or terminology code -> `/openehr-explain`
 - **Browsing / finding an implementation guide** -> handle it here: `guide_search` to find it, `guide_get` to load it, then summarise (the guides are an agent-facing knowledge layer; no separate command needed)
 - **Comparing two artefacts** (version bump or sibling diff) -> `/semantic-diff`
-- **Fixing syntax** -> `/archetype-fix-syntax`
+- **Fixing ADL syntax** ("won't parse / won't validate") -> `archetype-authoring` skill, fix-syntax mode
 - **Translating an archetype** (add a locale) -> archetype-authoring skill
 - **Demographic modeling** -> demographic-modeling skill
 - **Platform / REST service integration** -> consult `guide_get("openehr://guides/specs/sm-openehr_platform")` and `guide_get("openehr://guides/specs/its-rest-api")`

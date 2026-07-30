@@ -71,7 +71,7 @@ The MCP server exposes `openehr://examples/{kind}/{name}` for gold-standard patt
 
 ## Syntax and grammar sources
 
-Use these when you need authoritative ADL or AQL syntax (e.g. for `/archetype-fix-syntax`, AQL authoring, or when MCP guides are unavailable). Canonical detail lives in MCP guides and official specs; treat the following as pointers.
+Use these when you need authoritative ADL or AQL syntax (e.g. for the `archetype-authoring` fix-syntax mode, AQL authoring, or when MCP guides are unavailable). Canonical detail lives in MCP guides and official specs; treat the following as pointers.
 
 - **ADL syntax**: Official narrative in [specifications-AM](https://github.com/openEHR/specifications-AM) (e.g. `docs/ADL1.4/`, appendix C references ANTLR grammars). Normative grammars: [adl-antlr](https://github.com/openEHR/adl-antlr) (referenced by the spec). Consolidated ANTLR4 grammars (ADL1.4, ADL2): [openEHR-antlr4](https://github.com/openEHR/openEHR-antlr4) (`reader_adl14`, `reader_adl2`). MCP guide: `guide_get("openehr://guides/archetypes/adl-syntax")`. Published spec: `https://specifications.openehr.org/releases/AM/development/` (see retrieval methodology below).
 - **AQL syntax**: Official narrative and grammar in [specifications-QUERY](https://github.com/openEHR/specifications-QUERY) (`docs/AQL/`). ANTLR4 grammars: [openEHR-antlr4](https://github.com/openEHR/openEHR-antlr4) `reader_aql`. MCP guide: `guide_get("openehr://guides/aql/syntax")`. Published spec: `https://specifications.openehr.org/releases/QUERY/development/` (see retrieval methodology below).
@@ -96,22 +96,21 @@ For spec overview questions ("what does the EHR IM define?", "summarise ADL2"), 
 | Skill | Purpose |
 |-------|---------|
 | `openehr-assistant` | Auto-invoked openEHR awareness, clinical modeling, **guide browsing** (`guide_search`/`guide_get`), and tool routing |
-| `archetype-authoring` | Create, edit, extend, specialize archetypes; CKM-import for reuse; **review & remediate** pipeline (absorbs `/archetype-review`); **rationale prose** (absorbs `/archetype-rationale`); **translate / add a locale** (absorbs `/archetype-translate`) |
+| `archetype-authoring` | Create, edit, extend, specialize archetypes; CKM-import for reuse; **review & remediate** pipeline (absorbs `/archetype-review`); **rationale prose** (absorbs `/archetype-rationale`); **translate / add a locale** (absorbs `/archetype-translate`); **fix ADL syntax** (absorbs `/archetype-fix-syntax`) |
 | `archetype-lint` | Auto-invoked archetype validation with 24 normative lint rules (STRICT/PERMISSIVE) |
 | `template-authoring` | Create and constrain templates (OET/OPT) |
 | `composition-builder` | Build compositions (FLAT/STRUCTURED/CANONICAL) |
 | `aql-authoring` | Write, explain, optimize AQL queries |
 | `demographic-modeling` | Design demographic models (PARTY hierarchy, roles, relationships, identity patterns) |
 
-### Commands (6)
-A deliberately small slash surface — multi-step workflows live in the **skills** (which auto-trigger and are also `/`-invocable); commands are explicit one-shots. Former commands were merged (search/explain/lookups/diffs) or folded into skills (`/aql-designer`→`aql-authoring`, `/format-data`→`composition-builder`, `/archetype-review` + `/archetype-rationale` + `/archetype-translate`→`archetype-authoring`, `/rm-structure`→`/openehr-explain`, `/guide` + `/archetype-lint`→ the `openehr-assistant` and `archetype-lint` skills). Note: `/archetype-lint` still works — it resolves to the user-invocable `archetype-lint` skill.
+### Commands (5)
+A deliberately small slash surface — multi-step workflows live in the **skills** (which auto-trigger and are also `/`-invocable); commands are explicit one-shots. Former commands were merged (search/explain/lookups/diffs) or folded into skills (`/aql-designer`→`aql-authoring`, `/format-data`→`composition-builder`, `/archetype-review` + `/archetype-rationale` + `/archetype-translate` + `/archetype-fix-syntax`→`archetype-authoring`, `/rm-structure`→`/openehr-explain`, `/guide` + `/archetype-lint`→ the `openehr-assistant` and `archetype-lint` skills). Note: `/archetype-lint` still works — it resolves to the user-invocable `archetype-lint` skill.
 
 | Command | Purpose |
 |---------|---------|
 | `/ckm-search` | Find CKM **archetypes or templates** (`[archetype\|template] <query>`; optional `rmClass` filter) — merges `/archetype-search` + `/template-search` |
 | `/openehr-explain` | Explain / look up **any** openEHR thing — archetype, template, RM/AM type, **RM structural concept**, ADL idiom, **AQL query/keyword**, or terminology code (auto-detects) — merges `/archetype-explain`, `/template-explain`, `/type-spec`, `/rm-structure`, `/adl-idiom`, `/terminology` |
 | `/semantic-diff` | Semantic diff of two artefacts — archetype or template, version-bump **or** sibling/cross-artefact mode with a path-compatibility table — merges `/archetype-diff` + `/template-diff` |
-| `/archetype-fix-syntax` | Fix ADL syntax |
 | `/template-from-form` | Split a clinical form across compositions (CGEM categories) and sketch each template (archetypes + narrowing) |
 | `/archetype-impact` | Scan workspace for references to an archetype across templates (`.oet`/`.opt`/`.t.json`), parent `.adl` slots, and AQL |
 

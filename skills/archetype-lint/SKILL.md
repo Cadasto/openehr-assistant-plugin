@@ -70,7 +70,7 @@ The **normative rule definitions live in the `archetypes/rules` guide loaded in 
 
 For rule 4, verify attribute names against the RM with `type_specification_get` when uncertain.
 
-> Offline fallback only: `skills/openehr-assistant/reference/lint-rules-complete.md` mirrors these definitions for the `clinical-modeler` agent (no MCP access). In the main session, always prefer the loaded `archetypes/rules` guide.
+> Offline fallback only: `skills/openehr-assistant/reference/lint-rules-complete.md` mirrors these definitions as the `clinical-modeler` agent's fallback when its read-only MCP lookups are blocked. In the main session, always prefer the loaded `archetypes/rules` guide.
 
 ### Avoid known false positives
 
@@ -114,4 +114,4 @@ If the user asks for fixes after linting, provide a minimal-diff fix plan:
 - Version bump recommendation (patch/minor/major) with justification
 - Prefer template-level constraints over archetype constraints where applicable
 
-Do NOT apply fixes automatically. Present the plan and wait for user approval.
+Do NOT apply fixes automatically. Present the plan and wait for user approval. To actually apply fixes, route to the `archetype-authoring` skill — its fix-syntax mode for parse/structure errors, its review-remediate pipeline for semantic findings.
