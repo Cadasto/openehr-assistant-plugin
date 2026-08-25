@@ -1,6 +1,6 @@
 # Testing and Validation
 
-This is a pure-content repository — JSON manifests + markdown skills/commands/agents + a shared hook script. There is no build step or package manager. Testing means validating structure, then installing locally and exercising the components against the companion MCP server.
+This is a pure-content repository — JSON manifests, Markdown skills/commands/agents, and a shared hook script. It has no build step and no package manager. Testing means validating structure, then installing locally and exercising the components against the companion MCP server.
 
 ## Validation
 
@@ -12,11 +12,11 @@ This is a pure-content repository — JSON manifests + markdown skills/commands/
 
 ## Local triggering tests
 
-Install from your working copy (see [install.md](install.md)), then exercise the components. The plugin expects a reachable openEHR Assistant MCP server (the bundled `.mcp.json` targets the hosted instance; override for a local server — see [install.md](install.md#mcp-wiring)).
+Load your working copy (see [install.md](install.md)), then exercise the components. The plugin expects a reachable openEHR Assistant MCP server (the bundled `.mcp.json` targets the hosted instance; override for a local server — see [install.md](install.md#mcp-wiring)).
 
 - **Commands** — run a representative slash command and confirm it resolves its MCP tools without permission prompts:
 
-  ```
+  ```text
   /ckm-search blood pressure               # CKM discovery (archetypes or templates)
   /openehr-explain DV_QUANTITY             # type / archetype / RM-concept / idiom / terminology lookup
   /archetype-impact openEHR-EHR-OBSERVATION.blood_pressure.v2   # workspace impact scan
@@ -24,15 +24,25 @@ Install from your working copy (see [install.md](install.md)), then exercise the
 
   Guide browsing has no command — ask in natural language ("show me the AQL syntax guide") and the auto-invoked `openehr-assistant` skill loads it via `guide_search` / `guide_get`.
 
-  If a command (or a dispatched subagent) reports an MCP tool "denied", that's a host permission-policy gap, not a missing server — add the `permissions.allow` snippet (see [install.md](install.md#subagents--mcp-permissions)).
+  If a command (or a dispatched subagent) reports an MCP tool as denied, that's a host permission-policy gap, not a missing server — add the `permissions.allow` snippet (see [install.md](install.md#subagents--mcp-permissions)).
 
   If the tools, prompts, or guides a **self-hosted** server advertises look stale (a guide the release notes added is missing, an argument the new schema rejects still passes), the server's discovery cache is stale, not the plugin: since MCP v0.20.0 that cache is namespaced by `APP_VERSION`, so an upgrade without a version bump keeps serving the old capability ads — clear it server-side (see the MCP repo's `docs/development.md` → "Gotcha — MCP discovery cache"). The hosted instance in the bundled `.mcp.json` is unaffected.
 
-- **Skill auto-triggering** — mention an openEHR concept in conversation *without* a command (e.g. "help me design a blood pressure archetype", "lint this archetype" → `archetype-lint`, "this archetype won't parse" → `archetype-authoring` fix-syntax mode, "sketch a template from this form" → `template-authoring`, "compare these two archetypes" → `semantic-diff`) and confirm the relevant skill engages and follows the Guide-First principle. Skills are also `/`-invocable (e.g. `/archetype-lint`, `/semantic-diff old.adl new.adl`).
+- **Skill auto-triggering** — describe a task in conversation *without* a command, and confirm the skill engages and follows the Guide-First principle:
+
+  | Say this | Expect |
+  |----------|--------|
+  | help me design a blood pressure archetype | `archetype-authoring` |
+  | lint this archetype | `archetype-lint` |
+  | this archetype won't parse | `archetype-authoring`, fix-syntax mode |
+  | sketch a template from this form | `template-authoring` |
+  | compare these two archetypes | `semantic-diff` |
+
+  Skills are `/`-invocable too — `/archetype-lint`, `/semantic-diff old.adl new.adl`.
 - **Hooks** — open a workspace containing `*.adl` / `*.oet` / `*.opt` files and confirm the `SessionStart` hook prints the openEHR context line. On Claude Code, a `Write`/`Edit` to an `.adl` file should emit the `/archetype-lint` reminder (PostToolUse).
 
-After editing content, reinstall (or restart the session) to pick up changes.
+After editing content, restart the session to pick it up — a plugin's components are read at launch.
 
 ## Releasing
 
-See [versioning.md](versioning.md) for the semver policy, MCP compatibility alignment, and release steps.
+See [versioning.md](versioning.md) for the SemVer policy, MCP compatibility alignment, and release steps.

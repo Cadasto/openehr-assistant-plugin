@@ -14,6 +14,9 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 - Docs: `docs/versioning.md`, `AGENTS.md` — catalog pins `version` to `X.Y.Z` and `source.ref` to `vX.Y.Z`; added as release step 7.
 
 ### Changed
+- Docs: `README.md` — states the requirements up front; `Setup (MCP server)` leads with "nothing to configure"; the MCP v0.20.0 compatibility note drops the two paragraphs about other clients' breaking changes and links `docs/versioning.md`; the offline-reference inventory names all of what ships and corrects the RM type count (39, was "~30").
+- Docs: `docs/testing.md` — skill-triggering examples become a say-this/expect table; wording follows `--plugin-dir` (load, not install).
+- Docs: `docs/versioning.md` — release step 6 pipes the CHANGELOG section into `gh release create -F -` instead of naming a placeholder file.
 - Manifests: plugin `description` names what the plugin does — archetypes, templates, compositions, AQL, CKM reuse search, specification lookup — instead of "various openEHR related tasks". The catalog copies this string verbatim, so it reaches users on the next release.
 
 ### Fixed
