@@ -11,6 +11,7 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 
 ### Changed
 - Docs: release-naming convention recorded in AGENTS.md, `docs/versioning.md` and CONTRIBUTING.md — tags and GitHub release titles are exactly `vX.Y.Z`; CHANGELOG headings stay bare `X.Y.Z`. Legacy pre-`v0.8.1` tags renamed to the `v` form and their releases repointed.
+- Docs: `docs/versioning.md` — the marketplace no longer tracks `main`. The Cadasto catalog pins each entry to a release tag, so a release is not live until the entry in `Cadasto/plugin-marketplace` bumps `version` and `source.ref`; added as release step 7.
 
 ## [0.9.0] - 2026-07-30
 
