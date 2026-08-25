@@ -9,18 +9,18 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 
 ## [Unreleased]
 
+## [0.9.1] - 2026-08-25
+
 ### Added
 - CI: `.vale.ini` and a `prose` job pinned to Vale 3.18.0 — gates on errors only. Terminology lives in `styles/config/vocabularies/Cadasto/`; `skills/`, `agents/`, `commands/`, `rules/`, `hooks/` and `AGENTS.md` are excluded as model-facing content, and `styles/` is gitignored and `export-ignore`d.
 
 ### Changed
 - Docs: release-naming convention recorded in AGENTS.md, `docs/versioning.md` and CONTRIBUTING.md — tags and GitHub release titles are exactly `vX.Y.Z`; CHANGELOG headings stay bare `X.Y.Z`. Legacy pre-`v0.8.1` tags renamed to the `v` form and their releases repointed.
 - Docs: `docs/versioning.md`, `AGENTS.md` — catalog pins `version` to `X.Y.Z` and `source.ref` to `vX.Y.Z`; added as release step 7.
-
-### Changed
 - Docs: `README.md` — states the requirements up front; `Setup (MCP server)` leads with "nothing to configure"; the MCP v0.20.0 compatibility note drops the two paragraphs about other clients' breaking changes and links `docs/versioning.md`; the offline-reference inventory names all of what ships and corrects the RM type count (39, was "~30").
 - Docs: `docs/testing.md` — skill-triggering examples become a say-this/expect table; wording follows `--plugin-dir` (load, not install).
 - Docs: `docs/versioning.md` — release step 6 pipes the CHANGELOG section into `gh release create -F -` instead of naming a placeholder file.
-- Manifests: plugin `description` names what the plugin does — archetypes, templates, compositions, AQL, CKM reuse search, specification lookup — instead of "various openEHR related tasks". The catalog copies this string verbatim, so it reaches users on the next release.
+- Manifests: plugin `description` names what the plugin does — archetypes, templates, compositions, AQL, CKM reuse search, specification lookup — instead of "various openEHR related tasks". The catalog copies this string verbatim.
 
 ### Fixed
 - Docs: `claude plugin add` is not a Claude Code command. `README.md`, `docs/install.md`, `CONTRIBUTING.md`, and `AGENTS.md` load a local working copy with `claude --plugin-dir <path>`, which applies to that session only; a persistent install goes through the marketplace.

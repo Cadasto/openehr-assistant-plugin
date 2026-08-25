@@ -1,7 +1,7 @@
 {
   "name": "openehr-assistant",
   "displayName": "openEHR Assistant",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "openEHR clinical modeling for AI assistants — archetypes, templates, compositions, AQL, CKM reuse search, and specification lookup.",
   "author": {
     "name": "Cadasto B.V.",
