@@ -17,11 +17,15 @@ This plugin is versioned with [Semantic Versioning](https://semver.org), adapted
 3. Fold the accumulated `## [Unreleased]` notes into a dated `## [X.Y.Z]` section in [CHANGELOG.md](../CHANGELOG.md) (Keep a Changelog format — see [AGENTS.md](../AGENTS.md#changelog-style)).
 4. Commit (`chore(release): vX.Y.Z`) and tag: `git tag -a vX.Y.Z -m "openEHR Assistant Plugin vX.Y.Z"`.
 5. Push commits and the tag: `git push origin main --follow-tags`.
-6. Create the GitHub release from the tag, titled exactly `vX.Y.Z`, with the new CHANGELOG section as the notes body. `-F -` reads that body from standard input:
+6. Create the GitHub release from the tag, titled exactly `vX.Y.Z`, with the new CHANGELOG section as the notes body. `-F -` reads that body from standard input. Set `VER` to the release being tagged (for example `0.9.1`) — the same value is used in the heading match and the tag:
 
    ```bash
-   awk '/^## \[X\.Y\.Z\]/{f=1;next} /^## \[/{f=0} f' CHANGELOG.md |
-     gh release create vX.Y.Z --title "vX.Y.Z" -F -
+   VER=0.9.1
+   awk -v ver="$VER" '
+     $0 ~ "^## \\[" ver "\\]" {f=1; next}
+     /^## \[/ {f=0}
+     f
+   ' CHANGELOG.md | gh release create "v$VER" --title "v$VER" -F -
    ```
 7. **Update the marketplace entry** — the release is not live until this lands. See below.
 

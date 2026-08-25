@@ -1,4 +1,4 @@
-# Vocabulary the house style bans outright (style-guide.md §2, claims-and-evidence.md §2).
+# Marketing vocabulary this repo's prose must not use.
 seamlessly
 effortlessly
 cutting-edge

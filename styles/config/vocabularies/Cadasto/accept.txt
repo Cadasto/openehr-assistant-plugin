@@ -3,7 +3,7 @@
 # demand the first-listed form everywhere the other appears.
 
 # Identifiers keep their own spelling — repo, plugin, and command names are not prose
-# (style-guide.md §3). Listed so Vale.Terms does not "correct" them to the prose forms.
+# Listed so Vale.Terms does not "correct" them to the prose forms.
 openehr-assistant-mcp
 openehr-assistant-dev-plugin
 openehr-assistant-plugin

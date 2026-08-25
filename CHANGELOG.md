@@ -9,6 +9,9 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 
 ## [Unreleased]
 
+### Changed
+- Docs: `docs/testing.md`, `docs/versioning.md`, `.vale.ini`, `AGENTS.md` — load a working copy; `$VER` in the release awk; Vale comments for this repo; RM type count 39.
+
 ## [0.9.1] - 2026-08-25
 
 ### Added
