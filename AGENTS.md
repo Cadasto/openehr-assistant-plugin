@@ -149,7 +149,7 @@ No build step — pure Markdown + JSON. Validate and dogfood locally:
 ```bash
 ./scripts/validate.sh                                 # manifests, dual-host parity, .mcp.json, frontmatter (warns & skips if Python is absent)
 claude plugin validate .                              # manifest + component structure (no Python needed)
-claude plugin add /path/to/openehr-assistant-plugin   # install locally
+claude --plugin-dir /path/to/openehr-assistant-plugin # load locally for one session
 ```
 
 Then verify a command (`/ckm-search blood pressure`) and skill auto-triggering against the configured MCP server. On Cursor, add the plugin via its plugin flow and verify the same. CI runs `scripts/validate.py` strictly on every push/PR ([`.github/workflows/validate.yml`](.github/workflows/validate.yml)); locally, `scripts/validate.sh` runs the same checks but warns and skips if Python isn't installed. Fuller guidance lives in [`docs/`](docs/): [install](docs/install.md), [testing](docs/testing.md), [versioning](docs/versioning.md), [authoring](docs/authoring.md).

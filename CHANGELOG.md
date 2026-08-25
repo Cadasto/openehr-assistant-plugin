@@ -13,6 +13,9 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 - Docs: release-naming convention recorded in AGENTS.md, `docs/versioning.md` and CONTRIBUTING.md — tags and GitHub release titles are exactly `vX.Y.Z`; CHANGELOG headings stay bare `X.Y.Z`. Legacy pre-`v0.8.1` tags renamed to the `v` form and their releases repointed.
 - Docs: `docs/versioning.md` — the marketplace no longer tracks `main`. The Cadasto catalog pins each entry to a release tag, so a release is not live until the entry in `Cadasto/plugin-marketplace` bumps `version` and `source.ref`; added as release step 7.
 
+### Fixed
+- Docs: `claude plugin add` is not a Claude Code command. `README.md`, `docs/install.md`, `CONTRIBUTING.md`, and `AGENTS.md` load a local working copy with `claude --plugin-dir <path>`, which applies to that session only; a persistent install goes through the marketplace.
+
 ## [0.9.0] - 2026-07-30
 
 MCP **v0.20.0** alignment plus a **skills-first** surface consolidation. The plugin adopts the refreshed guide set and the server's enforced calling contracts, recognises all four template serialisations, promotes CGEM to a first-class design step, fixes agent MCP access under plugin mounts, and extends lint to 24 rules. The slash surface drops **6 → 3**: `/archetype-fix-syntax` and `/template-from-form` fold into their authoring skills, and `/semantic-diff` becomes a user-invocable skill (same invocation, now also auto-triggering). Removing/renaming commands is technically breaking; kept in the 0.x line (as with 0.8.0).

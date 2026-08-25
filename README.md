@@ -48,7 +48,7 @@ This plugin works with the [openEHR Assistant MCP Server](https://github.com/cad
 /plugin install openehr-assistant@cadasto
 ```
 
-or directly from the repo: `claude plugin add cadasto/openehr-assistant-plugin`.
+Or load a local working copy for a single session: `claude --plugin-dir /path/to/openehr-assistant-plugin`.
 
 **Cursor** — Add the plugin via Cursor’s plugin flow (e.g. from a Git URL or local path). The repo includes a Cursor manifest at [`.cursor-plugin/plugin.json`](.cursor-plugin/plugin.json); skills, commands, agents, and MCP config are shared with the Claude plugin.
 

@@ -35,11 +35,11 @@ By participating, you agree to uphold the project's [Code of Conduct](CODE_OF_CO
 Prerequisites:
 - [Claude Code](https://claude.ai/code) CLI installed
 
-Clone and install:
+Clone and load it for a session:
 ```bash
 git clone <your-fork-url>
 cd openehr-assistant-plugin
-claude plugin add .
+claude --plugin-dir .
 ```
 
 No build step is required — the plugin is pure markdown and JSON.
@@ -161,9 +161,9 @@ Do not bundle the other example kinds (`aql`, `flat`, `structured`) — their co
 
 ## Testing locally
 
-Install the plugin from a local path:
+Load the plugin from a local path:
 ```bash
-claude plugin add /path/to/openehr-assistant-plugin
+claude --plugin-dir /path/to/openehr-assistant-plugin
 ```
 
 Verify components work:
@@ -184,7 +184,7 @@ Guide browsing has no command — ask in natural language ("show me the AQL synt
 
 PR checklist:
 - [ ] `./scripts/validate.sh` and `claude plugin validate .` pass
-- [ ] Component works when tested locally with `claude plugin add .`
+- [ ] Component works when tested locally with `claude --plugin-dir .`
 - [ ] Both manifests kept in sync when metadata changed (`.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`)
 - [ ] All references updated (AGENTS.md, README.md, hooks/session-start.sh)
 - [ ] CHANGELOG.md updated
