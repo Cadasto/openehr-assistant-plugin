@@ -18,6 +18,7 @@ This plugin is versioned with [semver](https://semver.org), adapted to skill/com
 4. Commit (`chore(release): vX.Y.Z`) and tag: `git tag -a vX.Y.Z -m "openEHR Assistant Plugin vX.Y.Z"`.
 5. Push commits and the tag: `git push origin main --follow-tags`.
 6. Create the GitHub release from the tag, titled exactly `vX.Y.Z`, with the new CHANGELOG section as the notes body (e.g. `gh release create vX.Y.Z --title "vX.Y.Z" --notes-file <extracted-section>`).
+7. **Update the marketplace entry** — the release is not live until this lands. See below.
 
 ## MCP compatibility
 
@@ -25,4 +26,14 @@ This plugin is built and tested against a specific [openehr-assistant-mcp](https
 
 ## Marketplace
 
-This plugin is listed in the separate [cadasto/plugin-marketplace](https://github.com/cadasto/plugin-marketplace) repo via a GitHub `source`, so the marketplace always tracks `main` — no version pin to bump there. Only update the marketplace when the plugin's `name`, `description`, or `repo` changes.
+This plugin is listed in the separate [Cadasto/plugin-marketplace](https://github.com/Cadasto/plugin-marketplace) repo as `openehr-assistant@cadasto`. The catalog **pins every entry to a release tag**, so tagging and pushing a release here does not ship it — users see nothing until the marketplace entry moves.
+
+After step 6, update the entry in `Cadasto/plugin-marketplace`:
+
+1. Bump that entry's `version` **and** `source.ref` to the new `vX.Y.Z` together (validation there rejects a mismatch).
+2. Bump the catalog's own `metadata.version` — a plugin minor/major is a catalog **minor**, a plugin patch is a catalog **patch**.
+3. Add a `CHANGELOG.md` line and run `python3 scripts/validate.py --fix`.
+
+See the catalog's [docs/versioning.md](https://github.com/Cadasto/plugin-marketplace/blob/main/docs/versioning.md).
+
+The catalog copies `description`, `version`, and `keywords` verbatim from `.claude-plugin/plugin.json`, so update the entry whenever any of those change — not only on a release.
