@@ -9,6 +9,9 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 
 ## [Unreleased]
 
+### Added
+- CI: `.vale.ini` and a `prose` job pinned to Vale 3.18.0 — gates on errors only. Terminology lives in `styles/config/vocabularies/Cadasto/`; `skills/`, `agents/`, `commands/`, `rules/`, `hooks/` and `AGENTS.md` are excluded as model-facing content, and `styles/` is gitignored and `export-ignore`d.
+
 ### Changed
 - Docs: release-naming convention recorded in AGENTS.md, `docs/versioning.md` and CONTRIBUTING.md — tags and GitHub release titles are exactly `vX.Y.Z`; CHANGELOG headings stay bare `X.Y.Z`. Legacy pre-`v0.8.1` tags renamed to the `v` form and their releases repointed.
 - Docs: `docs/versioning.md`, `AGENTS.md` — catalog pins `version` to `X.Y.Z` and `source.ref` to `vX.Y.Z`; added as release step 7.

@@ -20,3 +20,9 @@ Thumbs.db
 *.temp
 # Claude Code local project memory (machine-specific)
 CLAUDE.local.md
+
+# Vale style packages (downloadable, not source — the vocabulary stays tracked).
+# `styles/*` rather than `styles/`: git cannot re-include a path whose parent
+# directory is itself excluded, so the negation below would never fire.
+styles/*
+!styles/config/

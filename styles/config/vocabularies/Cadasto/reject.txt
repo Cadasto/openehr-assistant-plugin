@@ -1,0 +1,9 @@
+# Vocabulary the house style bans outright (style-guide.md §2, claims-and-evidence.md §2).
+seamlessly
+effortlessly
+cutting-edge
+industry-leading
+game-changing
+revolutionary
+blazing[- ]fast
+best-in-class
