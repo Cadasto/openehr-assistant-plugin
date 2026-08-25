@@ -9,6 +9,12 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 
 ## [Unreleased]
 
+### Changed
+- Docs: `docs/testing.md` — load a working copy, not "install locally".
+- Docs: `docs/versioning.md` — release step 6 uses `$VER` in both the CHANGELOG heading match and the `gh release create` tag.
+- Docs: `.vale.ini` and the Cadasto Vale vocabulary comments describe this repo's CI config; they no longer cite `/docs-lint-setup` or files that live only in `docs-editing`.
+- Docs: `AGENTS.md` — RM type reference count is 39, matching `rm-type-reference.md`.
+
 ## [0.9.1] - 2026-08-25
 
 ### Added

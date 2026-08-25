@@ -1,6 +1,6 @@
 # Testing and Validation
 
-This is a pure-content repository — JSON manifests, Markdown skills/commands/agents, and a shared hook script. It has no build step and no package manager. Testing means validating structure, then installing locally and exercising the components against the companion MCP server.
+This is a pure-content repository — JSON manifests, Markdown skills/commands/agents, and a shared hook script. It has no build step and no package manager. Testing means validating structure, then loading a working copy and exercising the components against the companion MCP server.
 
 ## Validation
 
