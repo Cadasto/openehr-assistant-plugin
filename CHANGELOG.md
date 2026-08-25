@@ -13,6 +13,9 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 - Docs: release-naming convention recorded in AGENTS.md, `docs/versioning.md` and CONTRIBUTING.md — tags and GitHub release titles are exactly `vX.Y.Z`; CHANGELOG headings stay bare `X.Y.Z`. Legacy pre-`v0.8.1` tags renamed to the `v` form and their releases repointed.
 - Docs: `docs/versioning.md`, `AGENTS.md` — catalog pins `version` to `X.Y.Z` and `source.ref` to `vX.Y.Z`; added as release step 7.
 
+### Changed
+- Manifests: plugin `description` names what the plugin does — archetypes, templates, compositions, AQL, CKM reuse search, specification lookup — instead of "various openEHR related tasks". The catalog copies this string verbatim, so it reaches users on the next release.
+
 ### Fixed
 - Docs: `claude plugin add` is not a Claude Code command. `README.md`, `docs/install.md`, `CONTRIBUTING.md`, and `AGENTS.md` load a local working copy with `claude --plugin-dir <path>`, which applies to that session only; a persistent install goes through the marketplace.
 

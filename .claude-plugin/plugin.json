@@ -2,7 +2,7 @@
   "name": "openehr-assistant",
   "displayName": "openEHR Assistant",
   "version": "0.9.0",
-  "description": "AI plugin to assist on various openEHR related tasks",
+  "description": "openEHR clinical modeling for AI assistants — archetypes, templates, compositions, AQL, CKM reuse search, and specification lookup.",
   "author": {
     "name": "Cadasto B.V.",
     "url": "https://github.com/cadasto"
