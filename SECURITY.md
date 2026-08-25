@@ -2,7 +2,7 @@
 
 ## Threat Model
 
-This repository distributes **AI-assistant instruction content** — a plugin of skills, commands, agents, hooks, manifests, and a bundled MCP connection config (`.mcp.json`). The relevant security concerns are therefore content-integrity and supply-chain issues rather than classic software vulnerabilities:
+This repository distributes **AI-assistant instruction content** — a plugin of skills, commands, agents, hooks, manifests, and a bundled MCP connection config (`.mcp.json`). The relevant security concerns are therefore about content integrity and the supply chain, rather than classic software vulnerabilities:
 
 - **Malicious or manipulative skill/command/agent content** — instructions in a `SKILL.md`, a command, an agent file, or its `references/` designed to make an AI assistant exfiltrate data, execute harmful commands, or act against the user's interest (prompt injection via plugin content).
 - **Manifest tampering** — a `plugin.json` pointing at unexpected sources or misrepresenting plugin identity.
@@ -22,10 +22,10 @@ You can expect an acknowledgement within 7 days. Confirmed issues are fixed in a
 
 ## Supported Versions
 
-Only the **latest released version** (latest `vX.Y.Z` tag) is supported. Keep the plugin updated via your assistant's update mechanism — e.g. `/plugin update openehr-assistant` in Claude Code.
+Only the **latest released version** (latest `vX.Y.Z` tag) is supported. Keep the plugin updated via your assistant's update mechanism — for example `/plugin update openehr-assistant` in Claude Code.
 
 ## Out of Scope
 
-- Vulnerabilities in Claude Code, Cursor, or other AI assistants themselves — report to the respective vendor (e.g. [Anthropic](https://www.anthropic.com/security)).
+- Vulnerabilities in Claude Code, Cursor, or other AI assistants themselves — report to the respective vendor (for example [Anthropic](https://www.anthropic.com/security)).
 - Vulnerabilities in the companion [openehr-assistant-mcp](https://github.com/cadasto/openehr-assistant-mcp) server or the maintainer [openehr-assistant-dev-plugin](https://github.com/cadasto/openehr-assistant-dev-plugin) — report on those repositories.
 - Issues in the openEHR specifications — raise via the [openEHR Jira](https://openehr.atlassian.net/) (SPEC* projects).

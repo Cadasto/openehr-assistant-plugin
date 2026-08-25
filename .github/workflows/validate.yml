@@ -16,3 +16,21 @@ jobs:
       # CI is strict and deterministic: Python is guaranteed here, so run the
       # validator directly (the scripts/validate.sh graceful skip is for local use).
       - run: python3 scripts/validate.py
+
+  prose:
+    runs-on: ubuntu-latest
+    env:
+      # Pinned: a new Vale release must not turn a green pull request red on its own.
+      VALE_VERSION: 3.18.0
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Vale
+        run: |
+          mkdir -p "$RUNNER_TEMP/bin"
+          curl -sSfL "https://github.com/vale-cli/vale/releases/download/v${VALE_VERSION}/vale_${VALE_VERSION}_Linux_64-bit.tar.gz" \
+            | tar -xz -C "$RUNNER_TEMP/bin" vale
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+      # Downloads the style packages named in .vale.ini; the vocabulary is in-repo.
+      - run: vale sync
+      # Gates on errors only. Warnings and suggestions are a backlog, not a merge blocker.
+      - run: vale --minAlertLevel=error .

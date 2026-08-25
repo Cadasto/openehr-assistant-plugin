@@ -149,7 +149,7 @@ No build step — pure Markdown + JSON. Validate and dogfood locally:
 ```bash
 ./scripts/validate.sh                                 # manifests, dual-host parity, .mcp.json, frontmatter (warns & skips if Python is absent)
 claude plugin validate .                              # manifest + component structure (no Python needed)
-claude plugin add /path/to/openehr-assistant-plugin   # install locally
+claude --plugin-dir /path/to/openehr-assistant-plugin # load locally for one session
 ```
 
 Then verify a command (`/ckm-search blood pressure`) and skill auto-triggering against the configured MCP server. On Cursor, add the plugin via its plugin flow and verify the same. CI runs `scripts/validate.py` strictly on every push/PR ([`.github/workflows/validate.yml`](.github/workflows/validate.yml)); locally, `scripts/validate.sh` runs the same checks but warns and skips if Python isn't installed. Fuller guidance lives in [`docs/`](docs/): [install](docs/install.md), [testing](docs/testing.md), [versioning](docs/versioning.md), [authoring](docs/authoring.md).
@@ -197,3 +197,4 @@ When adding or renaming components, update: **AGENTS.md** (component tables), **
 - **A self-hosted server advertising stale tools/prompts/guides is a server cache, not a plugin bug.** Since MCP v0.20.0 the discovery cache is namespaced by `APP_VERSION`; upgrading the server without bumping its version keeps the old capability ads. Clear it server-side (MCP repo `docs/development.md`). The hosted instance in `.mcp.json` is unaffected.
 - **The Cursor hook uses a workspace-relative command** (`bash hooks/session-start.sh`), *not* `${CLAUDE_PLUGIN_ROOT}` (a Claude-Code-only variable). Keep both hook configs in step; don't "fix" the Cursor one to use the variable.
 - **Lint rules have one source of truth: `guide_get("openehr://guides/archetypes/rules")`.** The `archetype-lint` skill keeps only a compact index; `skills/openehr-assistant/reference/lint-rules-complete.md` is the offline twin for the `clinical-modeler` agent. When the guide changes, update the offline twin — don't re-inline full rule text into the skill.
+- **Register in the marketplace separately — and repin it on every release.** Public availability requires an entry in the `cadasto` marketplace, maintained in `Cadasto/plugin-marketplace`. That entry is pinned to a release tag, so tagging here ships nothing until the entry's `version` and `source.ref` are bumped; see [docs/versioning.md](docs/versioning.md#marketplace).

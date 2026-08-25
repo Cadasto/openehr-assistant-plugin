@@ -1,6 +1,6 @@
 # Contributing to openehr-assistant-plugin
 
-Thank you for your interest in contributing! This document explains how to propose changes and follow our conventions so that we can review and merge your work efficiently.
+Thank you for your interest in contributing. This document explains how to propose changes and follow our conventions so that we can review and merge your work efficiently.
 
 
 ## Table of contents
@@ -35,14 +35,14 @@ By participating, you agree to uphold the project's [Code of Conduct](CODE_OF_CO
 Prerequisites:
 - [Claude Code](https://claude.ai/code) CLI installed
 
-Clone and install:
+Clone and load it for a session:
 ```bash
 git clone <your-fork-url>
 cd openehr-assistant-plugin
-claude plugin add .
+claude --plugin-dir .
 ```
 
-No build step is required — the plugin is pure markdown and JSON.
+No build step is required — the plugin is pure Markdown and JSON.
 
 Validate your changes before pushing:
 ```bash
@@ -144,7 +144,7 @@ When aligning this plugin with a new **[openehr-assistant-mcp](https://github.co
 
 ### 3. Guide URIs and categories
 
-- If guide paths or categories changed (e.g. `specs/`, `howto/`, retired namespaces), update `guide_get` / `guide_search` examples in skills and commands so they match the server’s guide layout.
+- If guide paths or categories changed (for example `specs/`, `howto/`, retired namespaces), update `guide_get` / `guide_search` examples in skills and commands so they match the server’s guide layout.
 
 ### 4. Bundled archetype examples (offline corpus)
 
@@ -161,9 +161,9 @@ Do not bundle the other example kinds (`aql`, `flat`, `structured`) — their co
 
 ## Testing locally
 
-Install the plugin from a local path:
+Load the plugin from a local path:
 ```bash
-claude plugin add /path/to/openehr-assistant-plugin
+claude --plugin-dir /path/to/openehr-assistant-plugin
 ```
 
 Verify components work:
@@ -173,18 +173,18 @@ Verify components work:
 /semantic-diff old.adl new.adl           # Test a user-invocable skill via its slash form
 ```
 
-Guide browsing has no command — ask in natural language ("show me the AQL syntax guide") and the `openehr-assistant` skill loads it. Test skill auto-triggering by mentioning openEHR concepts in conversation without using a command (e.g. "this archetype won't parse" → `archetype-authoring`).
+Guide browsing has no command — ask in natural language ("show me the AQL syntax guide") and the `openehr-assistant` skill loads it. Test skill auto-triggering by mentioning openEHR concepts in conversation without using a command (for example "this archetype won't parse" → `archetype-authoring`).
 
 
 ## Commit messages and pull requests
 - Use conventional commits when possible (`feat:`, `fix:`, `docs:`, `refactor:`, `chore:`).
 - Write descriptive titles and include context in the body: what, why, how, and risks.
 - One logical change per PR. Large changes can be split into smaller PRs.
-- Link related issues using GitHub keywords (e.g., `Fixes #123`).
+- Link related issues using GitHub keywords (for example, `Fixes #123`).
 
 PR checklist:
 - [ ] `./scripts/validate.sh` and `claude plugin validate .` pass
-- [ ] Component works when tested locally with `claude plugin add .`
+- [ ] Component works when tested locally with `claude --plugin-dir .`
 - [ ] Both manifests kept in sync when metadata changed (`.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`)
 - [ ] All references updated (AGENTS.md, README.md, hooks/session-start.sh)
 - [ ] CHANGELOG.md updated
@@ -205,6 +205,6 @@ A [pull request template](.github/PULL_REQUEST_TEMPLATE.md) prefills this checkl
 
 
 ## Security
-Do not open public issues for security vulnerabilities. Instead, please report privately using GitHub's security advisories or contact the maintainers directly. See [SECURITY.md](SECURITY.md) for the threat model (content-integrity / supply-chain, including the bundled `.mcp.json` endpoint), reporting process, and supported versions.
+Do not open public issues for security vulnerabilities. Instead, please report privately using GitHub's security advisories or contact the maintainers directly. See [SECURITY.md](SECURITY.md) for the threat model (content integrity and the supply chain, including the bundled `.mcp.json` endpoint), reporting process, and supported versions.
 
-Thank you for contributing!
+Thank you for contributing.

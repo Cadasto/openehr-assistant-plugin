@@ -2,3 +2,5 @@
 AGENTS.md export-ignore
 CONTRIBUTING.md export-ignore
 .github/** export-ignore
+.vale.ini export-ignore
+styles/** export-ignore

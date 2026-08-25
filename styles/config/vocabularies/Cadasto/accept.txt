@@ -1,0 +1,73 @@
+# Terminology used in this repository. One entry per line, case-sensitive regex —
+# cover every legitimate casing of a term in a single entry, or Vale.Terms will
+# demand the first-listed form everywhere the other appears.
+
+# Identifiers keep their own spelling — repo, plugin, and command names are not prose
+# (style-guide.md §3). Listed so Vale.Terms does not "correct" them to the prose forms.
+openehr-assistant-mcp
+openehr-assistant-dev-plugin
+openehr-assistant-plugin
+openehr-assistant-dev
+openehr-assistant
+[Cc]laude
+[Rr]epointed
+
+# Organisation and products
+[Cc]adasto
+Claude
+Anthropic
+Cursor
+Jira
+Junie
+LibreChat
+EHRbase
+
+# openEHR domain
+openEHR
+[Aa]rchetyped
+CKM
+ADL
+AQL
+OET
+OPTs?
+AOM2
+BMM3?
+CGEM
+ODIN
+GDL2
+ANTLR
+SNOMED
+LOINC
+
+# Tooling and plugin vocabulary
+MCP('s)?
+[Ff]rontmatter
+[Nn]amespaces?
+[Nn]amespaced
+[Ss]ubagents?
+[Ss]ubcommands?
+[Tt]oolchains?
+[Vv]alidators?
+[Cc]onfigs?
+[Rr]epos?
+[Ll]ookups?
+[Dd]ogfood(ing|ed)?
+[Gg]itignor(e|ed|ing)
+URIs?
+[Pp]arams?
+[Ee]nv
+SemVer
+Markdown
+JSON
+YAML
+CI
+
+# Words this repo's prose uses that the base dictionary does not carry
+[Dd]isambiguates?
+[Dd]eduplicated?
+[Pp]articipations?
+[Pp]refills?
+[Pp]reloads?
+[Rr]eframes?
+[Ee]xfiltrate
+[Tt]yposquatting

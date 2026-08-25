@@ -12,7 +12,7 @@ AI plugin suite for clinical workflow integration with [openEHR](https://openehr
 
 This plugin works with the [openEHR Assistant MCP Server](https://github.com/cadasto/openehr-assistant-mcp), which provides the tools, prompts, and resources (CKM, guides, terminology, type specs). The plugin supplies the workflow layer: when to load which guides, which commands to offer, and how to stay aligned with openEHR best practices.
 
-**Recommended:** For installation, transports, and MCP client configuration of the server (hosted vs local, streamable-http vs stdio), see the **[openehr-assistant-mcp README](https://github.com/cadasto/openehr-assistant-mcp#quick-start)** — [Quick Start](https://github.com/cadasto/openehr-assistant-mcp#quick-start) and [Common client configurations](https://github.com/cadasto/openehr-assistant-mcp#common-client-configurations).
+**Requirements.** A Claude Code or Cursor host, and a reachable openEHR Assistant MCP server. A default install needs no server setup — the plugin bundles a config pointing at the hosted instance. Without a reachable server the guide-first workflows have nothing to load; the `clinical-modeler` agent falls back to the offline reference material in this repo, and `ckm-scout` and `spec-researcher` stop and say so.
 
 ## Table of Contents
 
@@ -35,7 +35,7 @@ This plugin works with the [openEHR Assistant MCP Server](https://github.com/cad
 - **AQL queries** — Write, explain, and optimize Archetype Query Language queries.
 - **CKM discovery** — Search the Clinical Knowledge Manager for archetypes and templates.
 - **Demographic modeling** — PARTY hierarchy, roles, relationships, identity patterns.
-- **Offline reference** — Quick-reference, ADL/AQL syntax cheatsheets, and RM type reference in the repo when MCP is unavailable.
+- **Offline reference** — Quick reference, ADL and AQL syntax cheatsheets, ADL idiom and OET syntax references, the complete lint-rule set, and an RM type reference, carried in the repo for when the MCP server is unreachable.
 
 ---
 
@@ -43,14 +43,14 @@ This plugin works with the [openEHR Assistant MCP Server](https://github.com/cad
 
 **Claude Code** — from the Cadasto marketplace:
 
-```
-/plugin marketplace add cadasto/plugin-marketplace
+```text
+/plugin marketplace add Cadasto/plugin-marketplace
 /plugin install openehr-assistant@cadasto
 ```
 
-or directly from the repo: `claude plugin add cadasto/openehr-assistant-plugin`.
+Or load a local working copy for a single session: `claude --plugin-dir /path/to/openehr-assistant-plugin`.
 
-**Cursor** — Add the plugin via Cursor’s plugin flow (e.g. from a Git URL or local path). The repo includes a Cursor manifest at [`.cursor-plugin/plugin.json`](.cursor-plugin/plugin.json); skills, commands, agents, and MCP config are shared with the Claude plugin.
+**Cursor** — Add the plugin via Cursor's plugin flow, from a Git URL or a local path. The repo includes a Cursor manifest at [`.cursor-plugin/plugin.json`](.cursor-plugin/plugin.json); skills, commands, agents, and MCP config are shared with the Claude plugin.
 
 See [docs/install.md](docs/install.md) for marketplace, local-development, update, and Cursor install details.
 
@@ -60,16 +60,14 @@ See [docs/install.md](docs/install.md) for marketplace, local-development, updat
 
 ## Setup (MCP server)
 
-This plugin expects the **openEHR Assistant MCP Server** to be configured in your client. The plugin ships with a default MCP config that points at the hosted server; you can override it for local or stdio use.
+Nothing to configure for a default install: the plugin bundles a `.mcp.json` pointing at the hosted **openEHR Assistant MCP Server** over `streamable-http`.
 
-For **server installation, transports (streamable-http vs stdio), and client-specific configuration** (Claude Desktop, Cursor, LibreChat, Junie), see:
+To use your own server instead — local, Docker, or `stdio` — override that config in your host. The server's own README documents installation, transports, client-specific configuration (Claude Desktop, Cursor, LibreChat, Junie), and environment variables such as `CKM_API_BASE_URL`:
 
 - **[openehr-assistant-mcp — Quick Start](https://github.com/cadasto/openehr-assistant-mcp#quick-start)** (hosted, Docker, stdio)
 - **[openehr-assistant-mcp — Common client configurations](https://github.com/cadasto/openehr-assistant-mcp#common-client-configurations)**
 
-Environment variables (e.g. `CKM_API_BASE_URL`) and Docker/stdio details are documented in the [MCP server README](https://github.com/cadasto/openehr-assistant-mcp).
-
-> **One server, not two.** This plugin bundles its own `.mcp.json`, so it provides the `openehr-assistant` MCP server itself — prefer that. If you *also* added an `openehr-assistant` connector at claude.ai, the same tools appear twice (under a `claude_ai` namespace and the plugin's); that duplicate is optional. If a subagent reports CKM/guide tools "denied", it's a permission-policy gap, not a missing server — see the `permissions.allow` snippet in [`.claude/settings.json`](.claude/settings.json) and [docs/install.md](docs/install.md).
+> **One server, not two.** This plugin bundles its own `.mcp.json`, so it provides the `openehr-assistant` MCP server itself — prefer that. If you *also* added an `openehr-assistant` connector at claude.ai, the same tools appear twice (under a `claude_ai` namespace and the plugin's); that duplicate is optional. If a subagent reports CKM/guide tools as denied, it's a permission-policy gap, not a missing server — see the `permissions.allow` snippet in [`.claude/settings.json`](.claude/settings.json) and [docs/install.md](docs/install.md).
 
 ---
 
@@ -119,11 +117,9 @@ The [openehr-assistant-mcp](https://github.com/cadasto/openehr-assistant-mcp) se
 - Implementation guides across six categories: `archetypes/`, `templates/`, `aql/`, `simplified_formats/`, `specs/` (openEHR specification digests tracking the `development` branch), and `howto/` (toolchain how-tos)
 - Curated worked examples at `openehr://examples/{kind}/{name}` — AQL, FLAT, STRUCTURED payloads, and CKM-published reference `.adl` archetypes
 
-**Compatibility:** This plugin version is built and tested against **openehr-assistant-mcp v0.20.0** — the tagged release that folds in the guide refresh (CGEM/OPT/web-template guides, PROC/CNF/BMM3 spec digests) and the audit hardening (stricter tool schemas, relevance-scored `guide_search`, parameterized prompts, the two CKM explorer prompts merged into one `ckm_explorer`); see [releases](https://github.com/cadasto/openehr-assistant-mcp/releases).
+**Compatibility.** Built and tested against **openehr-assistant-mcp v0.20.0**, which folds in the guide refresh (CGEM/OPT/web-template guides, PROC/CNF/BMM3 spec digests) and the audit hardening (stricter tool schemas, relevance-scored `guide_search`, parameterized prompts, the two CKM explorer prompts merged into one `ckm_explorer`) — see [releases](https://github.com/cadasto/openehr-assistant-mcp/releases). Against a v0.19.0 server, references to the newer guides degrade through `guide_search` fallbacks; pin v0.20.0 for the full guide set. Every plugin release aligns with a specific server version — the checklist is in [docs/versioning.md](docs/versioning.md#mcp-compatibility).
 
-v0.20.0 is breaking for MCP clients that pass `""` for an optional enum argument, that call `prompts/get` without arguments, or that hand `ckm_archetype_get` something that is neither a CKM CID nor a full archetype-id. This plugin does none of those, and the server's prompts are surfaced directly by the host as slash commands, so their arguments come from you rather than from the plugin. References to the newer guides degrade gracefully against a v0.19.0 server (`guide_search` fallbacks), but pin v0.20.0 for the full guide set. When updating the plugin, align with that server’s changelog so each plugin release stays compatible with a specific MCP server version.
-
-Offline reference material in [`skills/openehr-assistant/reference/`](skills/openehr-assistant/reference/) includes a quick-reference (principles, rules, guide index), minimal ADL and AQL syntax cheatsheets, and an RM type reference (~30 commonly archetyped types with attributes for local lint rule 4 validation); see [AGENTS.md](AGENTS.md) (Syntax and grammar sources) for links to official specs and grammars.
+Offline reference material in [`skills/openehr-assistant/reference/`](skills/openehr-assistant/reference/) carries a quick reference (principles, rules, guide index), ADL and AQL syntax cheatsheets, fuller ADL and OET syntax references, an ADL idiom reference, the complete lint-rule set, and an RM type reference — 39 commonly archetyped types with the attributes local lint rule 4 validates against. For the official specs and grammars behind them, see [AGENTS.md](AGENTS.md#syntax-and-grammar-sources).
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
