@@ -52,6 +52,7 @@ MCP('s)?
 [Rr]epos?
 [Ll]ookups?
 [Dd]ogfood(ing|ed)?
+[Gg]itignor(e|ed|ing)
 URIs?
 [Pp]arams?
 [Ee]nv
