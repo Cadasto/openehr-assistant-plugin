@@ -9,6 +9,13 @@ The format is based on Keep a Changelog, and this project adheres to Semantic Ve
 
 ## [Unreleased]
 
+### Changed
+- Docs: `README.md` intro states audience and scope, adds a hooks-and-Cursor-rule table and a Documentation section, and orders H2s like the sibling Cadasto plugins; `docs/*.md` open with an orienting paragraph and use sentence-case H1s.
+- Docs: `README.md`, `docs/`, `CONTRIBUTING.md`, `SECURITY.md` line-edited: em dashes removed, British spelling, CI trigger wording matches `validate.yml`; `docs/testing.md` documents the Vale prose gate; `docs/versioning.md` release step 1 updates the README version badge.
+
+### Fixed
+- Docs: `CONTRIBUTING.md` and `SECURITY.md` list `hooks/lint-on-save.sh`; hook guidance no longer implies `${CLAUDE_PLUGIN_ROOT}` applies to the Cursor hook config.
+
 ## [0.9.2] - 2026-08-25
 
 ### Changed

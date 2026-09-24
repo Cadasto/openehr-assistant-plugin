@@ -1,6 +1,6 @@
 # Contributing to openehr-assistant-plugin
 
-Thank you for your interest in contributing. This document explains how to propose changes and follow our conventions so that we can review and merge your work efficiently.
+Thank you for your interest in contributing. This document explains how to propose changes and follow the project's conventions, so maintainers can review and merge your work efficiently.
 
 
 ## Table of contents
@@ -19,14 +19,14 @@ Thank you for your interest in contributing. This document explains how to propo
 
 
 ## Code of Conduct
-By participating, you agree to uphold the project's [Code of Conduct](CODE_OF_CONDUCT.md): be respectful, constructive, and professional. If you encounter unacceptable behavior, contact the maintainers privately via the repository's security/contact channels.
+By participating, you agree to uphold the project's [Code of Conduct](CODE_OF_CONDUCT.md): be respectful, constructive, and professional. If you encounter unacceptable behaviour, contact the maintainers privately via the repository's security/contact channels.
 
-> **Contributor references:** the [`docs/`](docs/) directory holds the human-facing guides this document points to — [install](docs/install.md), [testing & validation](docs/testing.md), [versioning](docs/versioning.md), and [authoring conventions](docs/authoring.md).
+> **Contributor references:** the [`docs/`](docs/) directory holds the human-facing guides this document points to: [install](docs/install.md), [testing & validation](docs/testing.md), [versioning](docs/versioning.md), and [authoring conventions](docs/authoring.md).
 
 
 ## Getting help and asking questions
 - For usage questions, open a GitHub Discussion (if enabled) or a Question issue.
-- For bugs, open an Issue and include: expected behavior, actual behavior, steps to reproduce, and environment details.
+- For bugs, open an Issue and include expected behaviour, actual behaviour, steps to reproduce, and environment details.
 - For feature requests, explain the use-case and proposed UX.
 
 
@@ -42,19 +42,19 @@ cd openehr-assistant-plugin
 claude --plugin-dir .
 ```
 
-No build step is required — the plugin is pure Markdown and JSON.
+No build step is required: the plugin is pure Markdown and JSON.
 
 Validate your changes before pushing:
 ```bash
 ./scripts/validate.sh      # manifests, dual-host parity, .mcp.json, frontmatter (warns & skips if Python is absent)
 claude plugin validate .   # manifest + component structure (no Python needed)
 ```
-CI runs `scripts/validate.py` strictly on every push and pull request. See [docs/testing.md](docs/testing.md) for the full validation and local-triggering workflow.
+CI runs `scripts/validate.py` strictly, and a Vale prose check, on every pull request and on pushes to `main`. See [docs/testing.md](docs/testing.md) for the full validation and local-triggering workflow.
 
 
 ## Plugin structure
 
-```
+```text
 .claude-plugin/plugin.json     # Claude Code plugin manifest
 .cursor-plugin/plugin.json    # Cursor plugin manifest (same version, component paths)
 .mcp.json                     # MCP server connection config (shared)
@@ -65,9 +65,10 @@ commands/                      # Slash commands (thin MCP tool wrappers)
 agents/                        # Specialized subagents
   <name>.md
 hooks/                         # Event hooks
-  hooks.json                   # Claude Code SessionStart hook config
+  hooks.json                   # Claude Code hook config (SessionStart, PostToolUse)
   cursor-hooks.json            # Cursor format (hooks.sessionStart, etc.)
-  session-start.sh             # Shared script
+  session-start.sh             # Shared SessionStart script
+  lint-on-save.sh              # Claude Code PostToolUse reminder for .adl edits
 rules/                         # Cursor-only rules (.mdc)
   openehr-context.mdc
 .gitattributes                 # export-ignore: paths omitted from `git archive` only (see below)
@@ -77,7 +78,7 @@ Key conventions:
 - Skills go in `skills/<name>/SKILL.md` with YAML frontmatter.
 - Commands go in `commands/<name>.md` with YAML frontmatter.
 - Agents go in `agents/<name>.md` with YAML frontmatter.
-- Skills and commands pre-approve MCP tools with `allowed-tools`; **agents use `tools:` instead**, listing each MCP tool under both mount namespaces (see AGENTS.md → Gotchas).
+- Skills and commands pre-approve MCP tools with `allowed-tools`; **agents use `tools:` instead**, listing each MCP tool under both mount namespaces (see the Gotchas in [AGENTS.md](AGENTS.md#gotchas)).
 - MCP tool names follow the format `mcp__openehr-assistant__<tool_name>`.
 
 ## Repository archives (.gitattributes)
@@ -86,14 +87,14 @@ Key conventions:
 
 Currently omitted from archives:
 
-- `AGENTS.md` — maintainer / AI guidelines for **this** repository (not required for end users running the plugin).
-- `CONTRIBUTING.md` — this file.
-- `.github/**` — issue templates and Copilot instructions.
+- `AGENTS.md`: maintainer and AI guidelines for **this** repository (not required for end users running the plugin).
+- `CONTRIBUTING.md`: this file.
+- `.github/**`: issue templates and Copilot instructions.
 
 **Implications**
 
 - Prefer **`git clone`** (or full-repo checkouts) when developing the plugin so you keep maintainer docs and GitHub metadata.
-- If you ship or consume a **source tarball** produced with `git archive`, do not expect `AGENTS.md` or `CONTRIBUTING.md` inside it. Runtime plugin behavior does not depend on those files; user-facing behavior lives in README, skills, commands, rules, and MCP guides.
+- If you ship or consume a **source tarball** produced with `git archive`, do not expect `AGENTS.md` or `CONTRIBUTING.md` inside it. Runtime plugin behaviour does not depend on those files; user-facing behaviour lives in README, skills, commands, rules, and MCP guides.
 
 `export-ignore` does **not** change what Cursor or Claude install when they pull from a Git URL (typically a clone). It only affects archive-style exports.
 
@@ -108,20 +109,20 @@ Skills are multi-step, context-rich workflows. When adding a skill:
 - Use progressive disclosure: mandatory steps first, then detailed guidance.
 
 ### Commands
-Commands are thin wrappers around MCP tools for quick, focused tasks. **Prefer a skill for new functionality** — skills auto-trigger, are equally `/`-invocable, and can carry `references/`; reserve a command for a one-shot that completes in a single interaction and should never auto-trigger (see [docs/authoring.md](docs/authoring.md)). When adding a command:
-- Keep instructions concise — commands should complete in one interaction.
+Commands are thin wrappers around MCP tools for quick, focused tasks. **Prefer a skill for new functionality**: skills auto-trigger, are equally `/`-invocable, and can carry `references/`. Reserve a command for a one-shot that completes in a single interaction and should never auto-trigger (see [docs/authoring.md](docs/authoring.md)). When adding a command:
+- Keep instructions concise; commands should complete in one interaction.
 - Use `$ARGUMENTS` to capture user input.
 - Include `argument-hint` in frontmatter to guide users.
 
 ### Agents
-Agents are specialized subagents for complex domain tasks. When adding an agent:
+Agents are specialised subagents for complex domain tasks. When adding an agent:
 - Write a clear system prompt explaining the agent's expertise.
-- List the tools the agent needs in **`tools:`** (not `allowed-tools`), with each MCP tool under both mount namespaces — `scripts/validate.py` enforces the pairing.
+- List the tools the agent needs in **`tools:`** (not `allowed-tools`), with each MCP tool under both mount namespaces; `scripts/validate.py` enforces the pairing.
 
 ### Hooks
-Hooks respond to Claude Code events. When modifying hooks:
-- Keep hook scripts fast — they run on every session start.
-- Use `${CLAUDE_PLUGIN_ROOT}` for paths relative to the plugin root.
+Hooks respond to host events. When modifying hooks:
+- Keep hook scripts fast: `session-start.sh` runs on every session start, and `lint-on-save.sh` after every `Write` or `Edit` on Claude Code.
+- Use `${CLAUDE_PLUGIN_ROOT}` for paths relative to the plugin root in `hooks/hooks.json` (Claude Code). The Cursor config, `hooks/cursor-hooks.json`, runs from the plugin root and uses a relative path instead.
 
 ### Documentation
 When adding or renaming components, update all references in:
@@ -156,7 +157,7 @@ After updating the version pointer in step 1:
 2. Sync any changed files (keep the “English-only, translations stripped” convention documented in `skills/openehr-assistant/examples/README.md`).
 3. Update the `**Synced from:**` line in `skills/openehr-assistant/examples/README.md` to the new MCP version.
 
-Do not bundle the other example kinds (`aql`, `flat`, `structured`) — their consumers (main-session skills such as `aql-authoring`, `composition-builder`) retrieve via MCP’s `examples_search` / `examples_get` on demand, so bundling would only add drift risk without offline value.
+Do not bundle the other example kinds (`aql`, `flat`, `structured`). Their consumers (main-session skills such as `aql-authoring`, `composition-builder`) retrieve via MCP’s `examples_search` / `examples_get` on demand, so bundling would only add drift risk without offline value.
 
 
 ## Testing locally
@@ -167,13 +168,13 @@ claude --plugin-dir /path/to/openehr-assistant-plugin
 ```
 
 Verify components work:
-```
+```text
 /ckm-search blood pressure               # Test CKM discovery command
 /openehr-explain DV_QUANTITY             # Test type / archetype / terminology lookup
 /semantic-diff old.adl new.adl           # Test a user-invocable skill via its slash form
 ```
 
-Guide browsing has no command — ask in natural language ("show me the AQL syntax guide") and the `openehr-assistant` skill loads it. Test skill auto-triggering by mentioning openEHR concepts in conversation without using a command (for example "this archetype won't parse" → `archetype-authoring`).
+Guide browsing has no command. Ask in natural language ("show me the AQL syntax guide") and the `openehr-assistant` skill loads it. Test skill auto-triggering by mentioning openEHR concepts in conversation without using a command (for example "this archetype won't parse" → `archetype-authoring`).
 
 
 ## Commit messages and pull requests
@@ -196,7 +197,7 @@ A [pull request template](.github/PULL_REQUEST_TEMPLATE.md) prefills this checkl
 ## Branching, issues, and release notes
 - Default branch: `main`
 - Create feature branches from `main`: `feature/short-description` or `fix/short-description`
-- We follow SemVer for releases and maintain a `CHANGELOG.md` (Keep a Changelog format). Tags and GitHub release titles are exactly `vX.Y.Z`; CHANGELOG headings stay bare `X.Y.Z` (see [docs/versioning.md](docs/versioning.md)).
+- Releases follow SemVer, and changes are recorded in `CHANGELOG.md` (Keep a Changelog format). Tags and GitHub release titles are exactly `vX.Y.Z`; CHANGELOG headings stay bare `X.Y.Z` (see [docs/versioning.md](docs/versioning.md)).
 
 
 ## Versioning
@@ -205,6 +206,6 @@ A [pull request template](.github/PULL_REQUEST_TEMPLATE.md) prefills this checkl
 
 
 ## Security
-Do not open public issues for security vulnerabilities. Instead, please report privately using GitHub's security advisories or contact the maintainers directly. See [SECURITY.md](SECURITY.md) for the threat model (content integrity and the supply chain, including the bundled `.mcp.json` endpoint), reporting process, and supported versions.
+Do not open public issues for security vulnerabilities. Report them privately using GitHub's security advisories or contact the maintainers directly. See [SECURITY.md](SECURITY.md) for the threat model (content integrity and the supply chain, including the bundled `.mcp.json` endpoint), reporting process, and supported versions.
 
 Thank you for contributing.

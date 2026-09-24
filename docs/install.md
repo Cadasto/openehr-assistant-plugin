@@ -1,8 +1,8 @@
 # Installing the openEHR Assistant Plugin
 
-This plugin is distributed for both [Claude Code](https://docs.claude.com/en/docs/claude-code/plugins) (`.claude-plugin/`) and [Cursor](https://cursor.com/docs/plugins) (`.cursor-plugin/`). Skill, command, agent, and rule content is shared; only the manifest and hook layer differ.
+This page is for anyone installing, updating, or locally loading the plugin on [Claude Code](https://docs.claude.com/en/docs/claude-code/plugins) (`.claude-plugin/`) or [Cursor](https://cursor.com/docs/plugins) (`.cursor-plugin/`), and for anyone whose subagents cannot reach the MCP server. Both hosts share the skill, command, agent, and rule content; only the manifest and hook layer differ.
 
-> This is the **user-facing** plugin — for clinical modelling, AQL, CKM discovery, and specification lookup. If you instead want to *build* the openEHR Assistant tooling (MCP tools, guides, examples), see the maintainer [openehr-assistant-dev](https://github.com/cadasto/openehr-assistant-dev-plugin) plugin.
+> This is the **user-facing** plugin, for clinical modelling, AQL, CKM discovery, and specification lookup. To *build* the openEHR Assistant tooling (MCP tools, guides, examples), use the maintainer [openehr-assistant-dev](https://github.com/cadasto/openehr-assistant-dev-plugin) plugin instead.
 
 ## Claude Code
 
@@ -21,9 +21,9 @@ The marketplace name is `cadasto`, so installed plugins are addressed as `<plugi
 claude --plugin-dir /path/to/openehr-assistant-plugin
 ```
 
-`--plugin-dir` loads the plugin from disk for **that session only** — it does not persist, which makes it the right tool for dogfooding an unreleased working copy. It is repeatable (`--plugin-dir A --plugin-dir B`) and also accepts a `.zip`.
+`--plugin-dir` loads the plugin from disk for **that session only** and does not persist, which makes it the right tool for dogfooding an unreleased working copy. It is repeatable (`--plugin-dir A --plugin-dir B`) and also accepts a `.zip`.
 
-Claude Code has **no `plugin add` subcommand**. `claude plugin install` resolves names from a configured marketplace, not filesystem paths, and `claude plugin marketplace add <path>` expects a marketplace manifest (`.claude-plugin/marketplace.json`) — which a single-plugin repository like this one does not have. For a persistent install, go through the marketplace above.
+Claude Code has **no `plugin add` subcommand**. `claude plugin install` resolves names from a configured marketplace, not filesystem paths, and `claude plugin marketplace add <path>` expects a marketplace manifest (`.claude-plugin/marketplace.json`), which a single-plugin repository like this one does not have. For a persistent install, go through the marketplace above.
 
 ### Update / inspect
 
@@ -40,19 +40,19 @@ Restart the session for an update to take effect.
 
 ## Cursor
 
-Add this repository as a plugin (Cursor **Settings → Plugins**, via Git URL or local path). The repo root contains `.cursor-plugin/plugin.json`; skills, commands, agents, rules, the bundled MCP config (`.mcp.json`), and the Cursor hook config (`hooks/cursor-hooks.json`) are declared there. After changing content locally, reload or reinstall the plugin so Cursor picks it up.
+Add this repository as a plugin (Cursor **Settings → Plugins**, via Git URL or local path). The repository root contains `.cursor-plugin/plugin.json`, which declares the skills, commands, agents, rules, the bundled MCP config (`.mcp.json`), and the Cursor hook config (`hooks/cursor-hooks.json`). After changing content locally, reload or reinstall the plugin so Cursor picks it up.
 
 ## MCP wiring
 
-Unlike the maintainer plugin, this plugin **bundles a `.mcp.json`** so it works out of the box: it points at the hosted openEHR Assistant MCP server (`streamable-http`). Skill / command `allowed-tools` and agent `tools:` entries reference `mcp__openehr-assistant__*` tools resolved from that server.
+Unlike the maintainer plugin, this plugin **bundles a `.mcp.json`** so it works out of the box: it points at the hosted openEHR Assistant MCP server (`streamable-http`). Skill and command `allowed-tools` and agent `tools:` entries reference `mcp__openehr-assistant__*` tools resolved from that server.
 
-To use a **local or `stdio`** MCP server instead, override the bundled config in your host. For server installation, transports, and client-specific configuration, see the [openehr-assistant-mcp — Quick Start](https://github.com/cadasto/openehr-assistant-mcp#quick-start) and [AGENTS.md](../AGENTS.md#repository-layout).
+To use a **local or `stdio`** MCP server instead, override the bundled config in your host. For server installation, transports, and client-specific configuration, see the [openehr-assistant-mcp Quick Start](https://github.com/cadasto/openehr-assistant-mcp#quick-start) and [AGENTS.md](../AGENTS.md#repository-layout).
 
-## Subagents & MCP permissions
+## Subagents and MCP permissions
 
-The plugin's agents (`ckm-scout`, `spec-researcher`, and `clinical-modeler`'s read-only lookups) call MCP tools. Agent frontmatter (`tools:`) grants the *capability*, but your host's **permission policy** must still allow the server — otherwise a subagent can be silently denied CKM/guide access even though the same tools work in the main session.
+The plugin's agents (`ckm-scout`, `spec-researcher`, and `clinical-modeler`'s read-only lookups) call MCP tools. Agent frontmatter (`tools:`) grants the *capability*, but your host's **permission policy** must still allow the server. Without that, the host can silently deny a subagent CKM and guide access even though the same tools work in the main session.
 
-If you hit that, pre-approve the server in your project's `.claude/settings.json` (the plugin repo already ships this in its own [`.claude/settings.json`](../.claude/settings.json)):
+If you hit that, pre-approve the server in your project's `.claude/settings.json` (the plugin repository already ships this in its own [`.claude/settings.json`](../.claude/settings.json)):
 
 ```json
 {
@@ -65,7 +65,7 @@ If you hit that, pre-approve the server in your project's `.claude/settings.json
 }
 ```
 
-Both namespaces are listed because the server may be wired as the plugin-bundled one (`mcp__plugin_openehr-assistant_openehr-assistant__*`) or registered directly under its plain name in a project/user `.mcp.json` (`mcp__openehr-assistant__*`). All openEHR Assistant tools are read-only, so allowing the whole server is safe. The agents fail loud with `BLOCKED: …` and route the lookup back to the main session when this isn't in place.
+Both namespaces are listed because the server may be wired as the plugin-bundled one (`mcp__plugin_openehr-assistant_openehr-assistant__*`) or registered directly under its plain name in a project or user `.mcp.json` (`mcp__openehr-assistant__*`). All openEHR Assistant tools are read-only, so allowing the whole server is safe. When this is not in place, the agents fail loud with `BLOCKED: …` and route the lookup back to the main session.
 
 ### Mount shape matters for the agents
 
@@ -77,7 +77,7 @@ The same server yields a different tool-id namespace per mount, and agent `tools
 | This plugin's bundled `.mcp.json` | `mcp__plugin_openehr-assistant_openehr-assistant__<tool>` |
 | claude.ai connector | `mcp__claude_ai_<connector>__<tool>` |
 
-The three agents ship both of the first two forms, so they work under either without configuration. The **connector** shape is named after your connector, so the plugin cannot predict it: under a connector-only mount the agents lose MCP access (and `ckm-scout`, whose `tools:` is MCP-only, is refused with `would be spawned with zero tools`). If that is your setup, register the server in a project `.mcp.json` as well — that is the one mount the agents can rely on:
+The three agents ship both of the first two forms, so they work under either without configuration. The **connector** shape is named after your connector, so the plugin cannot predict it: under a connector-only mount the agents lose MCP access, and the host refuses `ckm-scout` (whose `tools:` is MCP-only) with `would be spawned with zero tools`. If that is your setup, register the server in a project `.mcp.json` as well; it is the one mount the agents can rely on:
 
 ```json
 {
@@ -90,4 +90,4 @@ The three agents ship both of the first two forms, so they work under either wit
 }
 ```
 
-The main session is unaffected either way — only agent `tools:` matching is namespace-sensitive.
+The main session is unaffected either way: only agent `tools:` matching is namespace-sensitive.
